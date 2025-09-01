@@ -42,6 +42,84 @@ import {
 } from "https://esm.sh/@tiptap/core@2";
 import * as f from "https://esm.sh/prosemirror-state@1";
 import * as y from "https://esm.sh/prosemirror-view@1";
+// Global Debug System - Available everywhere
+window.ChatDebug = {
+    enabled: false,
+    messageCounter: 0,
+    logBuffer: [],
+    maxLogBuffer: 100,
+    
+    log: function(category, message, data = null) {
+        const timestamp = new Date().toLocaleTimeString();
+        
+        // Deep clone and stringify data for proper display
+        let processedData = null;
+        if (data) {
+            try {
+                // This ensures all nested objects/arrays are properly shown
+                processedData = JSON.parse(JSON.stringify(data));
+            } catch (e) {
+                // If stringify fails, at least try to show something
+                processedData = String(data);
+            }
+        }
+        
+        const logEntry = {
+            timestamp: timestamp,
+            category: category,
+            message: message,
+            data: processedData
+        };
+        
+        // Always add to buffer
+        this.logBuffer.push(logEntry);
+        
+        // Keep buffer size limited
+        if (this.logBuffer.length > this.maxLogBuffer) {
+            this.logBuffer.shift();
+        }
+        
+        // Only console.log if debug mode is enabled
+        if (!this.enabled) return;
+        
+        const logMsg = `[${timestamp}][Chat Debug][${category}] ${message}`;
+        
+        if (data) {
+            // Always show as JSON string to avoid [object Object]
+            console.log(logMsg + ' | Data:', JSON.stringify(processedData, null, 2));
+        } else {
+            console.log(logMsg);
+        }
+    },
+    
+    dumpBuffer: function() {
+        console.log('%c[Chat Debug] === DUMPING BUFFERED LOGS ===', 'color: #ffcc00; font-weight: bold');
+        console.log(`[Chat Debug] Showing last ${this.logBuffer.length} log entries`);
+        
+        this.logBuffer.forEach((entry) => {
+            const logMsg = `[${entry.timestamp}][BUFFERED][${entry.category}] ${entry.message}`;
+            if (entry.data) {
+                // Show data as formatted JSON string
+                console.log(logMsg + ' | Data:', JSON.stringify(entry.data, null, 2));
+            } else {
+                console.log(logMsg);
+            }
+        });
+        
+        console.log('%c[Chat Debug] === END OF BUFFERED LOGS ===', 'color: #ffcc00; font-weight: bold');
+    },
+    
+    setEnabled: function(enabled) {
+        this.enabled = enabled;
+        if (enabled) {
+            this.dumpBuffer();
+        }
+    }
+};
+
+// Create a global shorthand
+window.debugLog = window.ChatDebug.log.bind(window.ChatDebug);
+
 window.TipTap = {
     Editor: e,
     Mark: t,
@@ -7468,14 +7546,24 @@ ${t}`,
                                     t.data && (v.userId = t.data.user_id, v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), t.data.emojis && (v.chat.Settings.Filter.Emojis = t.data.emojis), t.data.stickers && (v.chat.Settings.Filter.Stickers = t.data.stickers), t.data.logo && (v.chat.LOGO = t.data.logo), v.preInitialized = !0)
                                 },
                                 SET_DEBUG_MODE() {
-                                    p = t.enabled, v.debugMode = t.enabled, console.log(`%c[Chat Debug] Debug mode ${p?"ENABLED":"DISABLED"}`, "color: #00ff00; font-weight: bold"), p ? (y(), console.log("%c[Chat Debug] Current Status:", "color: #00ff00"), console.log({
-                                        messagesProcessed: u,
-                                        cachedMessages: v.recentMessageHashes ? v.recentMessageHashes.size : 0,
-                                        currentChannel: v.currentChannel,
-                                        channelsCount: v.channels.length,
-                                        bufferSize: `${h.length}/100`,
-                                        activePolls: Array.from(v.channelMessagesMap.values()).flat().filter(e => "poll" === e.type && e.pollData?.active).length
-                                    }), console.log("%c[Chat Debug] New logs will now be printed in real-time", "color: #ffcc00")) : console.log("%c[Chat Debug] Logs will continue to be buffered (last 100 entries)", "color: #ffcc00")
+                                    window.ChatDebug.setEnabled(t.enabled);
+                                    p = t.enabled;
+                                    v.debugMode = t.enabled;
+                                    console.log(`%c[Chat Debug] Debug mode ${t.enabled?"ENABLED":"DISABLED"}`, "color: #00ff00; font-weight: bold");
+                                    if (t.enabled) {
+                                        console.log("%c[Chat Debug] Current Status:", "color: #00ff00");
+                                        console.log({
+                                            messagesProcessed: window.ChatDebug.messageCounter,
+                                            cachedMessages: v.recentMessageHashes ? v.recentMessageHashes.size : 0,
+                                            currentChannel: v.currentChannel,
+                                            channelsCount: v.channels.length,
+                                            bufferSize: `${window.ChatDebug.logBuffer.length}/${window.ChatDebug.maxLogBuffer}`,
+                                            activePolls: Array.from(v.channelMessagesMap.values()).flat().filter(e => "poll" === e.type && e.pollData?.active).length
+                                        });
+                                        console.log("%c[Chat Debug] New logs will now be printed in real-time", "color: #ffcc00");
+                                    } else {
+                                        console.log("%c[Chat Debug] Logs will continue to be buffered (last 100 entries)", "color: #ffcc00");
+                                    }
                                 },
                                 ON_MESSAGE: () => L.onMessage(t),
                                 ON_MESSAGE_EDIT() {
