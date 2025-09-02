@@ -1,9 +1,9 @@
 import {
     Editor as e,
     Mark as t,
-    Extension as s
+    Extension as a
 } from "https://esm.sh/@tiptap/core@2";
-import a from "https://esm.sh/@tiptap/starter-kit@2";
+import s from "https://esm.sh/@tiptap/starter-kit@2";
 import {
     Mention as n
 } from "https://esm.sh/@tiptap/extension-mention@2";
@@ -41,90 +41,12 @@ import {
     InputRule as h
 } from "https://esm.sh/@tiptap/core@2";
 import * as f from "https://esm.sh/prosemirror-state@1";
-import * as y from "https://esm.sh/prosemirror-view@1";
-// Global Debug System - Available everywhere
-window.ChatDebug = {
-    enabled: false,
-    messageCounter: 0,
-    logBuffer: [],
-    maxLogBuffer: 100,
-    
-    log: function(category, message, data = null) {
-        const timestamp = new Date().toLocaleTimeString();
-        
-        // Deep clone and stringify data for proper display
-        let processedData = null;
-        if (data) {
-            try {
-                // This ensures all nested objects/arrays are properly shown
-                processedData = JSON.parse(JSON.stringify(data));
-            } catch (e) {
-                // If stringify fails, at least try to show something
-                processedData = String(data);
-            }
-        }
-        
-        const logEntry = {
-            timestamp: timestamp,
-            category: category,
-            message: message,
-            data: processedData
-        };
-        
-        // Always add to buffer
-        this.logBuffer.push(logEntry);
-        
-        // Keep buffer size limited
-        if (this.logBuffer.length > this.maxLogBuffer) {
-            this.logBuffer.shift();
-        }
-        
-        // Only console.log if debug mode is enabled
-        if (!this.enabled) return;
-        
-        const logMsg = `[${timestamp}][Chat Debug][${category}] ${message}`;
-        
-        if (data) {
-            // Always show as JSON string to avoid [object Object]
-            console.log(logMsg + ' | Data:', JSON.stringify(processedData, null, 2));
-        } else {
-            console.log(logMsg);
-        }
-    },
-    
-    dumpBuffer: function() {
-        console.log('%c[Chat Debug] === DUMPING BUFFERED LOGS ===', 'color: #ffcc00; font-weight: bold');
-        console.log(`[Chat Debug] Showing last ${this.logBuffer.length} log entries`);
-        
-        this.logBuffer.forEach((entry) => {
-            const logMsg = `[${entry.timestamp}][BUFFERED][${entry.category}] ${entry.message}`;
-            if (entry.data) {
-                // Show data as formatted JSON string
-                console.log(logMsg + ' | Data:', JSON.stringify(entry.data, null, 2));
-            } else {
-                console.log(logMsg);
-            }
-        });
-        
-        console.log('%c[Chat Debug] === END OF BUFFERED LOGS ===', 'color: #ffcc00; font-weight: bold');
-    },
-    
-    setEnabled: function(enabled) {
-        this.enabled = enabled;
-        if (enabled) {
-            this.dumpBuffer();
-        }
-    }
-};
-
-// Create a global shorthand
-window.debugLog = window.ChatDebug.log.bind(window.ChatDebug);
-
+import * as v from "https://esm.sh/prosemirror-view@1";
 window.TipTap = {
     Editor: e,
     Mark: t,
-    Extension: s,
-    StarterKit: a,
+    Extension: a,
+    StarterKit: s,
     Mention: n,
     Placeholder: o,
     CharacterCount: i,
@@ -139,7 +61,7 @@ window.TipTap = {
     InputRule: h,
     PM: {
         ...f,
-        ...y
+        ...v
     }
 };
 let {
@@ -147,39 +69,39 @@ let {
     Teleport: _Teleport,
     Transition: _Transition,
     TransitionGroup: _TransitionGroup,
-    canvasRef: v,
-    computed: k,
-    createApp: C,
+    canvasRef: canvasRef,
+    computed: computed,
+    createApp: createApp,
     createBlock: _createBlock,
     createCommentVNode: _createCommentVNode,
     createElementBlock: _createElementBlock,
     createElementVNode: _createElementVNode,
     createTextVNode: _createTextVNode,
     createVNode: _createVNode,
-    defineComponent: E,
-    nextTick: $,
+    defineComponent: defineComponent,
+    nextTick: nextTick,
     normalizeClass: _normalizeClass,
     normalizeStyle: _normalizeStyle,
-    onBeforeUnmount: N,
-    onBeforeUpdate: b,
-    onMounted: V,
-    onUnmounted: I,
-    onUpdated: _,
+    onBeforeUnmount: onBeforeUnmount,
+    onBeforeUpdate: onBeforeUpdate,
+    onMounted: onMounted,
+    onUnmounted: onUnmounted,
+    onUpdated: onUpdated,
     openBlock: _openBlock,
-    reactive: M,
-    ref: w,
+    reactive: reactive,
+    ref: ref,
     renderList: _renderList,
     resolveComponent: _resolveComponent,
-    shallowReactive: T,
-    shallowRef: S,
+    shallowReactive: shallowReactive,
+    shallowRef: shallowRef,
     toDisplayString: _toDisplayString,
-    toRef: x,
-    toRefs: D,
+    toRef: toRef,
+    toRefs: toRefs,
     vModelSelect: _vModelSelect,
     vModelText: _vModelText,
     vShow: _vShow,
-    watch: P,
-    watchEffect: B,
+    watch: watch,
+    watchEffect: watchEffect,
     withCtx: _withCtx,
     withDirectives: _withDirectives,
     withKeys: _withKeys,
@@ -187,13 +109,13 @@ let {
 } = Vue;
 ! function() {
     "use strict";
-    let e = E({
+    let e = defineComponent({
             props: ["onSelect", "emojiData", "discordAssets", "activeTab", "reactionMode", "hasStickersPermission", "hasServerEmojisPermission"],
             emits: ["tabChange"],
             setup(e, {
                 emit: t
             }) {
-                let s = T({
+                let a = shallowReactive({
                         activeCategory: "server",
                         hoveredEmoji: null,
                         hoveredSticker: null,
@@ -214,29 +136,25 @@ let {
                         currentTab: e.activeTab || "emojis",
                         isInitialized: !1
                     }),
-                    a = w(null),
-                    n = w(null);
-                P(() => e.activeTab, e => {
-                    s.currentTab = e, s.scrollTop = 0, n.value && (n.value.scrollTop = 0)
-                }), P(() => e.discordAssets, (t, a) => {
-                    t && (!a || t.emojis?.length !== a?.emojis?.length || t.stickers?.length !== a?.stickers?.length) ? (s.isInitialized = !1, c(), t.emojis?.length && e.hasServerEmojisPermission && (s.activeCategory = "server"), s.loading = !1) : t && t.isLoaded && (s.loading = !1)
+                    s = ref(null),
+                    n = ref(null);
+                watch(() => e.activeTab, e => {
+                    a.currentTab = e, a.scrollTop = 0, n.value && (n.value.scrollTop = 0)
+                }), watch(() => e.discordAssets, (t, s) => {
+                    !t || s && t.emojis?.length === s?.emojis?.length && t.stickers?.length === s?.stickers?.length ? t && t.isLoaded && (a.loading = !1) : (a.isInitialized = !1, c(), t.emojis?.length && e.hasServerEmojisPermission && (a.activeCategory = "server"), a.loading = !1)
                 }, {
                     deep: !0
                 });
-                let o = function e(t) {
-                        let s = new Map;
-                        return function(...e) {
-                            let a = JSON.stringify(e);
-                            if (s.has(a)) return s.get(a);
-                            let n = t.apply(this, e);
-                            return s.set(a, n), n
+                let o = function(e) {
+                        let t = new Map;
+                        return function(...a) {
+                            let s = JSON.stringify(a);
+                            if (t.has(s)) return t.get(s);
+                            let n = e.apply(this, a);
+                            return t.set(s, n), n
                         }
-                    }(e => {
-                        if (e.isCustom) return e.src;
-                        let t = e.unified.toLowerCase();
-                        return `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${t}.png`
-                    }),
-                    i = k(() => {
+                    }(e => e.isCustom ? e.src : `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${e.unified.toLowerCase()}.png`),
+                    i = computed(() => {
                         let t = [];
                         return e.discordAssets?.emojis?.length && t.push({
                             id: "server",
@@ -266,23 +184,23 @@ let {
                             id: "objects",
                             name: "Objects",
                             emoji: "\uD83D\uDCA1"
-                        }, ])
+                        }])
                     }),
                     l = window.chatState?.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"],
-                    r = S({}),
+                    r = shallowRef({}),
                     c = () => {
-                        if (s.isInitialized) return;
-                        s.isInitialized = !0;
+                        if (a.isInitialized) return;
+                        a.isInitialized = !0;
                         let e = "emoji-picker-data-v3",
                             t = null;
                         try {
-                            let a = localStorage.getItem(e);
-                            if (a) {
-                                let n = JSON.parse(a);
+                            let s = localStorage.getItem(e);
+                            if (s) {
+                                let n = JSON.parse(s);
                                 n.timestamp && Date.now() - n.timestamp < 6048e5 && (t = n.emojis)
                             }
                         } catch (o) {}
-                        d(t), s.loading = !1;
+                        d(t), a.loading = !1;
                         try {
                             let i = {};
                             Object.keys(r.value).forEach(e => {
@@ -294,9 +212,9 @@ let {
                         } catch (l) {}
                     },
                     d = t => {
-                        let s = {};
-                        e.discordAssets?.emojis?.length && (s.server = [], e.discordAssets.emojis.forEach((e, t) => {
-                            s.server.push({
+                        let a = {};
+                        e.discordAssets?.emojis?.length && (a.server = [], e.discordAssets.emojis.forEach((e, t) => {
+                            a.server.push({
                                 id: `server_${t}`,
                                 name: e.name || `Server Emoji ${t}`,
                                 native: `:${t}:`,
@@ -306,14 +224,14 @@ let {
                                 isCustom: !0
                             })
                         })), t ? Object.keys(t).forEach(e => {
-                            s[e] = t[e]
+                            a[e] = t[e]
                         }) : e.emojiData?.categories && e.emojiData?.emojis && e.emojiData.categories.forEach(t => {
-                            let a = t.id;
-                            i.value.find(e => e.id === a) && (s[a] = [], t.emojis?.length && t.emojis.forEach(t => {
+                            let s = t.id;
+                            i.value.find(e => e.id === s) && (a[s] = [], t.emojis?.length && t.emojis.forEach(t => {
                                 let n = e.emojiData.emojis[t];
                                 if (!n) return;
                                 let o = n.skins?.[0];
-                                o?.native && o?.unified && (l.includes(o.native) || s[a].push({
+                                o?.native && o?.unified && (l.includes(o.native) || a[s].push({
                                     id: t,
                                     name: n.name || t.replace(/_/g, " "),
                                     native: o.native,
@@ -323,114 +241,109 @@ let {
                                     isCustom: !1
                                 }))
                             }))
-                        }), r.value = s
+                        }), r.value = a
                     },
-                    m = k(() => e.discordAssets?.stickers ? e.discordAssets.stickers.map((e, t) => ({
+                    m = computed(() => e.discordAssets?.stickers ? e.discordAssets.stickers.map((e, t) => ({
                         id: `sticker_${t}`,
                         name: e.name,
                         src: e.url,
                         isSticker: !0
                     })) : []),
-                    g = k(() => m.value.length > 0),
-                    p = k(() => !0 === e.hasStickersPermission),
-                    u = k(() => !0 === e.hasServerEmojisPermission),
-                    h = k(() => r.value[s.activeCategory] || []),
-                    f = k(() => {
+                    g = computed(() => m.value.length > 0),
+                    p = computed(() => !0 === e.hasStickersPermission),
+                    u = computed(() => !0 === e.hasServerEmojisPermission),
+                    h = computed(() => r.value[a.activeCategory] || []),
+                    f = computed(() => {
                         let e = h.value,
                             t = [],
-                            a = Math.ceil(e.length / s.itemsPerRow);
-                        for (let n = 0; n < a; n++) {
-                            let o = n * s.itemsPerRow;
+                            s = Math.ceil(e.length / a.itemsPerRow);
+                        for (let n = 0; n < s; n++) {
+                            let o = n * a.itemsPerRow;
                             t.push({
                                 index: n,
-                                emojis: e.slice(o, o + s.itemsPerRow)
+                                emojis: e.slice(o, o + a.itemsPerRow)
                             })
                         }
                         return t
                     }),
-                    y = k(() => {
+                    v = computed(() => {
                         let e = m.value,
                             t = [],
-                            a = Math.ceil(e.length / s.stickerItemsPerRow);
-                        for (let n = 0; n < a; n++) {
-                            let o = n * s.stickerItemsPerRow;
+                            s = Math.ceil(e.length / a.stickerItemsPerRow);
+                        for (let n = 0; n < s; n++) {
+                            let o = n * a.stickerItemsPerRow;
                             t.push({
                                 index: n,
-                                stickers: e.slice(o, o + s.stickerItemsPerRow)
+                                stickers: e.slice(o, o + a.stickerItemsPerRow)
                             })
                         }
                         return t
                     }),
-                    v = k(() => {
-                        if ("emojis" === s.currentTab) {
+                    y = computed(() => {
+                        if ("emojis" === a.currentTab) {
                             let e = f.value.length,
-                                t = s.scrollTop,
-                                a = s.containerHeight,
-                                n = s.rowHeight;
-                            return f.value.slice(Math.max(0, Math.floor(t / n) - 2), Math.min(e - 1, Math.ceil((t + a) / n) + 2) + 1).map(e => ({
+                                t = a.scrollTop,
+                                s = a.containerHeight,
+                                n = a.rowHeight;
+                            return f.value.slice(Math.max(0, Math.floor(t / n) - 2), Math.min(e - 1, Math.ceil((t + s) / n) + 2) + 1).map(e => ({
                                 ...e,
                                 offsetY: e.index * n
                             }))
                         } {
-                            let o = y.value.length,
-                                i = s.scrollTop,
-                                l = s.containerHeight,
-                                r = s.stickerHeight;
-                            return y.value.slice(Math.max(0, Math.floor(i / r) - 1), Math.min(o - 1, Math.ceil((i + l) / r) + 1) + 1).map(e => ({
+                            let o = v.value.length,
+                                i = a.scrollTop,
+                                l = a.containerHeight,
+                                r = a.stickerHeight;
+                            return v.value.slice(Math.max(0, Math.floor(i / r) - 1), Math.min(o - 1, Math.ceil((i + l) / r) + 1) + 1).map(e => ({
                                 ...e,
                                 offsetY: e.index * r
                             }))
                         }
                     }),
-                    C = k(() => "emojis" === s.currentTab ? f.value.length * s.rowHeight + 80 : y.value.length * s.stickerHeight + 80),
-                    E = e => {
-                        s.scrollTop = e.target.scrollTop
-                    },
-                    $ = e => r.value[e]?.length || 0,
-                    N = s => {
-                        let a = {
-                            ...s,
-                            imageUrl: o(s)
-                        };
-                        e.onSelect ? e.onSelect(a) : t("select", a)
-                    },
-                    b = s => {
-                        e.onSelect ? e.onSelect(s) : t("select", s)
-                    },
-                    _ = a => {
-                        (!e.reactionMode || "stickers" !== a) && (s.currentTab = a, t("tabChange", a), s.scrollTop = 0, n.value && (n.value.scrollTop = 0))
-                    };
-                return P(() => s.activeCategory, () => {
-                    "emojis" === s.currentTab && (s.scrollTop = 0, n.value && (n.value.scrollTop = 0))
-                }), V(async () => {
-                    e.emojiData && !s.isInitialized && ("requestIdleCallback" in window ? requestIdleCallback(() => {
+                    C = computed(() => "emojis" === a.currentTab ? f.value.length * a.rowHeight + 80 : v.value.length * a.stickerHeight + 80);
+                return watch(() => a.activeCategory, () => {
+                    "emojis" === a.currentTab && (a.scrollTop = 0, n.value && (n.value.scrollTop = 0))
+                }), onMounted(async () => {
+                    e.emojiData && !a.isInitialized && ("requestIdleCallback" in window ? requestIdleCallback(() => {
                         c()
                     }, {
                         timeout: 100
                     }) : setTimeout(() => {
                         c()
-                    }, 10)), !e.discordAssets?.emojis?.length && i.value.length > 0 && (s.activeCategory = "people")
-                }), I(() => {
-                    s.scrollRAF && cancelAnimationFrame(s.scrollRAF), s.imageCache.clear()
+                    }, 10)), !e.discordAssets?.emojis?.length && i.value.length > 0 && (a.activeCategory = "people")
+                }), onUnmounted(() => {
+                    a.scrollRAF && cancelAnimationFrame(a.scrollRAF), a.imageCache.clear()
                 }), {
-                    pickerRef: a,
+                    pickerRef: s,
                     scrollContainerRef: n,
-                    ...D(s),
+                    ...toRefs(a),
                     categories: i,
                     currentCategoryEmojis: h,
-                    visibleRows: v,
-                    stickerRows: y,
+                    visibleRows: y,
+                    stickerRows: v,
                     stickers: m,
                     hasStickers: g,
                     canUseStickers: p,
                     canUseServerEmojis: u,
                     totalHeight: C,
-                    selectEmoji: N,
-                    selectSticker: b,
-                    getCategoryEmojiCount: $,
+                    selectEmoji(a) {
+                        let s = {
+                            ...a,
+                            imageUrl: o(a)
+                        };
+                        e.onSelect ? e.onSelect(s) : t("select", s)
+                    },
+                    selectSticker(a) {
+                        e.onSelect ? e.onSelect(a) : t("select", a)
+                    },
+                    getCategoryEmojiCount: e => r.value[e]?.length || 0,
                     getEmojiImageUrl: o,
-                    handleScroll: E,
-                    changeTab: _
+                    handleScroll(e) {
+                        a.scrollTop = e.target.scrollTop
+                    },
+                    changeTab(s) {
+                        e.reactionMode && "stickers" === s || (a.currentTab = s, t("tabChange", s), a.scrollTop = 0, n.value && (n.value.scrollTop = 0))
+                    }
                 }
             },
             render: function(e, t) {
@@ -460,7 +373,7 @@ let {
                     class: "emoji-picker-categories"
                 }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.categories, t => (_openBlock(), _createElementBlock("button", {
                     key: t.id,
-                    onClick: s => e.activeCategory = t.id,
+                    onClick: a => e.activeCategory = t.id,
                     class: _normalizeClass(["emoji-picker-category", {
                         active: e.activeCategory === t.id
                     }]),
@@ -528,8 +441,8 @@ let {
                     })
                 }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(t.stickers, t => (_openBlock(), _createElementBlock("button", {
                     key: t.id,
-                    onClick: s => e.selectSticker(t),
-                    onMouseenter: s => e.hoveredSticker = t,
+                    onClick: a => e.selectSticker(t),
+                    onMouseenter: a => e.hoveredSticker = t,
                     onMouseleave: t => e.hoveredSticker = null,
                     class: _normalizeClass(["sticker-picker-item", {
                         "sticker-restricted": !e.canUseStickers
@@ -599,8 +512,8 @@ let {
                     })
                 }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(t.emojis, t => (_openBlock(), _createElementBlock("button", {
                     key: t.id,
-                    onClick: s => e.selectEmoji(t),
-                    onMouseenter: s => e.hoveredEmoji = t,
+                    onClick: a => e.selectEmoji(t),
+                    onMouseenter: a => e.hoveredEmoji = t,
                     onMouseleave: t => e.hoveredEmoji = null,
                     class: _normalizeClass(["emoji-picker-emoji", "emoji-picker-emoji-apple", {
                         "emoji-restricted": "server" === e.activeCategory && !e.canUseServerEmojis
@@ -669,7 +582,7 @@ let {
                 }, _toDisplayString(e.hoveredSticker.name), 1)])) : _createCommentVNode("v-if", !0)], 512)
             }
         }),
-        t = E({
+        t = defineComponent({
             props: {
                 message: {
                     type: Object,
@@ -740,7 +653,7 @@ let {
             setup(e, {
                 emit: t
             }) {
-                let s = e => {
+                let a = e => {
                         if (!e) return "";
                         if (e.text) return e.text;
                         if (e.message) return e.message;
@@ -750,79 +663,68 @@ let {
                         }
                         return ""
                     },
-                    a = e => {
-                        if (!e || "string" != typeof e) return null;
-                        let t = e.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-                        return t ? {
-                            r: parseInt(t[1]),
-                            g: parseInt(t[2]),
-                            b: parseInt(t[3])
-                        } : null
-                    },
-                    o = e => {
+                    s = e => {
                         try {
                             return window.sharedEmojiData?.getAppleEmojiUrl?.(e) || null
                         } catch (t) {
                             return null
                         }
                     },
-                    i = (e, t = {}) => {
+                    o = (e, t = {}) => {
                         let {
-                            size: s = 20,
-                            className: a = "emoji-apple",
-                            forReply: n = !1
-                        } = t, i = document.createElement("img"), l = o(e);
+                            size: a = 20,
+                            className: n = "emoji-apple",
+                            forReply: o = !1
+                        } = t, i = document.createElement("img"), l = s(e);
                         if (l) i.src = l;
                         else {
-                            let r = e.codePointAt(0).toString(16).toLowerCase(),
-                                c = r.padStart(4, "0");
-                            i.src = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${c}.png`
+                            let r = e.codePointAt(0).toString(16).toLowerCase().padStart(4, "0");
+                            i.src = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${r}.png`
                         }
-                        i.alt = e, i.className = n ? `${a} reply-emoji` : a, i.loading = "lazy";
-                        let d = n ? 16 : s;
-                        return i.style.cssText = `width: ${d}px; height: ${d}px; display: inline-block; vertical-align: ${n?"text-bottom":"middle"}; margin: ${n?"0 1px":"0 2px"};`, l || n ? i.onerror = function() {
+                        i.alt = e, i.className = o ? `${n} reply-emoji` : n, i.loading = "lazy";
+                        let c = o ? 16 : a;
+                        return i.style.cssText = `width: ${c}px; height: ${c}px; display: inline-block; vertical-align: ${o?"text-bottom":"middle"}; margin: ${o?"0 1px":"0 2px"};`, i.onerror = l || o ? function() {
                             this.style.display = "none"
-                        } : i.onerror = function() {
+                        } : function() {
                             let t = document.createTextNode(e);
                             this.replaceWith(t)
                         }, i
                     },
-                    l = (e, t) => {
-                        if (!e || !e.parentNode || !t.length) return;
-                        let s = e.parentNode;
-                        t.forEach(t => s.insertBefore(t, e)), s.removeChild(e)
-                    },
-                    r = (e, t = {}) => {
+                    i = (e, t = {}) => {
                         try {
-                            let s = e.textContent;
-                            if (!s) return;
-                            g.lastIndex = 0;
-                            let a = 0,
+                            let a = e.textContent;
+                            if (!a) return;
+                            d.lastIndex = 0;
+                            let s = 0,
                                 n = [],
-                                o;
-                            for (; null !== (o = g.exec(s));) {
-                                o.index > a && n.push(document.createTextNode(s.slice(a, o.index)));
-                                let r = o[0],
-                                    c = i(r, t);
-                                n.push(c), a = o.index + o[0].length
+                                i;
+                            for (; null !== (i = d.exec(a));) {
+                                i.index > s && n.push(document.createTextNode(a.slice(s, i.index)));
+                                let l = i[0],
+                                    r = o(l, t);
+                                n.push(r), s = i.index + i[0].length
                             }
-                            a < s.length && n.push(document.createTextNode(s.slice(a))), n.length > 0 && l(e, n)
-                        } catch (d) {}
+                            s < a.length && n.push(document.createTextNode(a.slice(s))), n.length > 0 && ((e, t) => {
+                                if (!e || !e.parentNode || !t.length) return;
+                                let a = e.parentNode;
+                                t.forEach(t => a.insertBefore(t, e)), a.removeChild(e)
+                            })(e, n)
+                        } catch (c) {}
                     },
-                    c = (e, t = {}) => {
+                    l = (e, t = {}) => {
                         let {
-                            excludeClasses: s = ["chat-emoji", "custom-emoji-msg"],
-                            excludeTags: a = ["CODE"]
+                            excludeClasses: a = ["chat-emoji", "custom-emoji-msg"],
+                            excludeTags: s = ["CODE"]
                         } = t, n = document.createTreeWalker(e, NodeFilter.SHOW_TEXT, {
                             acceptNode(e) {
                                 let t = e.parentElement;
-                                return t && (a.includes(t.tagName) || s.some(e => t.classList?.contains(e))) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+                                return t && (s.includes(t.tagName) || a.some(e => t.classList?.contains(e))) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
                             }
                         }), o = [], i;
                         for (; i = n.nextNode();) o.push(i);
                         return o
                     },
-                    d = M({
+                    r = reactive({
                         imageUrls: [],
                         currentImageIndex: 0,
                         containsMention: !1,
@@ -854,9 +756,9 @@ let {
                             isClosing: !1
                         }
                     }),
-                    m = /(https?:\/\/[^\s]+\.(?:png|jpg|gif|jpeg|webp)(?:\?[^\s]*)?)/gi,
-                    g = /\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu,
-                    p = e => {
+                    c = /(https?:\/\/[^\s]+\.(?:png|jpg|gif|jpeg|webp)(?:\?[^\s]*)?)/gi,
+                    d = /\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu,
+                    m = e => {
                         try {
                             if (!e) return "غير معروف";
                             if (e.author) return String(e.author);
@@ -869,7 +771,7 @@ let {
                             return "غير معروف"
                         }
                     };
-                class u {
+                class g {
                     constructor(e) {
                         this.maxSize = e, this.cache = new Map
                     }
@@ -881,8 +783,8 @@ let {
                     set(e, t) {
                         if (this.cache.has(e)) this.cache.delete(e);
                         else if (this.cache.size >= this.maxSize) {
-                            let s = this.cache.keys().next().value;
-                            this.cache.delete(s)
+                            let a = this.cache.keys().next().value;
+                            this.cache.delete(a)
                         }
                         this.cache.set(e, t)
                     }
@@ -890,77 +792,74 @@ let {
                         this.cache.clear()
                     }
                 }
-                let h = new u(50),
-                    f = new u(100),
-                    y = e => {
+                let p = new g(50),
+                    u = new g(100),
+                    h = e => {
                         try {
                             if (!e) return "unknown";
-                            let t = h.get(e);
+                            let t = p.get(e);
                             if (t) return t;
-                            let s = "unknown";
+                            let a = "unknown";
                             if (e.gId && "string" == typeof e.gId) {
-                                let a = e.gId.split("_");
-                                a.length >= 2 && /^\d+$/.test(a[1]) && (s = a[1])
-                            } else e.author && (s = String(e.author));
-                            return h.set(e, s), s
+                                let s = e.gId.split("_");
+                                s.length >= 2 && /^\d+$/.test(s[1]) && (a = s[1])
+                            } else e.author && (a = String(e.author));
+                            return p.set(e, a), a
                         } catch (n) {
                             return "unknown"
                         }
                     },
-                    v = (e, t = !0) => {
+                    f = (e, t = !0) => {
                         try {
-                            if ("string" != typeof e) return String(e || "");
-                            return e = (e = (e = e.replace(/\r\n/g, "\n").replace(/\r/g, "\n")).replace(/^\n+/, "")).replace(/\n+$/, ""), e = t ? e.replace(/\n{2,}/g, "\n") : e.replace(/\n/g, " ")
-                        } catch (s) {
+                            return "string" != typeof e ? String(e || "") : (e = (e = (e = e.replace(/\r\n/g, "\n").replace(/\r/g, "\n")).replace(/^\n+/, "")).replace(/\n+$/, ""), e = t ? e.replace(/\n{2,}/g, "\n") : e.replace(/\n/g, " "))
+                        } catch (a) {
                             return e
                         }
                     },
-                    C = e => {
+                    v = e => {
                         try {
-                            if ("string" != typeof e) return String(e || "");
-                            return e = (e = (e = (e = e.replace(/(<br\s*\/?>){2,}/gi, "<br>")).replace(/^(\s*<br\s*\/?>)+/gi, "")).replace(/(<br\s*\/?>)+\s*$/gi, "")).replace(/(\n|<br\s*\/?>)(\s*(\n|<br\s*\/?>))+/gi, "<br>")
+                            return "string" != typeof e ? String(e || "") : e = (e = (e = (e = e.replace(/(<br\s*\/?>){2,}/gi, "<br>")).replace(/^(\s*<br\s*\/?>)+/gi, "")).replace(/(<br\s*\/?>)+\s*$/gi, "")).replace(/(\n|<br\s*\/?>)(\s*(\n|<br\s*\/?>))+/gi, "<br>")
                         } catch (t) {
                             return e
                         }
                     },
-                    E = t => {
+                    y = t => {
                         try {
-                            "string" != typeof t && (t = String(t || "")), t = v(t);
-                            let s = [];
+                            "string" != typeof t && (t = String(t || "")), t = f(t);
+                            let a = [];
                             if (e.message?.sticker && e.message.sticker.url) {
-                                let a = e.message.sticker.url,
-                                    n = a.startsWith("../") || a.startsWith("./") || !a.includes("://");
-                                if (n) s.push({
+                                let s = e.message.sticker.url;
+                                if (s.startsWith("../") || s.startsWith("./") || !s.includes("://")) a.push({
                                     index: 0,
-                                    url: a,
+                                    url: s,
                                     code: e.message.sticker.shortcode || ":sticker:",
                                     name: e.message.sticker.name || "Sticker"
                                 });
                                 else try {
-                                    new URL(a), s.push({
+                                    new URL(s), a.push({
                                         index: 0,
-                                        url: a,
+                                        url: s,
                                         code: e.message.sticker.shortcode || ":sticker:",
                                         name: e.message.sticker.name || "Sticker"
                                     })
                                 } catch {
-                                    s.push({
+                                    a.push({
                                         index: 0,
-                                        url: a,
+                                        url: s,
                                         code: e.message.sticker.shortcode || ":sticker:",
                                         name: e.message.sticker.name || "Sticker"
                                     })
                                 }
                             }
-                            let o = t.trim(),
-                                i = "text";
-                            return s.length > 0 && (i = o ? "mixed" : "sticker-only"), {
-                                type: i,
-                                stickers: s,
-                                textContent: o,
+                            let n = t.trim(),
+                                o = "text";
+                            return a.length > 0 && (o = n ? "mixed" : "sticker-only"), {
+                                type: o,
+                                stickers: a,
+                                textContent: n,
                                 hasEmojisOnly: !1
                             }
-                        } catch (l) {
+                        } catch (i) {
                             return {
                                 type: "text",
                                 stickers: [],
@@ -969,68 +868,38 @@ let {
                             }
                         }
                     },
-                    N = (e, t) => k(() => {
+                    C = (e, t) => computed(() => {
                         try {
                             return e()
-                        } catch (s) {
+                        } catch (a) {
                             return t
                         }
                     }),
-                    b = document.createElement("div"),
-                    _ = e => ("string" != typeof e && (e = String(e || "")), b.textContent = e, b.innerHTML),
-                    w = e => {
-                        "string" != typeof e && (e = String(e || ""));
-                        let t = _(e);
-                        for (let [s, a] of [
-                                [/\[b\](.*?)\[\/b\]/g, "<b>$1</b>"],
-                                [/\[i\](.*?)\[\/i\]/g, "<i>$1</i>"],
-                                [/\[u\](.*?)\[\/u\]/g, "<u>$1</u>"],
-                                [/\[s\](.*?)\[\/s\]/g, "<s>$1</s>"],
-                                [/\[code\](.*?)\[\/code\]/g, "<code>$1</code>"]
-                            ]) t = t.replace(s, a);
-                        return t
-                    },
-                    T = N(() => e.storage?.transition || "animate__pulse", "animate__pulse"),
-                    S = N(() => Boolean(e.storage?.hideAvatars), !1),
-                    x = e => {
-                        if (!e || !e.naturalWidth || !e.naturalHeight) return "";
-                        let t = [],
-                            s = e.naturalWidth,
-                            a = e.naturalHeight,
-                            n = s / a,
-                            o = Math.max(s, a);
-                        return o < 200 ? t.push("small") : o < 400 ? t.push("medium") : t.push("large"), n > 1.5 ? t.push("landscape") : n < .8 ? t.push("portrait") : t.push("square"), t.join(" ")
-                    },
-                    j = N(() => e.message?.reactions || {}, {}),
-                    A = N(() => Object.keys(j.value).length > 0, !1),
-                    L = N(() => y(e.message), "unknown"),
-                    R = e => {
+                    k = document.createElement("div"),
+                    E = e => ("string" != typeof e && (e = String(e || "")), k.textContent = e, k.innerHTML),
+                    $ = C(() => e.storage?.transition || "animate__pulse", "animate__pulse"),
+                    b = C(() => Boolean(e.storage?.hideAvatars), !1),
+                    N = C(() => e.message?.reactions || {}, {}),
+                    V = C(() => Object.keys(N.value).length > 0, !1),
+                    I = C(() => h(e.message), "unknown"),
+                    M = e => {
                         try {
                             return e?.gId && "string" == typeof e.gId && e.gId.trim().length > 0
                         } catch (t) {
                             return errorHandler(t, "hasValidMessageId"), !1
                         }
                     },
-                    U = N(() => L.value === String(e.userId), !1),
-                    F = N(() => {
+                    _ = C(() => I.value === String(e.userId), !1),
+                    w = C(() => {
                         if (window.GroupingCache) return window.GroupingCache.shouldGroup(e.message, e.previousMessage, e.storage);
-                        if (e.message?.forceUngrouped || !e.previousMessage || !e.storage?.enableMessageGrouping || !R(e.message) || !R(e.previousMessage)) return !1;
-                        let t = L.value,
-                            s = y(e.previousMessage);
-                        if (t !== s || "unknown" === t || e.message.channel !== e.previousMessage.channel || e.previousMessage.edited) return !1;
+                        if (e.message?.forceUngrouped || !e.previousMessage || !e.storage?.enableMessageGrouping || !M(e.message) || !M(e.previousMessage)) return !1;
+                        let t = I.value;
+                        if (t !== h(e.previousMessage) || "unknown" === t || e.message.channel !== e.previousMessage.channel || e.previousMessage.edited) return !1;
                         let a = parseInt(e.message.timestamp) || Date.now(),
-                            n = parseInt(e.previousMessage.timestamp) || Date.now(),
-                            o = e.storage?.groupingTimeWindow || 3e5;
-                        return Math.abs(a - n) <= o && a >= n
+                            s = parseInt(e.previousMessage.timestamp) || Date.now();
+                        return Math.abs(a - s) <= (e.storage?.groupingTimeWindow || 3e5) && a >= s
                     }, !1),
-                    O = e => {
-                        if (!e?.args || e.args.length < 2) return !1;
-                        let t = 3 === e.args.length ? 2 : 1,
-                            s = String(e.args[t] || ""),
-                            a = v(s);
-                        return a.includes("\n")
-                    },
-                    z = (() => {
+                    T = (() => {
                         let e = {
                                 b: [],
                                 i: [],
@@ -1042,460 +911,200 @@ let {
                                 img: ["src", "alt", "class", "style", "loading", "onerror"]
                             },
                             t = ["mention", "spoiler", "revealed", "link", "chat-emoji", "chat-emoji-apple", "emoji-apple", "custom-emoji-msg", "reply-emoji", "reply-content-text", "reply-empty", "only-msg", "msg-title", "message-edited", "reply-author-inline", "reply-sticker-only", "reply-media-indicator", "reply-sticker-indicator", "reply-error", "error-message", "color-0", "color-1", "color-2", "color-3", "color-4", "color-5", "color-6", "color-7", "color-8", "color-9"],
-                            s = ["https:", "http:"];
-                        return a => {
+                            a = ["https:", "http:"];
+                        return s => {
                             try {
                                 let n = document.createElement("div");
-                                n.innerHTML = a;
-                                let o = n.querySelectorAll("script, iframe, object, embed, form, input, textarea, button");
-                                o.forEach(e => e.remove());
-                                let i = n.querySelectorAll("*");
-                                for (let l of i) {
-                                    let r = l.tagName.toLowerCase();
-                                    if (!e.hasOwnProperty(r)) {
-                                        let c = l.textContent,
-                                            d = document.createTextNode(c);
-                                        l.parentNode.replaceChild(d, l);
+                                n.innerHTML = s, n.querySelectorAll("script, iframe, object, embed, form, input, textarea, button").forEach(e => e.remove());
+                                let o = n.querySelectorAll("*");
+                                for (let i of o) {
+                                    let l = i.tagName.toLowerCase();
+                                    if (!e.hasOwnProperty(l)) {
+                                        let r = i.textContent,
+                                            c = document.createTextNode(r);
+                                        i.parentNode.replaceChild(c, i);
                                         continue
                                     }
-                                    let m = e[r],
-                                        g = [...l.attributes];
-                                    for (let p of g) {
-                                        let u = p.name.toLowerCase();
-                                        if (u.startsWith("on") || !m.includes(u)) {
-                                            l.removeAttribute(p.name);
-                                            continue
-                                        }
-                                        if ("class" === u) {
-                                            let h = p.value.split(/\s+/).filter(e => t.includes(e));
-                                            h.length > 0 ? l.className = h.join(" ") : l.removeAttribute("class")
-                                        }
-                                        if ("style" === u) {
-                                            if ("span" === r) {
-                                                let f = p.value.trim(),
-                                                    y = [/^color:\s*rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)$/i, /^--reply-color-rgb:\s*\d{1,3},\s*\d{1,3},\s*\d{1,3}$/i, /^--msg-color-rgb:\s*\d{1,3},\s*\d{1,3},\s*\d{1,3}$/i],
-                                                    v = ["msg-title", "reply-author-inline"],
-                                                    k = v.some(e => l.classList.contains(e));
-                                                k && y.some(e => e.test(f)) || l.removeAttribute("style")
-                                            } else if ("img" === r) {
-                                                let E = l.classList.contains("custom-emoji-msg") || l.classList.contains("emoji-apple") || l.classList.contains("chat-emoji") || l.classList.contains("reply-emoji");
-                                                E || l.removeAttribute("style")
-                                            } else l.removeAttribute("style")
-                                        }
-                                        if ("src" === u && "img" === r) {
-                                            let $ = p.value,
-                                                N = $.startsWith("../") || $.startsWith("./") || $.startsWith("/") || !$.includes("://");
-                                            if (N);
-                                            else try {
-                                                let b = new URL($);
-                                                s.includes(b.protocol) || l.removeAttribute("src")
-                                            } catch {
-                                                l.removeAttribute("src")
+                                    let d = e[l],
+                                        m = [...i.attributes];
+                                    for (let g of m) {
+                                        let p = g.name.toLowerCase();
+                                        if (p.startsWith("on")) i.removeAttribute(g.name);
+                                        else if (d.includes(p)) {
+                                            if ("class" === p) {
+                                                let u = g.value.split(/\s+/).filter(e => t.includes(e));
+                                                u.length > 0 ? i.className = u.join(" ") : i.removeAttribute("class")
                                             }
-                                        }
+                                            if ("style" === p) {
+                                                if ("span" === l) {
+                                                    let h = g.value.trim(),
+                                                        f = [/^color:\s*rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)$/i, /^--reply-color-rgb:\s*\d{1,3},\s*\d{1,3},\s*\d{1,3}$/i, /^--msg-color-rgb:\s*\d{1,3},\s*\d{1,3},\s*\d{1,3}$/i];
+                                                    ["msg-title", "reply-author-inline"].some(e => i.classList.contains(e)) && f.some(e => e.test(h)) || i.removeAttribute("style")
+                                                } else "img" === l && (i.classList.contains("custom-emoji-msg") || i.classList.contains("emoji-apple") || i.classList.contains("chat-emoji") || i.classList.contains("reply-emoji")) || i.removeAttribute("style")
+                                            }
+                                            if ("src" === p && "img" === l) {
+                                                let y = g.value;
+                                                if (y.startsWith("../") || y.startsWith("./") || y.startsWith("/") || !y.includes("://"));
+                                                else try {
+                                                    let C = new URL(y);
+                                                    a.includes(C.protocol) || i.removeAttribute("src")
+                                                } catch {
+                                                    i.removeAttribute("src")
+                                                }
+                                            }
+                                        } else i.removeAttribute(g.name)
                                     }
-                                    for (let V of l.attributes) V.value.match(/^\s*(?:javascript|data):/i) && l.removeAttribute(V.name)
+                                    for (let k of i.attributes) k.value.match(/^\s*(?:javascript|data):/i) && i.removeAttribute(k.name)
                                 }
-                                let I = n.innerHTML;
-                                return I = C(I)
-                            } catch (M) {
-                                return _(a)
+                                let $ = n.innerHTML;
+                                return $ = v($)
+                            } catch (b) {
+                                return E(s)
                             }
                         }
                     })(),
-                    H = t => {
+                    S = t => {
                         try {
                             "string" != typeof t && (t = String(t || ""));
-                            let s = t = v(t),
-                                a = new Map,
+                            let a = t = f(t),
+                                s = new Map,
                                 n = 0,
                                 o = /@(everyone|here|-?\d+)(?!\w)/g,
                                 i;
                             for (window.MentionService && e.message && window.MentionService.updateKnownUsers([e.message]); null !== (i = o.exec(t));) {
                                 let l = i[1];
                                 if (/^-?\d+$/.test(l) || ["everyone", "here"].includes(l)) {
-                                    let r = `M${n++}`;
+                                    let c = `M${n++}`;
                                     if (window.MentionService) {
-                                        let c = window.MentionService.createMentionElement(l, e.userId, {
+                                        let d = window.MentionService.createMentionElement(l, e.userId, {
                                             showName: !1
                                         });
-                                        a.set(r, c)
-                                    } else a.set(r, `<span class="mention">@${l}</span>`);
+                                        s.set(c, d)
+                                    } else s.set(c, `<span class="mention">@${l}</span>`);
                                     let m = l.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-                                    s = s.replace(RegExp(`@${m}(?!\\w)`, "g"), r);
+                                    a = a.replace(RegExp(`@${m}(?!\\w)`, "g"), c);
                                     let g = String(e.userId || ""),
                                         p = l.replace(/^-/, ""),
                                         u = g.replace(/^-/, "");
-                                    ("everyone" === l || "here" === l || p === u) && (e.storage?.isMuted || (e.message?.channel, e.currentChannel), d.containsMention = !0)
+                                    "everyone" !== l && "here" !== l && p !== u || (e.storage?.isMuted || (e.message, e.currentChannel), r.containsMention = !0)
                                 }
                             }
-                            let h = s.replace(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, "$1").replace(/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, "$1").replace(/\[b\]([\s\S]*?)\[\/b\]/gi, "$1").replace(/\[i\]([\s\S]*?)\[\/i\]/gi, "$1").replace(/\[u\]([\s\S]*?)\[\/u\]/gi, "$1").replace(/\[s\]([\s\S]*?)\[\/s\]/gi, "$1").replace(/\[code\]([\s\S]*?)\[\/code\]/gi, "$1");
-                            for (let [f, y] of(h = (h = (h = _(h)).replace(/\uE010([\s\S]*?)\uE011/g, '<span class="spoiler">$1</span>').replace(/\uE012([\s\S]*?)\uE013/g, "<b>$1</b>").replace(/\uE014([\s\S]*?)\uE015/g, "<i>$1</i>").replace(/\uE016([\s\S]*?)\uE017/g, "<u>$1</u>").replace(/\uE018([\s\S]*?)\uE019/g, "<s>$1</s>").replace(/\uE01A([\s\S]*?)\uE01B/g, "<code>$1</code>").replace(/\*\*\*\*/g, "\x01").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\u0001/g, "**").replace(/____/g, "\x02").replace(/__([^_]+)__/g, "<u>$1</u>").replace(/\u0002/g, "__").replace(/~~~~/g, "\x03").replace(/~~([^~]+)~~/g, "<s>$1</s>").replace(/\u0003/g, "~~").replace(/\|\|\|\|/g, "\x04").replace(/\|\|([^|]+)\|\|/g, '<span class="spoiler">$1</span>').replace(/\u0004/g, "||").replace(/(?<!\*)\*(?!\*)([^*]+)(?<!\*)\*(?!\*)/g, "<i>$1</i>").replace(/``/g, "\x05").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\u0005/g, "`")).replace(/\n/g, "<br>"), a)) h = h.split(f).join(y);
-                            return z(h)
-                        } catch (k) {
-                            return _(String(t || ""))
+                            let h = a.replace(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, "$1").replace(/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, "$1").replace(/\[b\]([\s\S]*?)\[\/b\]/gi, "$1").replace(/\[i\]([\s\S]*?)\[\/i\]/gi, "$1").replace(/\[u\]([\s\S]*?)\[\/u\]/gi, "$1").replace(/\[s\]([\s\S]*?)\[\/s\]/gi, "$1").replace(/\[code\]([\s\S]*?)\[\/code\]/gi, "$1");
+                            for (let [v, y] of(h = (h = (h = E(h)).replace(/\uE010([\s\S]*?)\uE011/g, '<span class="spoiler">$1</span>').replace(/\uE012([\s\S]*?)\uE013/g, "<b>$1</b>").replace(/\uE014([\s\S]*?)\uE015/g, "<i>$1</i>").replace(/\uE016([\s\S]*?)\uE017/g, "<u>$1</u>").replace(/\uE018([\s\S]*?)\uE019/g, "<s>$1</s>").replace(/\uE01A([\s\S]*?)\uE01B/g, "<code>$1</code>").replace(/\*\*\*\*/g, "\x01").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\u0001/g, "**").replace(/____/g, "\x02").replace(/__([^_]+)__/g, "<u>$1</u>").replace(/\u0002/g, "__").replace(/~~~~/g, "\x03").replace(/~~([^~]+)~~/g, "<s>$1</s>").replace(/\u0003/g, "~~").replace(/\|\|\|\|/g, "\x04").replace(/\|\|([^|]+)\|\|/g, '<span class="spoiler">$1</span>').replace(/\u0004/g, "||").replace(/(?<!\*)\*(?!\*)([^*]+)(?<!\*)\*(?!\*)/g, "<i>$1</i>").replace(/``/g, "\x05").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\u0005/g, "`")).replace(/\n/g, "<br>"), s)) h = h.split(v).join(y);
+                            return T(h)
+                        } catch (C) {
+                            return E(String(t || ""))
                         }
                     },
-                    q = () => {
-                        try {
-                            d.isHovered = !0
-                        } catch (e) {}
-                    },
-                    W = () => {
-                        try {
-                            d.isHovered = !1, d.showFullTimestamp = !1
-                        } catch (e) {}
-                    },
-                    G = s => {
-                        try {
-                            if (e.message?.type === "poll" || "poll" === d.messageType) return;
-                            let a = s.target;
-                            if (a.classList.contains("message-image") || a.closest(".message-image-container") || a.closest(".message-sticker") || a.classList.contains("spoiler")) return;
-                            let n = a.closest(".message-text");
-                            if (!n) return;
-                            let o = a.closest(".link");
-                            if (o) {
-                                s.preventDefault(), s.stopPropagation();
-                                let i = o.textContent.trim();
-                                t("showLinkModal", {
-                                    url: i,
-                                    callback() {
-                                        window.invokeNative("openUrl", i)
-                                    }
-                                });
-                                return
-                            }
-                            if (a.classList.contains("message-action-btn") || a.classList.contains("reaction-button") || a.classList.contains("reaction-pill") || a.closest(".reaction-pill") || a.closest(".message-reactions") || a.classList.contains("message-reply-preview") || a.classList.contains("poll-option-compact") || "IMG" === a.tagName || "VIDEO" === a.tagName || "A" === a.tagName) return;
-                            s.stopPropagation();
-                            let l = {
-                                x: s.clientX,
-                                y: s.clientY
-                            };
-                            t("showOptions", {
-                                message: e.message,
-                                position: l
-                            })
-                        } catch (r) {}
-                    },
-                    K = () => {
-                        try {
-                            let t = {};
-                            if (e.message?.color && Array.isArray(e.message.color) && e.message.color.length >= 3) {
-                                let [s, a, n] = e.message.color.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
-                                t["--msg-color-rgb"] = `${s}, ${a}, ${n}`
-                            }
-                            return e.message?.cosmetics?.background ? (t.backgroundImage = `url(${e.message.cosmetics.background})`, t.backgroundSize = "cover", t.backgroundPosition = "center", t.backgroundRepeat = "no-repeat") : e.message?.bgColor && (t.background = e.message.bgColor), t
-                        } catch (o) {
-                            return {}
-                        }
-                    },
-                    Q = () => {
-                        try {
-                            let t = {};
-                            if (e.message?.customColor) {
-                                let s = a(e.message.customColor);
-                                s && (t["--gradient-color-strong"] = `rgba(${s.r}, ${s.g}, ${s.b}, 0.5)`, t["--gradient-color-weak"] = `rgba(${s.r}, ${s.g}, ${s.b}, 0.1)`)
-                            }
-                            return t
-                        } catch (n) {
-                            return {}
-                        }
-                    },
-                    Y = t => {
-                        try {
-                            if (!t || "object" != typeof t) return "";
-                            let a = p(t),
-                                n = "";
-                            if (t.fullText) n = String(t.fullText);
-                            else if (t.originalText) n = String(t.originalText);
-                            else if (t.text) {
-                                if ((n = String(t.text)).endsWith("...") || n.includes("...") && n.length < 60) {
-                                    let o = s(t);
-                                    o && o.length > n.length && (n = String(o))
-                                }
-                            } else n = String(s(t));
-                            if (n.includes('<span class="only-msg">')) {
-                                let i = document.createElement("div");
-                                i.innerHTML = n;
-                                let l = i.querySelector(".only-msg");
-                                l && (n = l.innerHTML || l.textContent || "")
-                            }
-                            n.length, n = v(n, !1);
-                            let d = RegExp(`^${a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}:?\\s*`);
-                            n = n.replace(d, ""), m.lastIndex = 0;
-                            let g = m.test(n),
-                                u = n.replace(m, "").trim(),
-                                h = _(a),
-                                f = h;
-                            if (t?.color && Array.isArray(t.color) && t.color.length >= 3) {
-                                let [y, k, C] = t.color.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
-                                f = `<span class="reply-author-inline" style="color: rgb(${y}, ${k}, ${C})">${h}</span>`
-                            } else f = `<span class="reply-author-inline">${h}</span>`;
-                            if (g && !u) return `${f}: <span class="reply-media-indicator"><i class="fa-solid fa-image"></i> Image, click to view</span>`;
-                            {
-                                let E = n;
-                                g && u && (E = u);
-                                let $ = !1;
-                                for (let [N, b] of((E.endsWith("...") || E.includes("[") && !E.includes("]", E.lastIndexOf("["))) && ($ = !0, E.includes("[spoile") && !E.includes("[spoiler]") && (E = E.replace(/\[spoile\.?\.\.$/, "..."))), [
-                                        [/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, "$1"],
-                                        [/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, "$1"],
-                                        [/\[b\]([\s\S]*?)\[\/b\]/gi, "$1"],
-                                        [/\[i\]([\s\S]*?)\[\/i\]/gi, "$1"],
-                                        [/\[u\]([\s\S]*?)\[\/u\]/gi, "$1"],
-                                        [/\[s\]([\s\S]*?)\[\/s\]/gi, "$1"],
-                                        [/\[code\]([\s\S]*?)\[\/code\]/gi, "$1"]
-                                    ])) E.match(N), E = E.replace(N, b);
-                                let V = E.includes("<b>") || E.includes("<i>") || E.includes("<u>") || E.includes("<s>") || E.includes("<code>");
-                                for (let [I, M] of(V || (E = H(E)), [
-                                        [/\uE020([\s\S]*?)\uE021/g, '<span class="spoiler">$1</span>'],
-                                        [/\uE022([\s\S]*?)\uE023/g, "<b>$1</b>"],
-                                        [/\uE024([\s\S]*?)\uE025/g, "<i>$1</i>"],
-                                        [/\uE026([\s\S]*?)\uE027/g, "<u>$1</u>"],
-                                        [/\uE028([\s\S]*?)\uE029/g, "<s>$1</s>"],
-                                        [/\uE02A([\s\S]*?)\uE02B/g, "<code>$1</code>"]
-                                    ])) E = E.replace(I, M);
-                                E = (t => {
-                                    "string" != typeof t && (t = String(t || ""));
-                                    let s = e.chat?.Settings?.Filter?.Emojis || [];
-                                    if (s.length > 0) {
-                                        let a = new Map;
-                                        if (s.forEach((e, t) => {
-                                                if (e && "string" == typeof e) {
-                                                    let s = e;
-                                                    e.startsWith("http") || e.startsWith("//") || (s = `../../emojis/${e}`), a.set(`:${t}:`, s)
-                                                }
-                                            }), a.size > 0) {
-                                            let n = RegExp(Array.from(a.keys()).map(e => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
-                                            t = t.replace(n, e => {
-                                                let t = a.get(e);
-                                                return `<img class="custom-emoji-msg reply-emoji" src="${t}" alt="${e}" loading="lazy" onerror="this.style.display='none'" style="width: 16px; height: 16px; display: inline-block; vertical-align: text-bottom; margin: 0 1px;" />`
-                                            })
-                                        }
-                                    }
-                                    if (e.emojiData) {
-                                        let o = document.createElement("div");
-                                        o.innerHTML = t;
-                                        let i = c(o);
-                                        i.forEach(e => {
-                                            r(e, {
-                                                forReply: !0
-                                            })
-                                        }), t = o.innerHTML
-                                    }
-                                    return t
-                                })(E);
-                                let w = "";
-                                g && (w += ' <span class="reply-media-indicator"><i class="fa-solid fa-image"></i></span>'), $ && (w += ' <span class="reply-truncated-indicator" title="تم اقتطاع الرسالة">...</span>');
-                                let T = `${f}: <span class="reply-content-text">${E}</span>${w}`;
-                                return T
-                            }
-                        } catch (S) {
-                            return '<span class="reply-error">Error loading reply</span>'
-                        }
-                    },
-                    Z = t => {
-                        try {
-                            if (!t?.startsWith(":") || !t?.endsWith(":")) return null;
-                            let s = parseInt(t.slice(1, -1));
-                            if (isNaN(s)) return null;
-                            let a = e.chat?.Settings?.Filter?.Emojis?.[s];
-                            if (!a) return null;
-                            if (!a.startsWith("http") && !a.startsWith("//")) return `../../emojis/${a}`;
-                            return a
-                        } catch (n) {
-                            return null
-                        }
-                    },
-                    J = t => {
-                        try {
-                            let s = j.value[t];
-                            if (!s) return !1;
-                            let a = String(e.userId || "");
-                            if (Array.isArray(s)) return s.some(e => "string" == typeof e ? e === a : e.id === a);
-                            return !1
-                        } catch (n) {
-                            return !1
-                        }
-                    },
-                    X = e => e && Array.isArray(e) ? e.length : 0,
-                    ee = t => {
-                        try {
-                            "function" == typeof e.onReact && e.message?.gId && e.onReact(e.message.gId, t)
-                        } catch (s) {}
-                    },
-                    et = e => {
-                        try {
-                            if (!e) return;
-                            n.add(() => {
-                                let t = document.querySelector(`[data-msg-id="${CSS.escape(e)}"]`);
-                                if (t) {
-                                    let s = t;
-                                    if (!t.classList.contains("message-item")) {
-                                        let a = t.closest("li.message-item");
-                                        a && (s = a)
-                                    }
-                                    s.scrollIntoView({
-                                        behavior: "smooth",
-                                        block: "center"
-                                    }), s.classList.add("highlight-flash"), setTimeout(() => {
-                                        s.classList.remove("highlight-flash")
-                                    }, 2500)
-                                }
-                            })
-                        } catch (t) {}
-                    },
-                    es = e => {
-                        try {
-                            let t = e.target;
-                            t?.classList?.contains("spoiler") && (t.classList.toggle("revealed"), e.stopPropagation())
-                        } catch (s) {}
-                    },
-                    ea = (e, t = "short") => {
+                    x = (e, t = "short") => {
                         try {
                             if (e instanceof Date || (e = new Date(parseInt(e) || Date.now())), isNaN(e.getTime()) && (e = new Date), "short" === t) {
-                                let s = e.getHours() % 12 || 12,
-                                    a = e.getMinutes().toString().padStart(2, "0"),
-                                    n = e.getHours() >= 12 ? "PM" : "AM";
-                                return `${s}:${a} ${n}`
+                                let a = e.getHours() % 12 || 12,
+                                    s = e.getMinutes().toString().padStart(2, "0");
+                                return `${a}:${s} ${e.getHours()>=12?"PM":"AM"}`
                             } {
-                                let o = new Date,
-                                    i = new Date(o);
-                                i.setDate(i.getDate() - 1);
-                                let l;
-                                l = e.toDateString() === o.toDateString() ? "Today at" : e.toDateString() === i.toDateString() ? "Yesterday at" : e.toLocaleDateString();
-                                let r = e.getHours() % 12 || 12,
-                                    c = e.getMinutes().toString().padStart(2, "0"),
-                                    d = e.getHours() >= 12 ? "PM" : "AM";
-                                return `${l} ${r}:${c} ${d}`
+                                let n = new Date,
+                                    o = new Date(n),
+                                    i;
+                                o.setDate(o.getDate() - 1), i = e.toDateString() === n.toDateString() ? "Today at" : e.toDateString() === o.toDateString() ? "Yesterday at" : e.toLocaleDateString();
+                                let l = e.getHours() % 12 || 12,
+                                    r = e.getMinutes().toString().padStart(2, "0");
+                                return `${i} ${l}:${r} ${e.getHours()>=12?"PM":"AM"}`
                             }
-                        } catch (m) {
+                        } catch (c) {
                             return "Unknown time"
                         }
                     },
-                    en = () => ea(e.message?.timestamp, "short"),
-                    eo = () => ea(e.message?.timestamp, "full"),
-                    ei = e => {
+                    P = () => {
                         try {
-                            e.preventDefault(), e.stopPropagation();
-                            let t = e.target;
-                            if (!t || !t.src) return;
-                            d.imageModal.imageSrc = t.src, d.imageModal.imageAlt = t.alt || "Full size image", d.imageModal.isOpen = !0, d.imageModal.isClosing = !1, document.addEventListener("keydown", er)
-                        } catch (s) {}
-                    },
-                    el = () => {
-                        try {
-                            if (d.imageModal.isClosing) return;
-                            d.imageModal.isClosing = !0, setTimeout(() => {
-                                d.imageModal.isOpen = !1, d.imageModal.isClosing = !1, d.imageModal.imageSrc = "", d.imageModal.imageAlt = ""
-                            }, 200), document.removeEventListener("keydown", er)
+                            if (r.imageModal.isClosing) return;
+                            r.imageModal.isClosing = !0, setTimeout(() => {
+                                r.imageModal.isOpen = !1, r.imageModal.isClosing = !1, r.imageModal.imageSrc = "", r.imageModal.imageAlt = ""
+                            }, 200), document.removeEventListener("keydown", D)
                         } catch (e) {}
                     },
-                    er = e => {
-                        "Escape" === e.key && d.imageModal.isOpen && !d.imageModal.isClosing && el()
+                    D = e => {
+                        "Escape" === e.key && r.imageModal.isOpen && !r.imageModal.isClosing && P()
                     },
-                    ec = new Map,
-                    ed = (t, s = null) => {
-                        try {
-                            if (t) {
-                                ec.has("icon") || ec.set("icon", 0);
-                                let a = ec.get("icon");
-                                a < 3 ? (ec.set("icon", a + 1), e.message.icon = "./images/user-avatar.png") : e.message.icon = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM1ODY1RjIiLz4KPC9zdmc+"
-                            } else s && d.errors.images.set(s, "Failed to load")
-                        } catch (n) {}
-                    },
-                    em = e => {
-                        try {
-                            d.errors.stickers.set(e.index, "Failed to load")
-                        } catch (t) {}
-                    },
-                    eg = e => {
-                        try {
-                            d.errors.stickers.delete(e.index)
-                        } catch (t) {}
-                    },
-                    ep = () => {
-                        try {
-                            d.currentImageIndex > 0 && d.currentImageIndex--
-                        } catch (e) {}
-                    },
-                    eu = () => {
-                        try {
-                            d.currentImageIndex < d.imageUrls.length - 1 && d.currentImageIndex++
-                        } catch (e) {}
-                    },
-                    eh = () => {
-                        try {
-                            d.showFullTimestamp = !0
-                        } catch (e) {}
-                    },
-                    ef = () => {
-                        try {
-                            d.showFullTimestamp = !1
-                        } catch (e) {}
-                    },
-                    e8 = null,
-                    ey = null,
-                    ev = null,
-                    ek = null,
-                    eC = k(() => {
-                        if (e.message?.type === "poll") return d.messageType = "poll", d.pollData = e.message.pollData || {}, d.hasVoted = d.pollData.voters?.includes(e.userId) || !1, d.pollTimeRemaining = d.pollData.timeRemaining || d.pollData.duration || 0, d.pollData.options || (d.pollData.options = []), void 0 === d.pollData.totalVotes && (d.pollData.totalVotes = 0), "";
+                    B = new Map,
+                    j = null,
+                    A = null,
+                    R = null,
+                    L = null,
+                    U = computed(() => {
+                        if ("poll" === e.message?.type) return r.messageType = "poll", r.pollData = e.message.pollData || {}, r.hasVoted = r.pollData.voters?.includes(e.userId) || !1, r.pollTimeRemaining = r.pollData.timeRemaining || r.pollData.duration || 0, r.pollData.options || (r.pollData.options = []), void 0 === r.pollData.totalVotes && (r.pollData.totalVotes = 0), "";
                         try {
                             let t = e.message?.gId || e.message?.templateId,
-                                s = F.value,
-                                a = d.edited;
-                            if (ey === t && ev === s && ek === a && null !== e8) return e8;
-                            let n = `${t}-${a}-${s}`,
-                                o = f.get(n);
-                            if (o) return ey = t, ev = s, ek = a, e8 = o, o;
+                                a = w.value,
+                                s = r.edited;
+                            if (A === t && R === a && L === s && null !== j) return j;
+                            let n = `${t}-${s}-${a}`,
+                                o = u.get(n);
+                            if (o) return A = t, R = a, L = s, j = o, o;
                             let i = e.message?.template || e.templates?.[e.message?.templateId] || e.templates?.default || "{0}: {1}";
-                            e.message?.args?.length === 1 ? i = e.templates?.defaultAlt || "{0}" : e.message?.args?.length === 3 ? i = '{0} <span class="only-msg">{2}</span>' : e.message?.args?.length !== 2 || e.message.args[0] && "" !== e.message.args[0] ? e.message?.args?.length !== 2 || e.message.args[1] && "" !== e.message.args[1] || (i = "{0}") : i = "{1}", i = i.replace(/{(\d+)}/g, (t, s) => {
-                                let a = parseInt(s);
-                                if (isNaN(a) || !e.message?.args || a >= e.message.args.length) return "";
-                                let n = e.message.args[a],
-                                    o = 1 === a && 2 === e.message.args.length || 2 === a && 3 === e.message.args.length;
-                                o && "string" == typeof n && (n = v(n));
-                                let i = o ? w(n) : _(n);
-                                if (0 === a && F.value) return "";
-                                if (0 === a) {
+                            1 === e.message?.args?.length ? i = e.templates?.defaultAlt || "{0}" : 3 === e.message?.args?.length ? i = '{0} <span class="only-msg">{2}</span>' : 2 !== e.message?.args?.length || e.message.args[0] && "" !== e.message.args[0] ? 2 !== e.message?.args?.length || e.message.args[1] && "" !== e.message.args[1] || (i = "{0}") : i = "{1}", i = i.replace(/{(\d+)}/g, (t, a) => {
+                                let s = parseInt(a);
+                                if (isNaN(s) || !e.message?.args || s >= e.message.args.length) return "";
+                                let n = e.message.args[s],
+                                    o = 1 === s && 2 === e.message.args.length || 2 === s && 3 === e.message.args.length;
+                                o && "string" == typeof n && (n = f(n));
+                                let i = o ? (e => {
+                                    "string" != typeof e && (e = String(e || ""));
+                                    let t = E(e);
+                                    for (let [a, s] of [
+                                            [/\[b\](.*?)\[\/b\]/g, "<b>$1</b>"],
+                                            [/\[i\](.*?)\[\/i\]/g, "<i>$1</i>"],
+                                            [/\[u\](.*?)\[\/u\]/g, "<u>$1</u>"],
+                                            [/\[s\](.*?)\[\/s\]/g, "<s>$1</s>"],
+                                            [/\[code\](.*?)\[\/code\]/g, "<code>$1</code>"]
+                                        ]) t = t.replace(a, s);
+                                    return t
+                                })(n) : E(n);
+                                if (0 === s && w.value) return "";
+                                if (0 === s) {
                                     let l = e.message?.args?.[1] || "",
-                                        r = v(l),
-                                        c = r.includes("\n"),
-                                        d = "";
-                                    l && "" !== l.trim() && (d = c && !F.value ? ":<br>" : ":");
-                                    let m = e.message?.color || e.message?.customColor;
-                                    return m ? `${eE(i,m)}${d}` : e.message?.nameAnimation && "none" !== e.message.nameAnimation ? `<span class="msg-title name-animation-${e.message.nameAnimation}">${i}</span>${d}` : `${i}${d}`
+                                        r = f(l).includes("\n"),
+                                        c = "";
+                                    l && "" !== l.trim() && (c = r && !w.value ? ":<br>" : ":");
+                                    let d = e.message?.color || e.message?.customColor;
+                                    return d ? `${F(i,d)}${c}` : e.message?.nameAnimation && "none" !== e.message.nameAnimation ? `<span class="msg-title name-animation-${e.message.nameAnimation}">${i}</span>${c}` : `${i}${c}`
                                 }
                                 return i
-                            }), F.value && (i = i.replace(/^:\s*/, "")), i = "sticker-only" !== d.messageType || F.value ? "sticker-only" === d.messageType && F.value ? "" : i.replace(/<span class="only-msg">(.*?)<\/span>/g, ' <span class="only-msg">$1</span>') : i.replace(/<span class="only-msg">(.*?)<\/span>/g, "");
-                            let l = e$(i, e, d);
-                            return f.set(n, l), ey = t, ev = s, ek = a, e8 = l, l
-                        } catch (r) {
-                            return console.error("Error in textEscaped:", r), '<span class="error-message">Error rendering message</span>'
+                            }), w.value && (i = i.replace(/^:\s*/, "")), i = "sticker-only" !== r.messageType || w.value ? "sticker-only" === r.messageType && w.value ? "" : i.replace(/<span class="only-msg">(.*?)<\/span>/g, ' <span class="only-msg">$1</span>') : i.replace(/<span class="only-msg">(.*?)<\/span>/g, "");
+                            let l = O(i, e, r);
+                            return u.set(n, l), A = t, R = a, L = s, j = l, l
+                        } catch (c) {
+                            return console.error("Error in textEscaped:", c), '<span class="error-message">Error rendering message</span>'
                         }
                     }),
-                    eE = (t, s) => {
+                    F = (t, a) => {
                         try {
-                            let a = "";
-                            e.message?.nameAnimation && "none" !== e.message.nameAnimation && (a = ` name-animation-${e.message.nameAnimation}`);
-                            let n, o, i;
-                            if (Array.isArray(s) && s.length >= 3)[n, o, i] = s.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
+                            let s, n, o, i = "";
+                            if (e.message?.nameAnimation && "none" !== e.message.nameAnimation && (i = ` name-animation-${e.message.nameAnimation}`), Array.isArray(a) && a.length >= 3)[s, n, o] = a.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
                             else {
-                                if (!("string" == typeof s && s.includes("rgb"))) return `<span class="msg-title${a}">${t}</span>`;
-                                let l = s.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-                                if (!l) return `<span class="msg-title${a}">${t}</span>`;
-                                n = Math.min(255, Math.max(0, parseInt(l[1]) || 0)), o = Math.min(255, Math.max(0, parseInt(l[2]) || 0)), i = Math.min(255, Math.max(0, parseInt(l[3]) || 0))
+                                if ("string" != typeof a || !a.includes("rgb")) return `<span class="msg-title${i}">${t}</span>`;
+                                {
+                                    let l = a.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+                                    if (!l) return `<span class="msg-title${i}">${t}</span>`;
+                                    s = Math.min(255, Math.max(0, parseInt(l[1]) || 0)), n = Math.min(255, Math.max(0, parseInt(l[2]) || 0)), o = Math.min(255, Math.max(0, parseInt(l[3]) || 0))
+                                }
                             }
-                            return `<span class="msg-title${a}" style="color: rgb(${n}, ${o}, ${i})">${t}</span>`
+                            return `<span class="msg-title${i}" style="color: rgb(${s}, ${n}, ${o})">${t}</span>`
                         } catch (r) {
                             return t
                         }
                     },
-                    e$ = (e, t, s) => {
+                    O = (e, t, a) => {
                         try {
-                            if (t.message?.type === "poll") return s.isProcessing = !1, s.messageType = "poll", s.pollData = t.message.pollData || {}, s.hasVoted = s.pollData.voters?.includes(t.userId) || !1, s.pollTimeRemaining = s.pollData.timeRemaining || s.pollData.duration || 0, s.pollData.options || (s.pollData.options = []), void 0 === s.pollData.totalVotes && (s.pollData.totalVotes = 0), "";
-                            s.isProcessing = !0;
-                            let a = O(t.message) && !F.value;
-                            s.hasMultilineContent = a;
+                            if ("poll" === t.message?.type) return a.isProcessing = !1, a.messageType = "poll", a.pollData = t.message.pollData || {}, a.hasVoted = a.pollData.voters?.includes(t.userId) || !1, a.pollTimeRemaining = a.pollData.timeRemaining || a.pollData.duration || 0, a.pollData.options || (a.pollData.options = []), void 0 === a.pollData.totalVotes && (a.pollData.totalVotes = 0), "";
+                            a.isProcessing = !0;
+                            let s = (e => {
+                                if (!e?.args || e.args.length < 2) return !1;
+                                let t = 3 === e.args.length ? 2 : 1,
+                                    a = String(e.args[t] || "");
+                                return f(a).includes("\n")
+                            })(t.message) && !w.value;
+                            a.hasMultilineContent = s;
                             let n = "<span>" + e.replace(/\^([0-9])/g, (e, t) => `</span><span class="color-${t}">`) + "</span>";
                             n = n.replace(/<span[^>]*><\/span>/g, "");
                             let o = document.createElement("div");
@@ -1506,60 +1115,56 @@ let {
                                 let r = i.innerHTML.includes("<b>") || i.innerHTML.includes("<i>") || i.innerHTML.includes("<u>") || i.innerHTML.includes("<s>") || i.innerHTML.includes("<code>");
                                 l = r ? i.innerHTML : i.textContent || ""
                             }
-                            l = v(l);
-                            let c = E(l);
-                            if (s.messageType = c.type, s.messageStickers = c.stickers.slice(0, 1), s.hasTextContent = !!c.textContent, s.processedContent = {
-                                    textContent: c.textContent,
-                                    hasEmojisOnly: c.hasEmojisOnly
-                                }, "poll" !== s.messageType) {
-                                let d = E(l);
-                                d.stickers.forEach(e => {
-                                    l = l.replace(RegExp(e.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"), "")
-                                })
-                            }
-                            l = l.trim(), eM.length > 0 && (eM.forEach(e => {
-                                n = n.replace(e, ""), l = l.replace(e, "")
-                            }), "" === l.trim() && (l = " ", s.hasTextContent = !0));
-                            let m;
-                            if (m = l.includes("<b>") || l.includes("<i>") || l.includes("<u>") || l.includes("<s>") || l.includes("<code>") ? (m = (m = l).replace(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, '<span class="spoiler">$1</span>').replace(/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, '<span class="spoiler">$1</span>').replace(/\[b\]([\s\S]*?)\[\/b\]/gi, "<b>$1</b>").replace(/\[i\]([\s\S]*?)\[\/i\]/gi, "<i>$1</i>").replace(/\[u\]([\s\S]*?)\[\/u\]/gi, "<u>$1</u>").replace(/\[s\]([\s\S]*?)\[\/s\]/gi, "<s>$1</s>").replace(/\[code\]([\s\S]*?)\[\/code\]/gi, "<code>$1</code>")).replace(/@(everyone|here|-?\d+)(?!\w)/g, (e, s) => window.MentionService ? window.MentionService.createMentionElement(s, t.userId, {
+                            l = f(l);
+                            let c = y(l);
+                            a.messageType = c.type, a.messageStickers = c.stickers.slice(0, 1), a.hasTextContent = !!c.textContent, a.processedContent = {
+                                textContent: c.textContent,
+                                hasEmojisOnly: c.hasEmojisOnly
+                            }, "poll" !== a.messageType && y(l).stickers.forEach(e => {
+                                l = l.replace(RegExp(e.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"), "")
+                            });
+                            let d;
+                            if (l = l.trim(), G.length > 0 && (G.forEach(e => {
+                                    n = n.replace(e, ""), l = l.replace(e, "")
+                                }), "" === l.trim() && (l = " ", a.hasTextContent = !0)), d = l.includes("<b>") || l.includes("<i>") || l.includes("<u>") || l.includes("<s>") || l.includes("<code>") ? (d = (d = l).replace(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, '<span class="spoiler">$1</span>').replace(/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, '<span class="spoiler">$1</span>').replace(/\[b\]([\s\S]*?)\[\/b\]/gi, "<b>$1</b>").replace(/\[i\]([\s\S]*?)\[\/i\]/gi, "<i>$1</i>").replace(/\[u\]([\s\S]*?)\[\/u\]/gi, "<u>$1</u>").replace(/\[s\]([\s\S]*?)\[\/s\]/gi, "<s>$1</s>").replace(/\[code\]([\s\S]*?)\[\/code\]/gi, "<code>$1</code>")).replace(/@(everyone|here|-?\d+)(?!\w)/g, (e, a) => window.MentionService ? window.MentionService.createMentionElement(a, t.userId, {
                                     showName: !1
-                                }) : `<span class="mention">@${s}</span>`) : H(l), t.chat?.Settings?.Filter?.Links && t.chat?.Settings?.Filter?.Links.Enabled && t.message?.isImageAndLinksAllowed?.[1] && s.hasTextContent && (m = m.replace(/(https?:\/\/[^\s<]+)/gi, e => {
-                                    if (eM.includes(e)) return "";
-                                    if (!e.includes("://")) return _(e);
+                                }) : `<span class="mention">@${a}</span>`) : S(l), t.chat?.Settings?.Filter?.Links && t.chat?.Settings?.Filter?.Links.Enabled && t.message?.isImageAndLinksAllowed?.[1] && a.hasTextContent && (d = d.replace(/(https?:\/\/[^\s<]+)/gi, e => {
+                                    if (G.includes(e)) return "";
+                                    if (!e.includes("://")) return E(e);
                                     try {
-                                        return new URL(e), `<span class="link">${_(e)}</span>`
+                                        return new URL(e), `<span class="link">${E(e)}</span>`
                                     } catch {
-                                        return _(e)
+                                        return E(e)
                                     }
                                 })), t.message?.gId) {
                                 t.message.gId.split("_")[1];
-                                let g = n;
-                                i ? (i.innerHTML = m, c.stickers.forEach(e => {
+                                let m = n;
+                                i ? (i.innerHTML = d, c.stickers.forEach(e => {
                                     let t = RegExp(e.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
                                     i.innerHTML = i.innerHTML.replace(t, "")
-                                }), g = o.innerHTML) : (g = n.replace(l, m), c.stickers.forEach(e => {
+                                }), m = o.innerHTML) : (m = n.replace(l, d), c.stickers.forEach(e => {
                                     let t = RegExp(e.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
-                                    g = g.replace(t, "")
-                                })), g = C(g), a && (g = eN(g, t, s)), n = eb(g.trim(), t.chat, !1, s.messageStickers)
+                                    m = m.replace(t, "")
+                                })), m = v(m), s && (m = z(m, t, a)), n = H(m.trim(), t.chat, !1, a.messageStickers)
                             } else {
-                                let p = n.replace(l, m);
+                                let g = n.replace(l, d);
                                 c.stickers.forEach(e => {
                                     let t = RegExp(e.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
-                                    p = p.replace(t, "")
-                                }), p = C(p), a && (p = eN(p, t, s)), n = eb(p.trim(), t.chat, !1, s.messageStickers)
+                                    g = g.replace(t, "")
+                                }), g = v(g), s && (g = z(g, t, a)), n = H(g.trim(), t.chat, !1, a.messageStickers)
                             }
-                            return s.isProcessing = !1, n
-                        } catch (u) {
-                            return console.error("Error in colorize:", u), s.isProcessing = !1, s.errors.processing = u.message, '<span class="error-message">Error processing message</span>'
+                            return a.isProcessing = !1, n
+                        } catch (p) {
+                            return console.error("Error in colorize:", p), a.isProcessing = !1, a.errors.processing = p.message, '<span class="error-message">Error processing message</span>'
                         }
                     },
-                    eN = (e, t, s) => {
+                    z = (e, t, a) => {
                         try {
-                            let a = document.createElement("div");
-                            a.innerHTML = e;
-                            let n = a.querySelector(".msg-title"),
-                                o = a.querySelector(".only-msg"),
-                                i = a.querySelector(".message-edited");
+                            let s = document.createElement("div");
+                            s.innerHTML = e;
+                            let n = s.querySelector(".msg-title"),
+                                o = s.querySelector(".only-msg"),
+                                i = s.querySelector(".message-edited");
                             if (!n || !o) return e;
                             let l = document.createElement("div");
                             l.className = "message-multiline";
@@ -1568,218 +1173,453 @@ let {
                             let c = n.cloneNode(!0);
                             c.textContent.endsWith(":") || (c.textContent += ":"), r.appendChild(c);
                             let d = document.createElement("div");
-                            d.className = "message-multiline-content", s.containsMention && d.classList.add("mention-bg");
+                            d.className = "message-multiline-content", a.containsMention && d.classList.add("mention-bg");
                             let m = o.cloneNode(!0);
                             return d.appendChild(m), i && d.appendChild(i.cloneNode(!0)), l.appendChild(r), l.appendChild(d), l.outerHTML
                         } catch (g) {
                             return e
                         }
                     },
-                    eb = (t, s, a = !1, n = null) => {
+                    H = (t, a, s = !1, n = null) => {
                         try {
                             "string" != typeof t && (t = String(t || ""));
-                            let o = s?.Settings?.Filter?.Emojis || [];
+                            let o = a?.Settings?.Filter?.Emojis || [];
                             if (o.length > 0) {
-                                let i = new Map;
+                                let r = new Map;
                                 if (o.forEach((e, t) => {
                                         if (e && "string" == typeof e) {
-                                            let s = e;
-                                            e.startsWith("http") || e.startsWith("//") || (s = `../../emojis/${e}`), i.set(`:${t}:`, s)
+                                            let a = e;
+                                            e.startsWith("http") || e.startsWith("//") || (a = `../../emojis/${e}`), r.set(`:${t}:`, a)
                                         }
-                                    }), i.size > 0) {
-                                    let l = RegExp(Array.from(i.keys()).map(e => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
-                                    t = t.replace(l, e => {
-                                        let t = i.get(e);
-                                        return a ? "\uD83D\uDE0A" : `<img class="custom-emoji-msg" src="${t}" alt="${e}" loading="lazy" onerror="this.style.display='none'" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;" />`
+                                    }), r.size > 0) {
+                                    let c = RegExp(Array.from(r.keys()).map(e => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
+                                    t = t.replace(c, e => {
+                                        let t = r.get(e);
+                                        return s ? "\uD83D\uDE0A" : `<img class="custom-emoji-msg" src="${t}" alt="${e}" loading="lazy" onerror="this.style.display='none'" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;" />`
                                     })
                                 }
                             }
-                            if (a && n && n.length > 0 && (t += " [Sticker]"), e.emojiData && !a) {
+                            if (s && n && n.length > 0 && (t += " [Sticker]"), e.emojiData && !s) {
                                 let d = document.createElement("div");
                                 d.innerHTML = t;
-                                let m = c(d, {
+                                let m = l(d, {
                                     excludeClasses: ["chat-emoji"]
                                 });
-                                for (let g = m.length - 1; g >= 0; g -= 10) {
-                                    let p = m.slice(Math.max(0, g - 10 + 1), g + 1);
-                                    p.forEach(e => {
-                                        r(e, {
-                                            size: 20
-                                        })
+                                for (let g = m.length - 1; g >= 0; g -= 10) m.slice(Math.max(0, g - 10 + 1), g + 1).forEach(e => {
+                                    i(e, {
+                                        size: 20
                                     })
-                                }
+                                });
                                 t = d.innerHTML
                             }
                             return t
-                        } catch (u) {
+                        } catch (p) {
                             return t
                         }
                     },
-                    eV = null,
-                    eI = k(() => {
-                        let e = ["message-layout", `layout-${d.messageType}`];
-                        return d.messageStickers.length > 1 && e.push("has-multiple-stickers"), F.value && e.push("grouped-layout"), d.isProcessing && e.push("is-processing"), d.errors.processing && e.push("has-error"), d.hasMultilineContent && e.push("has-multiline"), e.join(" ")
+                    q = null,
+                    W = computed(() => {
+                        let e = ["message-layout", `layout-${r.messageType}`];
+                        return r.messageStickers.length > 1 && e.push("has-multiple-stickers"), w.value && e.push("grouped-layout"), r.isProcessing && e.push("is-processing"), r.errors.processing && e.push("has-error"), r.hasMultilineContent && e.push("has-multiline"), e.join(" ")
                     }),
-                    e_ = () => {
-                        try {
-                            window.eventBus && "function" == typeof window.eventBus.on && (eV = window.eventBus.on("message-edited", t => {
-                                try {
-                                    t?.detail?.gId && e.message?.gId === t.detail.gId && (d.edited = !0)
-                                } catch (s) {}
-                            })), $(() => {
-                                let e = e => {
-                                    let t = e.target.closest(".spoiler");
-                                    t && (e.preventDefault(), e.stopPropagation(), t.classList.toggle("revealed"))
-                                };
-                                document.addEventListener("click", e)
-                            })
-                        } catch (t) {}
-                    },
-                    eM = (() => {
-                        if (e.message?.type === "poll") return [];
+                    G = (() => {
+                        if ("poll" === e.message?.type) return [];
                         let t = [];
                         if (e.message?.images && Array.isArray(e.message.images)) {
-                            let s = e.message.images.filter(e => e && e.url).map(e => e.url).slice(0, 5);
-                            t.push(...s)
+                            let a = e.message.images.filter(e => e && e.url).map(e => e.url).slice(0, 5);
+                            t.push(...a)
                         }
                         if (t.length < 5 && e.chat?.Settings?.Filter?.Images?.Enabled && e.message?.isImageAndLinksAllowed?.[0]) {
-                            let a = "";
-                            if (e.message?.args?.length === 3 ? a = String(e.message.args[2] || "") : e.message?.args?.length === 2 ? a = String(e.message.args[1] || "") : e.message?.args?.length === 1 && (a = String(e.message.args[0] || "")), a) {
-                                m.lastIndex = 0;
-                                let n = [...a.matchAll(m)].map(e => e[0]),
+                            let s = "";
+                            if (3 === e.message?.args?.length ? s = String(e.message.args[2] || "") : 2 === e.message?.args?.length ? s = String(e.message.args[1] || "") : 1 === e.message?.args?.length && (s = String(e.message.args[0] || "")), s) {
+                                c.lastIndex = 0;
+                                let n = [...s.matchAll(c)].map(e => e[0]),
                                     o = 5 - t.length;
                                 t.push(...n.slice(0, o))
                             }
                         }
                         return t
                     })();
-                eM.length > 0 && (d.imageUrls = [...eM], d.extractedImageUrls = [...eM]), d.contentInitialized = !0, B(() => {
-                    eM.length > 0 && 0 === d.imageUrls.length && (d.imageUrls = [...eM])
-                }), V(() => {
-                    e_()
-                }), I(() => {
+                G.length > 0 && (r.imageUrls = [...G], r.extractedImageUrls = [...G]), r.contentInitialized = !0, watchEffect(() => {
+                    G.length > 0 && 0 === r.imageUrls.length && (r.imageUrls = [...G])
+                }), onMounted(() => {
+                    (() => {
+                        try {
+                            window.eventBus && "function" == typeof window.eventBus.on && (q = window.eventBus.on("message-edited", t => {
+                                try {
+                                    t?.detail?.gId && e.message?.gId === t.detail.gId && (r.edited = !0)
+                                } catch (a) {}
+                            })), nextTick(() => {
+                                document.addEventListener("click", e => {
+                                    let t = e.target.closest(".spoiler");
+                                    t && (e.preventDefault(), e.stopPropagation(), t.classList.toggle("revealed"))
+                                })
+                            })
+                        } catch (t) {}
+                    })()
+                }), onUnmounted(() => {
                     try {
-                        if (ew && (clearInterval(ew), ew = null), eV && "function" == typeof eV && eV(), f.clear(), h.clear(), ec.clear(), d.errors.stickers.clear(), d.errors.images.clear(), n.clear(), window.requestAnimationFrame) {
+                        if (K && (clearInterval(K), K = null), q && "function" == typeof q && q(), u.clear(), p.clear(), B.clear(), r.errors.stickers.clear(), r.errors.images.clear(), n.clear(), window.requestAnimationFrame) {
                             let e = window.requestAnimationFrame(() => {});
                             for (; e--;) window.cancelAnimationFrame(e)
                         }
-                        b.innerHTML = "", d.messageStickers = []
+                        k.innerHTML = "", r.messageStickers = []
                     } catch (t) {}
                 });
-                let ew = null,
-                    eT = () => {
-                        ew && clearInterval(ew), d.pollData && d.pollData.active && d.pollTimeRemaining > 0 && (ew = setInterval(() => {
-                            d.pollTimeRemaining > 0 ? d.pollTimeRemaining-- : (clearInterval(ew), ew = null, d.pollData.active = !1)
+                let K = null,
+                    Q = () => {
+                        K && clearInterval(K), r.pollData && r.pollData.active && r.pollTimeRemaining > 0 && (K = setInterval(() => {
+                            r.pollTimeRemaining > 0 ? r.pollTimeRemaining-- : (clearInterval(K), K = null, r.pollData.active = !1)
                         }, 1e3))
                     };
-                V(() => {
-                    if (e.message?.type === "poll" || e.message?.isPoll || e.message?.pollData) {
-                        d.messageType = "poll", d.pollData = e.message.pollData || {};
+                onMounted(() => {
+                    if ("poll" === e.message?.type || e.message?.isPoll || e.message?.pollData) {
+                        r.messageType = "poll", r.pollData = e.message.pollData || {};
                         let t = String(e.userId || "");
-                        d.pollData.voters ? Array.isArray(d.pollData.voters) ? d.hasVoted = d.pollData.voters.includes(t) || d.pollData.voters.includes(e.userId) : "object" == typeof d.pollData.voters && (d.hasVoted = void 0 !== d.pollData.voters[t] || void 0 !== d.pollData.voters[e.userId], d.hasVoted && (d.selectedOption = d.pollData.voters[t] || d.pollData.voters[e.userId])) : d.hasVoted = !1, d.pollTimeRemaining = d.pollData.timeRemaining || 0, d.errors.processing = null, d.isProcessing = !1, d.pollData.options || (d.pollData.options = []), void 0 === d.pollData.totalVotes && (d.pollData.totalVotes = 0), d.pollData.active && d.pollTimeRemaining > 0 && eT()
+                        r.pollData.voters ? Array.isArray(r.pollData.voters) ? r.hasVoted = r.pollData.voters.includes(t) || r.pollData.voters.includes(e.userId) : "object" == typeof r.pollData.voters && (r.hasVoted = void 0 !== r.pollData.voters[t] || void 0 !== r.pollData.voters[e.userId], r.hasVoted && (r.selectedOption = r.pollData.voters[t] || r.pollData.voters[e.userId])) : r.hasVoted = !1, r.pollTimeRemaining = r.pollData.timeRemaining || 0, r.errors.processing = null, r.isProcessing = !1, r.pollData.options || (r.pollData.options = []), void 0 === r.pollData.totalVotes && (r.pollData.totalVotes = 0), r.pollData.active && r.pollTimeRemaining > 0 && Q()
                     }
                 });
-                let eS = !1;
-                P(() => e.message?.pollData, (t, s) => {
+                let Y = !1;
+                watch(() => e.message?.pollData, (t, a) => {
                     if (!t) return;
-                    d.messageType = "poll", d.pollData = {
+                    r.messageType = "poll", r.pollData = {
                         ...t
                     };
-                    let a = String(e.userId || "");
-                    t.voters && (Array.isArray(t.voters) ? d.hasVoted = t.voters.includes(a) || t.voters.includes(e.userId) : "object" == typeof t.voters && (d.hasVoted = void 0 !== t.voters[a] || void 0 !== t.voters[e.userId], d.hasVoted && (d.selectedOption = t.voters[a] || t.voters[e.userId]))), d.pollData.options || (d.pollData.options = []), void 0 === d.pollData.totalVotes && (d.pollData.totalVotes = 0), !eS && t.active && t.timeRemaining > 0 ? (d.pollTimeRemaining = t.timeRemaining, eT(), eS = !0) : !t.active && ew && (clearInterval(ew), ew = null, eS = !1)
+                    let s = String(e.userId || "");
+                    t.voters && (Array.isArray(t.voters) ? r.hasVoted = t.voters.includes(s) || t.voters.includes(e.userId) : "object" == typeof t.voters && (r.hasVoted = void 0 !== t.voters[s] || void 0 !== t.voters[e.userId], r.hasVoted && (r.selectedOption = t.voters[s] || t.voters[e.userId]))), r.pollData.options || (r.pollData.options = []), void 0 === r.pollData.totalVotes && (r.pollData.totalVotes = 0), !Y && t.active && t.timeRemaining > 0 ? (r.pollTimeRemaining = t.timeRemaining, Q(), Y = !0) : !t.active && K && (clearInterval(K), K = null, Y = !1)
                 }, {
                     immediate: !0,
                     deep: !0
-                }), P(() => e.message?.lastUpdate, () => {
-                    e.message?.pollData && (d.pollData = {
+                }), watch(() => e.message?.lastUpdate, () => {
+                    e.message?.pollData && (r.pollData = {
                         ...e.message.pollData
                     })
                 });
-                let ex = async t => {
-                    let s = d.pollData || e.message?.pollData;
-                    if (d.hasVoted || null !== d.selectedOption || !s?.active) return;
-                    d.selectedOption = t, d.hasVoted = !0;
-                    let a = "function" == typeof GetParentResourceName ? GetParentResourceName() : "Easy-Chat-Max";
-                    try {
-                        let n = await fetch(`https://${a}/votePoll`, {
+                let Z = computed(() => {
+                        let t = r.pollData || e.message?.pollData;
+                        return t && t.active ? `${Math.floor(r.pollTimeRemaining/60)}:${(r.pollTimeRemaining%60).toString().padStart(2,"0")}` : ""
+                    }),
+                    J = computed(() => {
+                        let t = r.pollData || e.message?.pollData;
+                        return !(!t || !t.totalVotes) && t.totalVotes > 0
+                    });
+                return watchEffect(() => {
+                    r.imageUrls.length > 0 || e.message?.args?.[2]?.includes("http")
+                }), {
+                    ...toRefs(r),
+                    myAnimation: $,
+                    hideAvatars: b,
+                    messageReactions: N,
+                    hasReactions: V,
+                    messageUserId: I,
+                    isOwnMessage: _,
+                    isGrouped: w,
+                    messageLayoutClass: W,
+                    textEscaped: U,
+                    handleMouseEnter() {
+                        try {
+                            r.isHovered = !0
+                        } catch (e) {}
+                    },
+                    handleMouseLeave() {
+                        try {
+                            r.isHovered = !1, r.showFullTimestamp = !1
+                        } catch (e) {}
+                    },
+                    getMessageStyle() {
+                        try {
+                            let t = {};
+                            if (e.message?.color && Array.isArray(e.message.color) && e.message.color.length >= 3) {
+                                let [a, s, n] = e.message.color.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
+                                t["--msg-color-rgb"] = `${a}, ${s}, ${n}`
+                            }
+                            return e.message?.cosmetics?.background ? (t.backgroundImage = `url(${e.message.cosmetics.background})`, t.backgroundSize = "cover", t.backgroundPosition = "center", t.backgroundRepeat = "no-repeat") : e.message?.bgColor && (t.background = e.message.bgColor), t
+                        } catch (o) {
+                            return {}
+                        }
+                    },
+                    getMessageGradientStyle() {
+                        try {
+                            let t = {};
+                            if (e.message?.customColor) {
+                                let a = (e => {
+                                    if (!e || "string" != typeof e) return null;
+                                    let t = e.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+                                    return t ? {
+                                        r: parseInt(t[1]),
+                                        g: parseInt(t[2]),
+                                        b: parseInt(t[3])
+                                    } : null
+                                })(e.message.customColor);
+                                a && (t["--gradient-color-strong"] = `rgba(${a.r}, ${a.g}, ${a.b}, 0.5)`, t["--gradient-color-weak"] = `rgba(${a.r}, ${a.g}, ${a.b}, 0.1)`)
+                            }
+                            return t
+                        } catch (s) {
+                            return {}
+                        }
+                    },
+                    getAuthorName: m,
+                    processReplyText(t) {
+                        try {
+                            if (!t || "object" != typeof t) return "";
+                            let s = m(t),
+                                n = "";
+                            if (t.fullText) n = String(t.fullText);
+                            else if (t.originalText) n = String(t.originalText);
+                            else if (t.text) {
+                                if ((n = String(t.text)).endsWith("...") || n.includes("...") && n.length < 60) {
+                                    let o = a(t);
+                                    o && o.length > n.length && (n = String(o))
+                                }
+                            } else n = String(a(t));
+                            if (n.includes('<span class="only-msg">')) {
+                                let r = document.createElement("div");
+                                r.innerHTML = n;
+                                let d = r.querySelector(".only-msg");
+                                d && (n = d.innerHTML || d.textContent || "")
+                            }
+                            n.length, n = f(n, !1);
+                            let g = RegExp(`^${s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}:?\\s*`);
+                            n = n.replace(g, ""), c.lastIndex = 0;
+                            let p = c.test(n),
+                                u = n.replace(c, "").trim(),
+                                h = E(s),
+                                v = h;
+                            if (t?.color && Array.isArray(t.color) && t.color.length >= 3) {
+                                let [y, C, k] = t.color.map(e => Math.min(255, Math.max(0, parseInt(e) || 0)));
+                                v = `<span class="reply-author-inline" style="color: rgb(${y}, ${C}, ${k})">${h}</span>`
+                            } else v = `<span class="reply-author-inline">${h}</span>`;
+                            if (!p || u) {
+                                let $ = n;
+                                p && u && ($ = u);
+                                let b = !1;
+                                for (let [N, V] of(($.endsWith("...") || $.includes("[") && !$.includes("]", $.lastIndexOf("["))) && (b = !0, $.includes("[spoile") && !$.includes("[spoiler]") && ($ = $.replace(/\[spoile\.?\.\.$/, "..."))), [
+                                        [/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, "$1"],
+                                        [/\[spiler\]([\s\S]*?)\[\/spiler\]/gi, "$1"],
+                                        [/\[b\]([\s\S]*?)\[\/b\]/gi, "$1"],
+                                        [/\[i\]([\s\S]*?)\[\/i\]/gi, "$1"],
+                                        [/\[u\]([\s\S]*?)\[\/u\]/gi, "$1"],
+                                        [/\[s\]([\s\S]*?)\[\/s\]/gi, "$1"],
+                                        [/\[code\]([\s\S]*?)\[\/code\]/gi, "$1"]
+                                    ])) $.match(N), $ = $.replace(N, V);
+                                for (let [I, M] of($.includes("<b>") || $.includes("<i>") || $.includes("<u>") || $.includes("<s>") || $.includes("<code>") || ($ = S($)), [
+                                        [/\uE020([\s\S]*?)\uE021/g, '<span class="spoiler">$1</span>'],
+                                        [/\uE022([\s\S]*?)\uE023/g, "<b>$1</b>"],
+                                        [/\uE024([\s\S]*?)\uE025/g, "<i>$1</i>"],
+                                        [/\uE026([\s\S]*?)\uE027/g, "<u>$1</u>"],
+                                        [/\uE028([\s\S]*?)\uE029/g, "<s>$1</s>"],
+                                        [/\uE02A([\s\S]*?)\uE02B/g, "<code>$1</code>"]
+                                    ])) $ = $.replace(I, M);
+                                $ = (t => {
+                                    "string" != typeof t && (t = String(t || ""));
+                                    let a = e.chat?.Settings?.Filter?.Emojis || [];
+                                    if (a.length > 0) {
+                                        let s = new Map;
+                                        if (a.forEach((e, t) => {
+                                                if (e && "string" == typeof e) {
+                                                    let a = e;
+                                                    e.startsWith("http") || e.startsWith("//") || (a = `../../emojis/${e}`), s.set(`:${t}:`, a)
+                                                }
+                                            }), s.size > 0) {
+                                            let n = RegExp(Array.from(s.keys()).map(e => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
+                                            t = t.replace(n, e => `<img class="custom-emoji-msg reply-emoji" src="${s.get(e)}" alt="${e}" loading="lazy" onerror="this.style.display='none'" style="width: 16px; height: 16px; display: inline-block; vertical-align: text-bottom; margin: 0 1px;" />`)
+                                        }
+                                    }
+                                    if (e.emojiData) {
+                                        let o = document.createElement("div");
+                                        o.innerHTML = t, l(o).forEach(e => {
+                                            i(e, {
+                                                forReply: !0
+                                            })
+                                        }), t = o.innerHTML
+                                    }
+                                    return t
+                                })($);
+                                let _ = "";
+                                return p && (_ += ' <span class="reply-media-indicator"><i class="fa-solid fa-image"></i></span>'), b && (_ += ' <span class="reply-truncated-indicator" title="تم اقتطاع الرسالة">...</span>'), `${v}: <span class="reply-content-text">${$}</span>${_}`
+                            }
+                            return `${v}: <span class="reply-media-indicator"><i class="fa-solid fa-image"></i> Image, click to view</span>`
+                        } catch (w) {
+                            return '<span class="reply-error">Error loading reply</span>'
+                        }
+                    },
+                    getAppleEmojiUrl: s,
+                    getCustomEmojiUrl(t) {
+                        try {
+                            if (!t?.startsWith(":") || !t?.endsWith(":")) return null;
+                            let a = parseInt(t.slice(1, -1));
+                            if (isNaN(a)) return null;
+                            let s = e.chat?.Settings?.Filter?.Emojis?.[a];
+                            return s ? s.startsWith("http") || s.startsWith("//") ? s : `../../emojis/${s}` : null
+                        } catch (n) {
+                            return null
+                        }
+                    },
+                    hasUserReacted(t) {
+                        try {
+                            let a = N.value[t];
+                            if (!a) return !1;
+                            let s = String(e.userId || "");
+                            return !!Array.isArray(a) && a.some(e => "string" == typeof e ? e === s : e.id === s)
+                        } catch (n) {
+                            return !1
+                        }
+                    },
+                    getReactionCount: e => e && Array.isArray(e) ? e.length : 0,
+                    toggleReaction(t) {
+                        try {
+                            "function" == typeof e.onReact && e.message?.gId && e.onReact(e.message.gId, t)
+                        } catch (a) {}
+                    },
+                    scrollToMessage(e) {
+                        try {
+                            if (!e) return;
+                            n.add(() => {
+                                let t = document.querySelector(`[data-msg-id="${CSS.escape(e)}"]`);
+                                if (t) {
+                                    let a = t;
+                                    if (!t.classList.contains("message-item")) {
+                                        let s = t.closest("li.message-item");
+                                        s && (a = s)
+                                    }
+                                    a.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center"
+                                    }), a.classList.add("highlight-flash"), setTimeout(() => {
+                                        a.classList.remove("highlight-flash")
+                                    }, 2500)
+                                }
+                            })
+                        } catch (t) {}
+                    },
+                    handleSpoilerClick(e) {
+                        try {
+                            let t = e.target;
+                            t?.classList?.contains("spoiler") && (t.classList.toggle("revealed"), e.stopPropagation())
+                        } catch (a) {}
+                    },
+                    getCurrentTime: () => x(e.message?.timestamp, "short"),
+                    getFullTimestamp: () => x(e.message?.timestamp, "full"),
+                    openImageModal(e) {
+                        try {
+                            e.preventDefault(), e.stopPropagation();
+                            let t = e.target;
+                            if (!t || !t.src) return;
+                            r.imageModal.imageSrc = t.src, r.imageModal.imageAlt = t.alt || "Full size image", r.imageModal.isOpen = !0, r.imageModal.isClosing = !1, document.addEventListener("keydown", D)
+                        } catch (a) {}
+                    },
+                    closeImageModal: P,
+                    getImageClasses(e) {
+                        if (!e || !e.naturalWidth || !e.naturalHeight) return "";
+                        let t = [],
+                            a = e.naturalWidth,
+                            s = e.naturalHeight,
+                            n = a / s,
+                            o = Math.max(a, s);
+                        return o < 200 ? t.push("small") : o < 400 ? t.push("medium") : t.push("large"), n > 1.5 ? t.push("landscape") : n < .8 ? t.push("portrait") : t.push("square"), t.join(" ")
+                    },
+                    handleImageError(t, a = null) {
+                        try {
+                            if (t) {
+                                B.has("icon") || B.set("icon", 0);
+                                let s = B.get("icon");
+                                s < 3 ? (B.set("icon", s + 1), e.message.icon = "./images/user-avatar.png") : e.message.icon = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM1ODY1RjIiLz4KPC9zdmc+"
+                            } else a && r.errors.images.set(a, "Failed to load")
+                        } catch (n) {}
+                    },
+                    handleStickerError(e) {
+                        try {
+                            r.errors.stickers.set(e.index, "Failed to load")
+                        } catch (t) {}
+                    },
+                    handleStickerLoad(e) {
+                        try {
+                            r.errors.stickers.delete(e.index)
+                        } catch (t) {}
+                    },
+                    prevImage() {
+                        try {
+                            r.currentImageIndex > 0 && r.currentImageIndex--
+                        } catch (e) {}
+                    },
+                    nextImage() {
+                        try {
+                            r.currentImageIndex < r.imageUrls.length - 1 && r.currentImageIndex++
+                        } catch (e) {}
+                    },
+                    showTimestamp() {
+                        try {
+                            r.showFullTimestamp = !0
+                        } catch (e) {}
+                    },
+                    hideTimestamp() {
+                        try {
+                            r.showFullTimestamp = !1
+                        } catch (e) {}
+                    },
+                    async votePoll(t) {
+                        let a = r.pollData || e.message?.pollData;
+                        if (r.hasVoted || null !== r.selectedOption || !a?.active) return;
+                        r.selectedOption = t, r.hasVoted = !0;
+                        let s = "function" == typeof GetParentResourceName ? GetParentResourceName() : "Easy-Chat-Max";
+                        try {
+                            let n = await fetch(`https://${s}/votePoll`, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
                                 },
                                 body: JSON.stringify({
-                                    pollId: s.id,
+                                    pollId: a.id,
                                     optionId: t
                                 })
-                            }),
-                            o = await n.json();
-                        o.success || (d.selectedOption = null, d.hasVoted = !1)
-                    } catch (i) {
-                        console.error("[votePoll] Error voting:", i), d.selectedOption = null, d.hasVoted = !1
+                            });
+                            (await n.json()).success || (r.selectedOption = null, r.hasVoted = !1)
+                        } catch (o) {
+                            console.error("[votePoll] Error voting:", o), r.selectedOption = null, r.hasVoted = !1
+                        }
+                    },
+                    getPollOptionPercentage(t) {
+                        let a = r.pollData || e.message?.pollData;
+                        if (!a || !a.totalVotes || 0 === a.totalVotes) return 0;
+                        let s = t.votes || 0;
+                        return Math.round(s / a.totalVotes * 100)
+                    },
+                    getPollTimeRemaining: Z,
+                    isWinningOption(t) {
+                        let a = r.pollData || e.message?.pollData;
+                        if (!a || !a.options) return !1;
+                        let s = Math.max(...a.options.map(e => e.votes || 0));
+                        return (t.votes || 0) === s && t.votes > 0
+                    },
+                    pollHasVotes: J,
+                    handleMessageClick(a) {
+                        try {
+                            if ("poll" === e.message?.type || "poll" === r.messageType) return;
+                            let s = a.target;
+                            if (s.classList.contains("message-image") || s.closest(".message-image-container") || s.closest(".message-sticker") || s.classList.contains("spoiler") || !s.closest(".message-text")) return;
+                            let n = s.closest(".link");
+                            if (n) {
+                                a.preventDefault(), a.stopPropagation();
+                                let o = n.textContent.trim();
+                                return void t("showLinkModal", {
+                                    url: o,
+                                    callback() {
+                                        window.invokeNative("openUrl", o)
+                                    }
+                                })
+                            }
+                            if (s.classList.contains("message-action-btn") || s.classList.contains("reaction-button") || s.classList.contains("reaction-pill") || s.closest(".reaction-pill") || s.closest(".message-reactions") || s.classList.contains("message-reply-preview") || s.classList.contains("poll-option-compact") || "IMG" === s.tagName || "VIDEO" === s.tagName || "A" === s.tagName) return;
+                            a.stopPropagation();
+                            let i = {
+                                x: a.clientX,
+                                y: a.clientY
+                            };
+                            t("showOptions", {
+                                message: e.message,
+                                position: i
+                            })
+                        } catch (l) {}
                     }
-                }, eD = t => {
-                    let s = d.pollData || e.message?.pollData;
-                    if (!s || !s.totalVotes || 0 === s.totalVotes) return 0;
-                    let a = t.votes || 0;
-                    return Math.round(a / s.totalVotes * 100)
-                }, eP = k(() => {
-                    let t = d.pollData || e.message?.pollData;
-                    if (!t || !t.active) return "";
-                    let s = Math.floor(d.pollTimeRemaining / 60),
-                        a = d.pollTimeRemaining % 60;
-                    return `${s}:${a.toString().padStart(2,"0")}`
-                }), eB = t => {
-                    let s = d.pollData || e.message?.pollData;
-                    if (!s || !s.options) return !1;
-                    let a = Math.max(...s.options.map(e => e.votes || 0));
-                    return (t.votes || 0) === a && t.votes > 0
-                }, ej = k(() => {
-                    let t = d.pollData || e.message?.pollData;
-                    return !!t && !!t.totalVotes && t.totalVotes > 0
-                });
-                return B(() => {
-                    d.imageUrls.length > 0 || e.message?.args?.[2]?.includes("http")
-                }), {
-                    ...D(d),
-                    myAnimation: T,
-                    hideAvatars: S,
-                    messageReactions: j,
-                    hasReactions: A,
-                    messageUserId: L,
-                    isOwnMessage: U,
-                    isGrouped: F,
-                    messageLayoutClass: eI,
-                    textEscaped: eC,
-                    handleMouseEnter: q,
-                    handleMouseLeave: W,
-                    getMessageStyle: K,
-                    getMessageGradientStyle: Q,
-                    getAuthorName: p,
-                    processReplyText: Y,
-                    getAppleEmojiUrl: o,
-                    getCustomEmojiUrl: Z,
-                    hasUserReacted: J,
-                    getReactionCount: X,
-                    toggleReaction: ee,
-                    scrollToMessage: et,
-                    handleSpoilerClick: es,
-                    getCurrentTime: en,
-                    getFullTimestamp: eo,
-                    openImageModal: ei,
-                    closeImageModal: el,
-                    getImageClasses: x,
-                    handleImageError: ed,
-                    handleStickerError: em,
-                    handleStickerLoad: eg,
-                    prevImage: ep,
-                    nextImage: eu,
-                    showTimestamp: eh,
-                    hideTimestamp: ef,
-                    votePoll: ex,
-                    getPollOptionPercentage: eD,
-                    getPollTimeRemaining: eP,
-                    isWinningOption: eB,
-                    pollHasVotes: ej,
-                    handleMessageClick: G
                 }
             },
             render: function(e, t) {
@@ -1903,7 +1743,7 @@ let {
                     }, {
                         disabled: e.hasVoted || !e.message?.pollData?.active
                     }]),
-                    onClick: s => !e.hasVoted && e.message?.pollData?.active ? e.votePoll(t.id) : null
+                    onClick: a => !e.hasVoted && e.message?.pollData?.active ? e.votePoll(t.id) : null
                 }, [_createElementVNode("div", {
                     class: "poll-option-bar-compact"
                 }, [_createElementVNode("div", {
@@ -1950,7 +1790,7 @@ let {
                         "multiline-wrapper": e.hasMultilineContent
                     }, {
                         "reply-notification": e.message.isReplyToMe
-                    }, ]),
+                    }]),
                     "data-msg-id": e.message.gId,
                     onClick: e.handleSpoilerClick,
                     role: "region",
@@ -1994,7 +1834,7 @@ let {
                         gap: "8px",
                         "flex-wrap": "wrap"
                     }
-                }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageStickers, (t, s) => (_openBlock(), _createElementBlock("div", {
+                }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageStickers, (t, a) => (_openBlock(), _createElementBlock("div", {
                     key: t.index,
                     class: _normalizeClass(["message-sticker-container", "enhanced", {
                         "sticker-inline": "mixed" === e.messageType
@@ -2016,8 +1856,8 @@ let {
                     alt: "Sticker " + t.index,
                     class: _normalizeClass(["message-sticker", "sticker-" + e.messageType]),
                     loading: "lazy",
-                    onLoad: s => e.handleStickerLoad(t),
-                    onError: s => e.handleStickerError(t)
+                    onLoad: a => e.handleStickerLoad(t),
+                    onError: a => e.handleStickerError(t)
                 }, null, 42, ["src", "alt", "onLoad", "onError"]))], 2))), 128))]), _createCommentVNode(" Time display without action buttons "), _createElementVNode("div", {
                     class: "message-actions-wrapper"
                 }, [_createElementVNode("span", {
@@ -2033,7 +1873,7 @@ let {
                     role: "tooltip"
                 }, _toDisplayString(e.getFullTimestamp()), 1)) : _createCommentVNode("v-if", !0)])])])) : (_openBlock(), _createElementBlock(_Fragment, {
                     key: 1
-                }, [_createCommentVNode(" Regular stickers (not sticker-only grouped) "), (_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageStickers, (t, s) => (_openBlock(), _createElementBlock("div", {
+                }, [_createCommentVNode(" Regular stickers (not sticker-only grouped) "), (_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageStickers, (t, a) => (_openBlock(), _createElementBlock("div", {
                     key: t.index,
                     class: _normalizeClass(["message-sticker-container", "enhanced", {
                         "sticker-inline": "mixed" === e.messageType
@@ -2055,8 +1895,8 @@ let {
                     alt: "Sticker " + t.index,
                     class: _normalizeClass(["message-sticker", "sticker-" + e.messageType]),
                     loading: "lazy",
-                    onLoad: s => e.handleStickerLoad(t),
-                    onError: s => e.handleStickerError(t)
+                    onLoad: a => e.handleStickerLoad(t),
+                    onError: a => e.handleStickerError(t)
                 }, null, 42, ["src", "alt", "onLoad", "onError"]))], 2))), 128))], 64))], 2)) : _createCommentVNode("v-if", !0)], 2)], 2112)), _createCommentVNode(" Images Container "), e.imageUrls.length && !e.errors.processing ? (_openBlock(), _createElementBlock("div", {
                     key: 4,
                     class: _normalizeClass(["message-image-container", {
@@ -2084,8 +1924,8 @@ let {
                     onError: t => e.handleImageError(!1, e.imageUrls[e.currentImageIndex]),
                     onClick: e.openImageModal,
                     onLoad(t) {
-                        let s = e.getImageClasses(t.target);
-                        s && s.split(" ").forEach(e => t.target.classList.add(e)), t.target.classList.add("is-loaded")
+                        let a = e.getImageClasses(t.target);
+                        a && a.split(" ").forEach(e => t.target.classList.add(e)), t.target.classList.add("is-loaded")
                     },
                     "data-img-id": e.message.gId,
                     class: "message-image",
@@ -2108,36 +1948,36 @@ let {
                     class: "message-reactions",
                     role: "group",
                     "aria-label": "Message reactions"
-                }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageReactions, (t, s) => (_openBlock(), _createElementBlock("span", {
-                    key: s,
-                    onClick: _withModifiers(t => e.toggleReaction(s), ["stop"]),
+                }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.messageReactions, (t, a) => (_openBlock(), _createElementBlock("span", {
+                    key: a,
+                    onClick: _withModifiers(t => e.toggleReaction(a), ["stop"]),
                     class: _normalizeClass(["reaction-pill", {
-                        "user-reacted": e.hasUserReacted(s)
+                        "user-reacted": e.hasUserReacted(a)
                     }]),
                     title: "Click to toggle reaction",
                     role: "button",
                     tabindex: "0",
-                    "aria-label": s + " reaction by " + e.getReactionCount(t) + " user" + (1 !== e.getReactionCount(t) ? "s" : "") + (e.hasUserReacted(s) ? " including you" : ""),
-                    "aria-pressed": e.hasUserReacted(s)
-                }, [s.startsWith(":") && s.endsWith(":") ? (_openBlock(), _createElementBlock("span", {
+                    "aria-label": a + " reaction by " + e.getReactionCount(t) + " user" + (1 !== e.getReactionCount(t) ? "s" : "") + (e.hasUserReacted(a) ? " including you" : ""),
+                    "aria-pressed": e.hasUserReacted(a)
+                }, [a.startsWith(":") && a.endsWith(":") ? (_openBlock(), _createElementBlock("span", {
                     key: 0
                 }, [_createElementVNode("img", {
-                    src: e.getCustomEmojiUrl(s),
+                    src: e.getCustomEmojiUrl(a),
                     class: "reaction-emoji-img",
                     alt: "",
                     loading: "lazy",
                     onError: e => e.target.style.display = "none"
-                }, null, 40, ["src", "onError"])])) : e.getAppleEmojiUrl(s) ? (_openBlock(), _createElementBlock("span", {
+                }, null, 40, ["src", "onError"])])) : e.getAppleEmojiUrl(a) ? (_openBlock(), _createElementBlock("span", {
                     key: 1
                 }, [_createElementVNode("img", {
-                    src: e.getAppleEmojiUrl(s),
+                    src: e.getAppleEmojiUrl(a),
                     class: "reaction-emoji-img",
-                    alt: s,
+                    alt: a,
                     loading: "lazy",
                     onError: e => e.target.style.display = "none"
                 }, null, 40, ["src", "alt", "onError"])])) : (_openBlock(), _createElementBlock("span", {
                     key: 2
-                }, _toDisplayString(s), 1)), _createElementVNode("span", {
+                }, _toDisplayString(a), 1)), _createElementVNode("span", {
                     class: "reaction-count",
                     "aria-label": "reaction count"
                 }, _toDisplayString(e.getReactionCount(t)), 1)], 10, ["onClick", "aria-label", "aria-pressed"]))), 128))])) : _createCommentVNode("v-if", !0)])], 46, ["data-msg-id", "data-has-gid", "data-animation", "data-font", "data-has-gradient", "onMouseenter", "onMouseleave", "onClick", "aria-label"]), _createCommentVNode(" Image Modal (Vue-style) "), e.imageModal.isOpen ? (_openBlock(), _createBlock(_Teleport, {
@@ -2173,22 +2013,21 @@ let {
                 }, " اضغط ESC او اي مكان لاغلاق الصورة ")], 10, ["onClick", "aria-label"])])) : _createCommentVNode("v-if", !0)])
             }
         }),
-        s = E({
+        a = defineComponent({
             props: ["messages", "onClose"],
             emits: ["close"],
             setup(e, {
                 emit: t
             }) {
-                let s = M({
+                let a = reactive({
                         query: "",
                         currentIndex: -1,
                         matchCount: 0,
                         textDirection: "ltr",
                         isClosing: !1
                     }),
-                    a = w(null),
-                    n = e => /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(e),
-                    o = () => {
+                    s = ref(null),
+                    n = () => {
                         document.querySelectorAll(".search-highlight-text").forEach(e => {
                             let t = e.parentNode;
                             t.replaceChild(document.createTextNode(e.textContent), e), t.normalize()
@@ -2196,91 +2035,83 @@ let {
                             e.classList.remove("search-match")
                         })
                     },
-                    i = () => {
-                        s.isClosing = !0, o(), s.query = "", s.matchCount = 0, s.currentIndex = -1, e.onClose ? e.onClose() : t("close")
-                    },
-                    l = () => {
-                        if (o(), !s.query) {
-                            s.matchCount = 0;
-                            return
-                        }
-                        let e = s.query.toLowerCase(),
-                            t = null,
-                            a = (e, t) => {
-                                let s = e.textContent,
-                                    n = s.toLowerCase(),
-                                    o = n.indexOf(t);
-                                if (-1 !== o) {
-                                    let i = s.substring(0, o),
-                                        l = s.substring(o, o + t.length),
-                                        r = s.substring(o + t.length),
-                                        c = e.parentNode,
-                                        d = document.createDocumentFragment();
-                                    i && d.appendChild(document.createTextNode(i));
-                                    let m = document.createElement("span");
-                                    if (m.className = "search-highlight-text", m.textContent = l, d.appendChild(m), r) {
-                                        let g = document.createTextNode(r);
-                                        d.appendChild(g), c.replaceChild(d, e), a(g, t)
-                                    } else c.replaceChild(d, e);
-                                    return !0
-                                }
-                                return !1
-                            },
-                            n = t => {
-                                let s = !1;
-                                if (t.classList?.contains("search-highlight-text") || t.classList?.contains("message-time") || t.classList?.contains("message-actions") || t.classList?.contains("reaction-pill")) return !1;
-                                let o = Array.from(t.childNodes);
-                                for (let i of o) i.nodeType === Node.TEXT_NODE ? a(i, e) && (s = !0) : i.nodeType === Node.ELEMENT_NODE && n(i) && (s = !0);
-                                return s
-                            },
-                            i = document.querySelectorAll(".message-item");
-                        i.forEach(e => {
-                            n(e) && (e.classList.add("search-match"), t || (t = e))
-                        }), s.matchCount = document.querySelectorAll(".search-highlight-text").length, t && $(() => {
-                            t.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center"
+                    o = () => {
+                        a.isClosing = !0, n(), a.query = "", a.matchCount = 0, a.currentIndex = -1, e.onClose ? e.onClose() : t("close")
+                    };
+                return onMounted(() => {
+                    s.value?.focus()
+                }), onUnmounted(() => {
+                    n()
+                }), {
+                    ...toRefs(a),
+                    searchInputRef: s,
+                    handleSearchInput(e) {
+                        var t;
+                        a.query = e.target.value, a.currentIndex = -1, a.textDirection = (t = a.query, /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(t) ? "rtl" : "ltr"), (() => {
+                            if (n(), !a.query) return void(a.matchCount = 0);
+                            let e = a.query.toLowerCase(),
+                                t = null,
+                                s = (e, t) => {
+                                    let a = e.textContent,
+                                        n = a.toLowerCase().indexOf(t);
+                                    if (-1 !== n) {
+                                        let o = a.substring(0, n),
+                                            i = a.substring(n, n + t.length),
+                                            l = a.substring(n + t.length),
+                                            r = e.parentNode,
+                                            c = document.createDocumentFragment();
+                                        o && c.appendChild(document.createTextNode(o));
+                                        let d = document.createElement("span");
+                                        if (d.className = "search-highlight-text", d.textContent = i, c.appendChild(d), l) {
+                                            let m = document.createTextNode(l);
+                                            c.appendChild(m), r.replaceChild(c, e), s(m, t)
+                                        } else r.replaceChild(c, e);
+                                        return !0
+                                    }
+                                    return !1
+                                },
+                                o = t => {
+                                    let a = !1;
+                                    if (t.classList?.contains("search-highlight-text") || t.classList?.contains("message-time") || t.classList?.contains("message-actions") || t.classList?.contains("reaction-pill")) return !1;
+                                    let n = Array.from(t.childNodes);
+                                    for (let i of n) i.nodeType === Node.TEXT_NODE ? s(i, e) && (a = !0) : i.nodeType === Node.ELEMENT_NODE && o(i) && (a = !0);
+                                    return a
+                                };
+                            document.querySelectorAll(".message-item").forEach(e => {
+                                o(e) && (e.classList.add("search-match"), t || (t = e))
+                            }), a.matchCount = document.querySelectorAll(".search-highlight-text").length, t && nextTick(() => {
+                                t.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "center"
+                                })
                             })
-                        })
+                        })()
                     },
-                    r = e => {
-                        s.query = e.target.value, s.currentIndex = -1, s.textDirection = n(s.query) ? "rtl" : "ltr", l()
-                    },
-                    c = e => {
-                        if ("Escape" === e.key) i();
-                        else if ("Backspace" === e.key && "" === s.query) i();
+                    handleKeydown(e) {
+                        if ("Escape" === e.key) o();
+                        else if ("Backspace" === e.key && "" === a.query) o();
                         else if ("Enter" === e.key) {
                             e.preventDefault();
                             let t = document.querySelectorAll(".search-highlight-text");
                             if (t.length > 0) {
-                                s.currentIndex = (s.currentIndex + 1) % t.length;
-                                let a = t[s.currentIndex];
-                                a.scrollIntoView({
+                                a.currentIndex = (a.currentIndex + 1) % t.length;
+                                let s = t[a.currentIndex];
+                                s.scrollIntoView({
                                     behavior: "smooth",
                                     block: "center"
-                                }), a.classList.add("search-focus"), setTimeout(() => {
-                                    a.classList.remove("search-focus")
+                                }), s.classList.add("search-focus"), setTimeout(() => {
+                                    s.classList.remove("search-focus")
                                 }, 1e3)
                             }
                         }
                     },
-                    d = e => {
+                    handleBlur(e) {
                         let t = e.currentTarget.closest(".search-bar-minimal");
                         e.relatedTarget, setTimeout(() => {
-                            t?.contains(document.activeElement) || s.isClosing || i()
+                            t?.contains(document.activeElement) || a.isClosing || o()
                         }, 100)
-                    };
-                return V(() => {
-                    a.value?.focus()
-                }), I(() => {
-                    o()
-                }), {
-                    ...D(s),
-                    searchInputRef: a,
-                    handleSearchInput: r,
-                    handleKeydown: c,
-                    handleBlur: d,
-                    closeSearch: i
+                    },
+                    closeSearch: o
                 }
             },
             render: function(e, t) {
@@ -2314,7 +2145,7 @@ let {
                 })], 8, ["onClick"])], 8, ["onClick"])
             }
         }),
-        a = E({
+        s = defineComponent({
             props: ["typingUsers", "showInput"],
             render: function(e, t) {
                 return _openBlock(), _createBlock(_Transition, {
@@ -2346,7 +2177,7 @@ let {
             },
             rafId: null,
             add(e, t = "normal") {
-                "function" != typeof e || (this.queues[t].push(e), this.rafId || (this.rafId = requestAnimationFrame(() => {
+                "function" == typeof e && (this.queues[t].push(e), this.rafId || (this.rafId = requestAnimationFrame(() => {
                     this.flush()
                 })))
             },
@@ -2354,8 +2185,8 @@ let {
                 let e = [...this.queues.high.splice(0), ...this.queues.normal.splice(0), ...this.queues.low.splice(0)];
                 for (let t = 0; t < e.length; t++) try {
                     e[t]()
-                } catch (s) {
-                    console.error("RAF Scheduler error:", s)
+                } catch (a) {
+                    console.error("RAF Scheduler error:", a)
                 }
                 this.rafId = null, (this.queues.high.length > 0 || this.queues.normal.length > 0 || this.queues.low.length > 0) && (this.rafId = requestAnimationFrame(() => {
                     this.flush()
@@ -2383,8 +2214,8 @@ let {
             },
             addUser(e) {
                 let t = 0 === this.users.size,
-                    s = this.users.has(e);
-                this.users.set(e, Date.now() + 5e3), !s && this.updateCallback && this.updateCallback(this.getUserList()), t && this.startTimer()
+                    a = this.users.has(e);
+                this.users.set(e, Date.now() + 5e3), !a && this.updateCallback && this.updateCallback(this.getUserList()), t && this.startTimer()
             },
             removeUser(e) {
                 this.users.delete(e) && this.updateCallback && this.updateCallback(this.getUserList()), 0 === this.users.size && this.stopTimer()
@@ -2392,7 +2223,7 @@ let {
             checkExpired() {
                 let e = Date.now(),
                     t = !1;
-                for (let [s, a] of this.users) e >= a && (this.users.delete(s), t = !0);
+                for (let [a, s] of this.users) e >= s && (this.users.delete(a), t = !0);
                 t && this.updateCallback && this.updateCallback(this.getUserList()), 0 === this.users.size && this.stopTimer()
             },
             getUserList() {
@@ -2428,18 +2259,17 @@ let {
                 let e = this.state.container;
                 if (!e) return;
                 let t = e.scrollHeight,
-                    s = e.scrollTop,
-                    a = e.clientHeight,
+                    a = e.scrollTop,
+                    s = t - e.clientHeight - a,
                     n = this.state.userHasScrolled;
-                this.state.userHasScrolled = t - a - s > this.config.nearBottomThreshold, n && !this.state.userHasScrolled && (this.state.newMessagesWhileScrolled = 0, this.state.onNewMessageCallback && this.state.onNewMessageCallback(0))
+                this.state.userHasScrolled = s > this.config.nearBottomThreshold, n && !this.state.userHasScrolled && (this.state.newMessagesWhileScrolled = 0, this.state.onNewMessageCallback && this.state.onNewMessageCallback(0))
             },
             isNearBottom() {
                 let e = this.state.container;
                 if (!e) return !1;
                 let t = e.scrollHeight,
-                    s = e.scrollTop,
-                    a = e.clientHeight;
-                return t - a - s <= this.config.nearBottomThreshold
+                    a = e.scrollTop;
+                return t - e.clientHeight - a <= this.config.nearBottomThreshold
             },
             scrollToBottom(e = !1) {
                 if (!e && this.state.userHasScrolled || !this.state.container) return;
@@ -2458,28 +2288,28 @@ let {
             setupMutationObserver(e) {
                 this.observer && this.observer.disconnect(), this.observer = new MutationObserver(e => {
                     let t = !1,
-                        s = [];
+                        a = [];
                     e.forEach(e => {
                         e.addedNodes.forEach(e => {
                             if (1 === e.nodeType) {
                                 if (e.classList?.contains("message-item") || e.querySelector?.(".message-item")) {
                                     t = !0;
-                                    let a = e.querySelectorAll("img");
-                                    s.push(...a)
+                                    let s = e.querySelectorAll("img");
+                                    a.push(...s)
                                 }
-                                "IMG" === e.tagName && (s.push(e), t = !0)
+                                "IMG" === e.tagName && (a.push(e), t = !0)
                             }
                         })
                     }), t && (this.isNearBottom() && !this.state.userHasScrolled ? this.state.scrollQueued || (this.state.scrollQueued = !0, n.add(() => {
-                        if (this.state.scrollQueued = !1, this.scrollToBottom(), s.length > 0) {
+                        if (this.state.scrollQueued = !1, this.scrollToBottom(), a.length > 0) {
                             let e = 0,
-                                t = s.length;
-                            s.forEach(s => {
-                                s.complete ? e++ : (s.addEventListener("load", () => {
+                                t = a.length;
+                            a.forEach(a => {
+                                a.complete ? e++ : (a.addEventListener("load", () => {
                                     ++e === t && this.scrollToBottom(!0)
                                 }, {
                                     once: !0
-                                }), s.addEventListener("error", () => {
+                                }), a.addEventListener("error", () => {
                                     ++e === t && this.scrollToBottom(!0)
                                 }, {
                                     once: !0
@@ -2520,17 +2350,17 @@ let {
         l = {
             limits: new Map,
             canRequest(e, t = 1e3) {
-                let s = Date.now(),
-                    a = this.limits.get(e);
-                return (!a || s - a >= t) && (this.limits.set(e, s), !0)
+                let a = Date.now(),
+                    s = this.limits.get(e);
+                return (!s || a - s >= t) && (this.limits.set(e, a), !0)
             },
             getCooldown(e, t = 1e3) {
-                let s = Date.now(),
-                    a = this.limits.get(e);
-                return a ? Math.max(0, t - (s - a)) : 0
+                let a = Date.now(),
+                    s = this.limits.get(e);
+                return s ? Math.max(0, t - (a - s)) : 0
             },
-            throttle(e, t, s = 1e3) {
-                return (...a) => this.canRequest(t, s) ? e(...a) : null
+            throttle(e, t, a = 1e3) {
+                return (...s) => this.canRequest(t, a) ? e(...s) : null
             },
             clear(e) {
                 this.limits.delete(e)
@@ -2562,10 +2392,10 @@ let {
                 if (this.data && this.data.emojis) {
                     for (let [e, t] of(this.nativeToUnified.clear(), this.nameToEmoji.clear(), this.categoryIndex.clear(), Object.entries(this.data.emojis)))
                         if (t.skins?.[0]) {
-                            let s = t.skins[0];
-                            s.native && this.nativeToUnified.set(s.native, s.unified), t.name && this.nameToEmoji.set(t.name.toLowerCase(), t), t._id = e
+                            let a = t.skins[0];
+                            a.native && this.nativeToUnified.set(a.native, a.unified), t.name && this.nameToEmoji.set(t.name.toLowerCase(), t), t._id = e
                         } if (this.data.categories)
-                        for (let a of this.data.categories) a.id && a.emojis && this.categoryIndex.set(a.id, a.emojis)
+                        for (let s of this.data.categories) s.id && s.emojis && this.categoryIndex.set(s.id, s.emojis)
                 }
             },
             getAppleEmojiUrl(e) {
@@ -2573,8 +2403,8 @@ let {
                 if (this.urlCache.has(e)) return this.urlCache.get(e);
                 let t = this.nativeToUnified.get(e);
                 if (t) {
-                    let s = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${t.toLowerCase()}.png`;
-                    return this.urlCache.set(e, s), s
+                    let a = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${t.toLowerCase()}.png`;
+                    return this.urlCache.set(e, a), a
                 }
                 return null
             }
@@ -2595,11 +2425,11 @@ let {
             isNumeric: e => "string" == typeof e && !isNaN(e) && !isNaN(parseFloat(e)),
             playSound: (() => {
                 let e = new Map;
-                return (t, s = !1) => {
+                return (t, a = !1) => {
                     try {
                         if (!t.startsWith("http://") && !t.startsWith("https://") && !t.startsWith("file://")) {
-                            let a = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
-                            t = new URL(t, a).href
+                            let s = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+                            t = new URL(t, s).href
                         }
                         if (!e.has(t)) {
                             if (e.size >= 10) {
@@ -2610,7 +2440,7 @@ let {
                             o.load(), e.set(t, o)
                         }
                         let i = e.get(t);
-                        i.volume = .6, i.loop = s, i.currentTime = 0;
+                        i.volume = .6, i.loop = a, i.currentTime = 0;
                         let l = i.play();
                         void 0 !== l && l.catch(e => {
                             console.error("Audio playback failed:", e), console.error("Attempted URL:", t)
@@ -2621,20 +2451,20 @@ let {
                 }
             })(),
             debounce(e, t) {
-                let s;
-                return (...a) => {
-                    clearTimeout(s), s = setTimeout(() => e(...a), t)
+                let a;
+                return (...s) => {
+                    clearTimeout(a), a = setTimeout(() => e(...s), t)
                 }
             },
             throttle: (e, t) => {
-                let s;
-                return (...a) => {
-                    s || (e.apply(this, a), s = !0, setTimeout(() => s = !1, t))
+                let a;
+                return (...s) => {
+                    a || (e.apply(this, s), a = !0, setTimeout(() => a = !1, t))
                 }
             }
         };
     window.utils = m, window.sharedEmojiData = r;
-    let g = C({
+    let g = createApp({
         components: {
             MessageComponent: t,
             TipTapInput: {
@@ -2645,8 +2475,8 @@ let {
                     emit: t
                 }) {
                     let {
-                        ref: s,
-                        reactive: a,
+                        ref: a,
+                        reactive: s,
                         computed: o,
                         watch: i,
                         onMounted: l,
@@ -2654,7 +2484,7 @@ let {
                         nextTick: c,
                         shallowRef: d,
                         watchEffect: m
-                    } = Vue, g = d(null), p = s(null), u = [], h = !1, f = null, y = "", v = a({
+                    } = Vue, g = d(null), p = a(null), u = [], h = !1, f = null, v = "", y = s({
                         showMentionSuggestions: !1,
                         mentionSuggestions: [],
                         selectedMentionIndex: 0,
@@ -2686,34 +2516,18 @@ let {
                             html: "",
                             json: null
                         }
-                    }), k = e => {
-                        if (!e || "" === e.trim()) return;
-                        let t = U(),
-                            s = g.value ? g.value.getJSON() : null,
-                            a = {
-                                text: e,
-                                html: t,
-                                json: s,
-                                timestamp: Date.now()
-                            },
-                            n = v.messageHistory.findIndex(t => "string" == typeof t && t === e || t.text === e);
-                        n > -1 && v.messageHistory.splice(n, 1), v.messageHistory.push(a), v.messageHistory.length > 20 && (v.messageHistory = v.messageHistory.slice(-20)), v.historyPosition = -1, v.currentDraft = {
-                            text: "",
-                            html: "",
-                            json: null
-                        }
-                    }, C = () => {
-                        if (0 === v.messageHistory.length) return;
-                        if (-1 === v.historyPosition) v.currentDraft = {
-                            text: R(),
-                            html: U(),
+                    }), C = () => {
+                        if (0 === y.messageHistory.length) return;
+                        if (-1 === y.historyPosition) y.currentDraft = {
+                            text: T(),
+                            html: S(),
                             json: g.value ? g.value.getJSON() : null
-                        }, v.historyPosition = 0;
+                        }, y.historyPosition = 0;
                         else {
-                            if (!(v.historyPosition < v.messageHistory.length - 1)) return;
-                            v.historyPosition++
+                            if (!(y.historyPosition < y.messageHistory.length - 1)) return;
+                            y.historyPosition++
                         }
-                        let e = v.messageHistory[v.messageHistory.length - 1 - v.historyPosition];
+                        let e = y.messageHistory[y.messageHistory.length - 1 - y.historyPosition];
                         if (g.value && !g.value.isDestroyed) {
                             if ("object" == typeof e && e.json) g.value.chain().setContent(e.json).focus("start").run();
                             else if ("object" == typeof e && e.html) g.value.chain().setContent(e.html).focus("start").run();
@@ -2722,47 +2536,33 @@ let {
                                 g.value.chain().setContent(t).focus("start").run()
                             }
                         }
-                    }, E = () => {
-                        if (v.historyPosition <= 0) {
-                            if (0 === v.historyPosition && (v.historyPosition = -1, g.value && !g.value.isDestroyed)) {
-                                if ("object" == typeof v.currentDraft && v.currentDraft.json) g.value.chain().setContent(v.currentDraft.json).focus("end").run();
-                                else if ("object" == typeof v.currentDraft && v.currentDraft.html) g.value.chain().setContent(v.currentDraft.html).focus("end").run();
+                    }, k = () => {
+                        if (y.historyPosition <= 0) {
+                            if (0 === y.historyPosition && (y.historyPosition = -1, g.value && !g.value.isDestroyed)) {
+                                if ("object" == typeof y.currentDraft && y.currentDraft.json) g.value.chain().setContent(y.currentDraft.json).focus("end").run();
+                                else if ("object" == typeof y.currentDraft && y.currentDraft.html) g.value.chain().setContent(y.currentDraft.html).focus("end").run();
                                 else {
-                                    let e = "string" == typeof v.currentDraft ? v.currentDraft : v.currentDraft.text || "";
+                                    let e = "string" == typeof y.currentDraft ? y.currentDraft : y.currentDraft.text || "";
                                     g.value.chain().setContent(e).focus("end").run()
                                 }
                             }
                             return
                         }
-                        v.historyPosition--;
-                        let t = 0 === v.historyPosition ? v.messageHistory[v.messageHistory.length - 1] : v.messageHistory[v.messageHistory.length - 1 - v.historyPosition];
+                        y.historyPosition--;
+                        let t = 0 === y.historyPosition ? y.messageHistory[y.messageHistory.length - 1] : y.messageHistory[y.messageHistory.length - 1 - y.historyPosition];
                         if (g.value && !g.value.isDestroyed) {
                             if ("object" == typeof t && t.json) g.value.chain().setContent(t.json).focus("end").run();
                             else if ("object" == typeof t && t.html) g.value.chain().setContent(t.html).focus("end").run();
                             else {
-                                let s = "string" == typeof t ? t : t.text;
-                                g.value.chain().setContent(s).focus("end").run()
+                                let a = "string" == typeof t ? t : t.text;
+                                g.value.chain().setContent(a).focus("end").run()
                             }
                         }
-                    }, $ = async e => {
-                        try {
-                            let t = await e.arrayBuffer(),
-                                s = await crypto.subtle.digest("SHA-256", t),
-                                a = Array.from(new Uint8Array(s));
-                            return a.map(e => e.toString(16).padStart(2, "0")).join("")
-                        } catch (n) {
-                            return `${e.size}_${e.name}_${e.lastModified}`
-                        }
-                    }, N = e => {
-                        v.stickers = [], v.actualText = e, v.displayText = e
-                    }, b = e => {
-                        let s = `:${e}:`;
-                        v.actualText = v.actualText.replace(s, "").trim(), N(v.actualText), t("update:modelValue", v.actualText)
-                    }, V = e => window.sharedEmojiData?.getAppleEmojiUrl(e);
+                    }, E = e => window.sharedEmojiData?.getAppleEmojiUrl(e);
                     m(() => {
                         e.lastFiveMessages && window.MentionService && window.MentionService.updateKnownUsers(e.lastFiveMessages)
                     });
-                    let I = () => e.messageFont && "default" !== e.messageFont ? ({
+                    let $ = () => e.messageFont && "default" !== e.messageFont ? ({
                             cairo: "Cairo",
                             amiri: "Amiri",
                             almarai: "Almarai",
@@ -2774,70 +2574,62 @@ let {
                             aref: "Aref Ruqaa",
                             reem: "Reem Kufi"
                         })[e.messageFont] || "Tajawal" : "Tajawal, sans-serif",
-                        _ = e => {
+                        b = e => {
                             let t = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/,
-                                s = /[A-Za-z]/,
-                                a = e.replace(/<[^>]*>/g, "").replace(/:[^:]+:/g, "").trim(),
+                                a = /[A-Za-z]/,
+                                s = e.replace(/<[^>]*>/g, "").replace(/:[^:]+:/g, "").trim(),
                                 n = 0,
                                 o = 0;
-                            for (let i of a) t.test(i) ? n++ : s.test(i) && o++;
+                            for (let i of s) t.test(i) ? n++ : a.test(i) && o++;
                             let l = "ltr";
-                            if (a.length > 0) {
-                                for (let r of a) {
+                            if (s.length > 0) {
+                                for (let r of s) {
                                     if (t.test(r)) {
                                         l = "rtl";
                                         break
                                     }
-                                    if (s.test(r)) {
+                                    if (a.test(r)) {
                                         l = "ltr";
                                         break
                                     }
                                 }
                                 n > 0 && o > 0 && (l = n >= o ? "rtl" : "ltr")
                             }
-                            if (v.textDirection !== l && (v.textDirection = l, p.value)) {
+                            if (y.textDirection !== l && (y.textDirection = l, p.value)) {
                                 let c = p.value.querySelector(".ProseMirror");
                                 c && (c.setAttribute("data-dir", l), c.style.direction = l, c.style.textAlign = "rtl" === l ? "right" : "left")
                             }
                         },
-                        M = () => {
+                        N = () => {
                             if (h || 0 === u.length) return;
                             h = !0;
                             let e = u.shift();
                             try {
-                                g.value && !g.value.isDestroyed && v.editorReady && e()
+                                g.value && !g.value.isDestroyed && y.editorReady && e()
                             } catch (t) {
                                 console.error("Error processing update:", t)
                             } finally {
-                                h = !1, u.length > 0 && n.add(M, "normal")
+                                h = !1, u.length > 0 && n.add(N, "normal")
                             }
                         },
-                        w = e => {
-                            u.push(e), n.add(M, "normal")
+                        V = e => {
+                            u.push(e), n.add(N, "normal")
                         },
-                        T = e => {
-                            clearTimeout(f), f = setTimeout(() => {
-                                e !== y && (y = e, t("update:modelValue", e))
-                            }, 10)
-                        },
-                        S = async () => {
+                        I = async () => {
                             if (g.value) {
                                 try {
                                     g.value.destroy()
-                                } catch (s) {
-                                    console.error("Error cleaning up editor:", s)
+                                } catch (a) {
+                                    console.error("Error cleaning up editor:", a)
                                 }
                                 g.value = null
                             }
-                            v.isDestroyed = !1, v.editorReady = !1, u = [];
-                            let a = 0,
+                            y.isDestroyed = !1, y.editorReady = !1, u = [];
+                            let s = 0,
                                 o = async () => {
-                                    if (a++, !window.TipTap || !window.TipTap.Editor) {
-                                        a < 20 ? setTimeout(o, 300) : console.error("Failed to load TipTap after maximum attempts");
-                                        return
-                                    }
+                                    if (s++, !window.TipTap || !window.TipTap.Editor) return void(s < 20 ? setTimeout(o, 300) : console.error("Failed to load TipTap after maximum attempts"));
                                     let {
-                                        Editor: s,
+                                        Editor: a,
                                         StarterKit: i,
                                         Mention: l,
                                         Placeholder: r,
@@ -2845,13 +2637,13 @@ let {
                                         Link: m,
                                         Underline: u,
                                         Strike: h,
-                                        Code: f,
-                                        BubbleMenu: k,
-                                        Image: N
+                                        Code: E,
+                                        BubbleMenu: N,
+                                        Image: I
                                     } = window.TipTap;
                                     try {
-                                        let b = [];
-                                        i && b.push(i.configure({
+                                        let _ = [];
+                                        i && _.push(i.configure({
                                             heading: !1,
                                             blockquote: !1,
                                             horizontalRule: !1,
@@ -2864,32 +2656,32 @@ let {
                                                 depth: 100,
                                                 newGroupDelay: 500
                                             }
-                                        })), u && b.push(u), h && b.push(h), f && b.push(f.configure({
+                                        })), u && _.push(u), h && _.push(h), E && _.push(E.configure({
                                             HTMLAttributes: {
                                                 class: "inline-code"
                                             }
-                                        })), N && b.push(N.configure({
+                                        })), I && _.push(I.configure({
                                             inline: !0,
                                             allowBase64: !0,
                                             HTMLAttributes: {
                                                 class: "tiptap-emoji-img"
                                             }
                                         }));
-                                        let V = (() => {
+                                        let w = (() => {
                                             let {
                                                 Extension: t,
-                                                InputRule: s
+                                                InputRule: a
                                             } = window.TipTap;
-                                            return t && s ? t.create({
+                                            return t && a ? t.create({
                                                 name: "emojiShortcode",
-                                                addInputRules: () => [new s({
+                                                addInputRules: () => [new a({
                                                     find: /:(\d+):\s?$/,
                                                     handler({
                                                         state: t,
-                                                        range: s,
-                                                        match: a
+                                                        range: a,
+                                                        match: s
                                                     }) {
-                                                        let n = parseInt(a[1], 10),
+                                                        let n = parseInt(s[1], 10),
                                                             o = e.emojis?.[n];
                                                         if (!o) return null;
                                                         let i = o;
@@ -2897,7 +2689,7 @@ let {
                                                         let {
                                                             tr: l
                                                         } = t;
-                                                        l.delete(s.from, s.to);
+                                                        l.delete(a.from, a.to);
                                                         let r = t.schema.nodes.image.create({
                                                             src: i,
                                                             alt: `:${n}:`,
@@ -2906,39 +2698,39 @@ let {
                                                             "data-emoji": `:${n}:`,
                                                             style: "width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;"
                                                         });
-                                                        return l.insert(s.from, r), l.insertText(" ", s.from + 1), l
+                                                        return l.insert(a.from, r), l.insertText(" ", a.from + 1), l
                                                     }
                                                 })],
                                                 addProseMirrorPlugins() {
                                                     let {
                                                         Plugin: t,
-                                                        PluginKey: s
+                                                        PluginKey: a
                                                     } = window.TipTap.PM;
-                                                    return t && s ? [new t({
-                                                        key: new s("emojiShortcode"),
+                                                    return t && a ? [new t({
+                                                        key: new a("emojiShortcode"),
                                                         props: {
-                                                            handleTextInput(t, s, a, n) {
+                                                            handleTextInput(t, a, s, n) {
                                                                 if (":" === n) {
                                                                     let {
                                                                         state: o
-                                                                    } = t, i = o.doc.resolve(s), l = i.parent.textContent.slice(0, i.parentOffset), r = l.match(/:(\d+)$/);
-                                                                    if (r) {
-                                                                        let c = parseInt(r[1], 10),
-                                                                            d = e.emojis?.[c];
-                                                                        if (d) {
-                                                                            let m = d;
-                                                                            d.startsWith("http") || d.startsWith("//") || (m = `../../emojis/${d}`);
-                                                                            let g = o.tr;
-                                                                            g.delete(s - r[0].length, a + 1);
-                                                                            let p = o.schema.nodes.image.create({
-                                                                                src: m,
-                                                                                alt: `:${c}:`,
-                                                                                title: `Emoji ${c}`,
+                                                                    } = t, i = o.doc.resolve(a), l = i.parent.textContent.slice(0, i.parentOffset).match(/:(\d+)$/);
+                                                                    if (l) {
+                                                                        let r = parseInt(l[1], 10),
+                                                                            c = e.emojis?.[r];
+                                                                        if (c) {
+                                                                            let d = c;
+                                                                            c.startsWith("http") || c.startsWith("//") || (d = `../../emojis/${c}`);
+                                                                            let m = o.tr;
+                                                                            m.delete(a - l[0].length, s + 1);
+                                                                            let g = o.schema.nodes.image.create({
+                                                                                src: d,
+                                                                                alt: `:${r}:`,
+                                                                                title: `Emoji ${r}`,
                                                                                 class: "custom-emoji",
-                                                                                "data-emoji": `:${c}:`,
+                                                                                "data-emoji": `:${r}:`,
                                                                                 style: "width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;"
                                                                             });
-                                                                            return g.insert(s - r[0].length, p), g.insertText(" "), t.dispatch(g), !0
+                                                                            return m.insert(a - l[0].length, g), m.insertText(" "), t.dispatch(m), !0
                                                                         }
                                                                     }
                                                                 }
@@ -2949,8 +2741,8 @@ let {
                                                 }
                                             }) : null
                                         })();
-                                        V && b.push(V);
-                                        let M = (() => {
+                                        w && _.push(w);
+                                        let S = (() => {
                                             let {
                                                 Mark: e
                                             } = window.TipTap;
@@ -2961,7 +2753,7 @@ let {
                                                 spanning: !1,
                                                 parseHTML: () => [{
                                                     tag: "span[data-spoiler]"
-                                                }, ],
+                                                }],
                                                 renderHTML: ({
                                                     HTMLAttributes: e
                                                 }) => ["span", {
@@ -2989,7 +2781,7 @@ let {
                                                 }
                                             }) : null
                                         })();
-                                        if (M && b.push(M), k && b.push(k.configure({
+                                        if (S && _.push(S), N && _.push(N.configure({
                                                 element: null,
                                                 tippyOptions: {
                                                     duration: 100,
@@ -2998,41 +2790,41 @@ let {
                                                 shouldShow: ({
                                                     editor: e,
                                                     view: t,
-                                                    state: s,
-                                                    oldState: a,
+                                                    state: a,
+                                                    oldState: s,
                                                     from: n,
                                                     to: o
                                                 }) => n !== o
-                                            })), m && b.push(m.configure({
+                                            })), m && _.push(m.configure({
                                                 openOnClick: !1,
                                                 autolink: !0
-                                            })), r && b.push(r.configure({
+                                            })), r && _.push(r.configure({
                                                 placeholder: e.placeholder || "اكتب رسالتك هنا..."
-                                            })), d && b.push(d.configure({
+                                            })), d && _.push(d.configure({
                                                 limit: 500
                                             })), l) {
-                                            let S = l.extend({
+                                            let x = l.extend({
                                                 addInputRules: () => []
                                             });
-                                            b.push(S.configure({
+                                            _.push(x.configure({
                                                 HTMLAttributes: {
                                                     class: "input-mention"
                                                 },
                                                 renderHTML({
                                                     node: t,
-                                                    HTMLAttributes: s
+                                                    HTMLAttributes: a
                                                 }) {
-                                                    let a = t.attrs.id || t.attrs.label,
-                                                        n = window.MentionService?.isValidMention(a) || {
+                                                    let s = t.attrs.id || t.attrs.label,
+                                                        n = window.MentionService?.isValidMention(s) || {
                                                             valid: !1
                                                         },
                                                         o = e.userId || null;
                                                     return ["span", {
-                                                        ...s,
+                                                        ...a,
                                                         "data-mention-valid": n.valid,
                                                         "data-mention-type": n.type || "unknown",
-                                                        "data-mention-id": a,
-                                                        class: window.MentionService?.getMentionClass(a, o) || "mention",
+                                                        "data-mention-id": s,
+                                                        class: window.MentionService?.getMentionClass(s, o) || "mention",
                                                         contenteditable: "false"
                                                     }, `@${t.attrs.label||t.attrs.id}`]
                                                 },
@@ -3043,38 +2835,38 @@ let {
                                                     command({
                                                         editor: e,
                                                         range: t,
-                                                        props: s
+                                                        props: a
                                                     }) {
-                                                        s.label, s.id, e.chain().focus().deleteRange(t).insertContent({
+                                                        a.label || a.id, e.chain().focus().deleteRange(t).insertContent({
                                                             type: "mention",
                                                             attrs: {
-                                                                id: s.id,
-                                                                label: s.label || s.id
+                                                                id: a.id,
+                                                                label: a.label || a.id
                                                             }
                                                         }).insertContent(" ").run()
                                                     },
                                                     items({
                                                         query: t
                                                     }) {
-                                                        let s = [];
-                                                        if (/^(everyone|here|-?\d+)$/.test(t) && s.push({
+                                                        let a = [];
+                                                        if (/^(everyone|here|-?\d+)$/.test(t) && a.push({
                                                                 id: t,
                                                                 label: t,
                                                                 type: "everyone" === t || "here" === t ? "special" : "user",
                                                                 isDirectInput: !0
-                                                            }), ("" === t || "everyone".includes(t.toLowerCase())) && !s.find(e => "everyone" === e.id) && e.permissions.MentionEveryone && s.push({
+                                                            }), ("" === t || "everyone".includes(t.toLowerCase())) && (a.find(e => "everyone" === e.id) || e.permissions.MentionEveryone && a.push({
                                                                 id: "everyone",
                                                                 label: "everyone",
                                                                 type: "special",
                                                                 icon: "\uD83D\uDC65"
-                                                            }), window.MentionService?.knownUsers)
-                                                            for (let [a, n] of window.MentionService.knownUsers) {
-                                                                if (a === String(e.userId)) continue;
+                                                            })), window.MentionService?.knownUsers)
+                                                            for (let [s, n] of window.MentionService.knownUsers) {
+                                                                if (s === String(e.userId)) continue;
                                                                 let o = t.replace(/^-/, ""),
-                                                                    i = a.replace(/^-/, "");
-                                                                if (n.name?.toLowerCase().includes(o.toLowerCase()) || i.includes(o) || a.includes(t)) {
-                                                                    let l = a;
-                                                                    t.startsWith("-") && !a.startsWith("-") && (l = "-" + i), s.push({
+                                                                    i = s.replace(/^-/, "");
+                                                                if (n.name?.toLowerCase().includes(o.toLowerCase()) || i.includes(o) || s.includes(t)) {
+                                                                    let l = s;
+                                                                    t.startsWith("-") && !s.startsWith("-") && (l = "-" + i), a.push({
                                                                         id: l,
                                                                         label: n.name || `User ${l}`,
                                                                         type: "user",
@@ -3087,17 +2879,17 @@ let {
                                                             let r = new Set,
                                                                 c = String(e.userId || "");
                                                             e.lastFiveMessages.forEach(e => {
-                                                                let a = null,
+                                                                let s = null,
                                                                     n = null;
                                                                 if (e.gId && "string" == typeof e.gId) {
                                                                     let o = e.gId.split("_");
-                                                                    o.length >= 2 && /^\d+$/.test(o[1]) && (a = o[1], n = o[3] || e.author || e.name)
-                                                                } else e.userId && (a = e.userId.toString(), n = e.author || e.name || `User ${a}`);
-                                                                if (!a || !n || a === c || String(a) === c || e.userId && String(e.userId) === c) return;
+                                                                    o.length >= 2 && /^\d+$/.test(o[1]) && (s = o[1], n = o[3] || e.author || e.name)
+                                                                } else e.userId && (s = e.userId.toString(), n = e.author || e.name || `User ${s}`);
+                                                                if (!s || !n || s === c || String(s) === c || e.userId && String(e.userId) === c) return;
                                                                 let i = t.replace(/^-/, "");
-                                                                if (!r.has(a) && !s.find(e => e.id === a) && (!t || n.toLowerCase().includes(i.toLowerCase()) || a.includes(i))) {
-                                                                    let l = a;
-                                                                    t.startsWith("-") && !a.startsWith("-") && (l = "-" + a), r.add(a), s.push({
+                                                                if (!r.has(s) && !a.find(e => e.id === s) && (!t || n.toLowerCase().includes(i.toLowerCase()) || s.includes(i))) {
+                                                                    let l = s;
+                                                                    t.startsWith("-") && !s.startsWith("-") && (l = "-" + s), r.add(s), a.push({
                                                                         id: l,
                                                                         label: n,
                                                                         type: "user",
@@ -3107,51 +2899,51 @@ let {
                                                                 }
                                                             })
                                                         }
-                                                        return v.mentionSuggestions = s, v.showMentionSuggestions = s.length > 0, s
+                                                        return y.mentionSuggestions = a, y.showMentionSuggestions = a.length > 0, a
                                                     },
                                                     render() {
                                                         let e = {};
                                                         return {
                                                             onStart(t) {
-                                                                e = t, x = t.command, v.mentionQuery = t.query, v.selectedMentionIndex = 0
+                                                                e = t, M = t.command, y.mentionQuery = t.query, y.selectedMentionIndex = 0
                                                             },
                                                             onUpdate(t) {
-                                                                e = t, x = t.command, v.mentionQuery = t.query
+                                                                e = t, M = t.command, y.mentionQuery = t.query
                                                             },
                                                             onKeyDown(t) {
-                                                                if ("Escape" === t.event.key) return v.showMentionSuggestions = !1, !0;
+                                                                if ("Escape" === t.event.key) return y.showMentionSuggestions = !1, !0;
                                                                 if (" " === t.event.key) {
-                                                                    if (/^(everyone|here|-?\d+)$/.test(v.mentionQuery)) {
-                                                                        let s = {
-                                                                            id: v.mentionQuery,
-                                                                            label: v.mentionQuery
+                                                                    if (/^(everyone|here|-?\d+)$/.test(y.mentionQuery)) {
+                                                                        let a = {
+                                                                            id: y.mentionQuery,
+                                                                            label: y.mentionQuery
                                                                         };
-                                                                        if (e.command) return t.event.preventDefault(), t.event.stopPropagation(), e.command(s), !0
+                                                                        if (e.command) return t.event.preventDefault(), t.event.stopPropagation(), e.command(a), !0
                                                                     }
-                                                                    return v.showMentionSuggestions = !1, !1
+                                                                    return y.showMentionSuggestions = !1, !1
                                                                 }
-                                                                if (!v.showMentionSuggestions) return !1;
-                                                                if ("Escape" === t.event.key) return t.event.preventDefault(), v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0, !0;
-                                                                if ("ArrowUp" === t.event.key) return t.event.preventDefault(), v.selectedMentionIndex = Math.max(0, v.selectedMentionIndex - 1), !0;
-                                                                if ("ArrowDown" === t.event.key) return t.event.preventDefault(), v.selectedMentionIndex = Math.min(v.mentionSuggestions.length - 1, v.selectedMentionIndex + 1), !0;
+                                                                if (!y.showMentionSuggestions) return !1;
+                                                                if ("Escape" === t.event.key) return t.event.preventDefault(), y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0, !0;
+                                                                if ("ArrowUp" === t.event.key) return t.event.preventDefault(), y.selectedMentionIndex = Math.max(0, y.selectedMentionIndex - 1), !0;
+                                                                if ("ArrowDown" === t.event.key) return t.event.preventDefault(), y.selectedMentionIndex = Math.min(y.mentionSuggestions.length - 1, y.selectedMentionIndex + 1), !0;
                                                                 if ("Enter" === t.event.key || "Tab" === t.event.key) {
                                                                     t.event.preventDefault(), t.event.stopPropagation();
-                                                                    let a = v.mentionSuggestions[v.selectedMentionIndex];
-                                                                    return a && e.command && (e.command(a), v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0), !0
+                                                                    let s = y.mentionSuggestions[y.selectedMentionIndex];
+                                                                    return s && e.command && (e.command(s), y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0), !0
                                                                 }
                                                                 return !1
                                                             },
                                                             onExit() {
-                                                                v.showMentionSuggestions = !1
+                                                                y.showMentionSuggestions = !1
                                                             }
                                                         }
                                                     }
                                                 }
                                             }))
                                         }
-                                        let D = new s({
+                                        let P = new a({
                                             element: p.value,
-                                            extensions: b,
+                                            extensions: _,
                                             content: e.modelValue || "",
                                             autofocus: !1,
                                             editable: !e.disabled,
@@ -3163,12 +2955,12 @@ let {
                                                 attributes: {
                                                     class: "tiptap-editor",
                                                     spellcheck: "false",
-                                                    "data-dir": v.textDirection,
-                                                    style: `font-family: ${I()}`
+                                                    "data-dir": y.textDirection,
+                                                    style: `font-family: ${$()}`
                                                 },
                                                 handleDOMEvents: {
-                                                    async paste(s, a) {
-                                                        let n = a.clipboardData || window.clipboardData;
+                                                    async paste(a, s) {
+                                                        let n = s.clipboardData || window.clipboardData;
                                                         if (n && e.permissions.ImagesAndLinks?.[0]) {
                                                             let o = n.items,
                                                                 i = null;
@@ -3177,7 +2969,7 @@ let {
                                                                     i = o[l];
                                                                     break
                                                                 } if (i) {
-                                                                a.preventDefault(), a.stopPropagation();
+                                                                s.preventDefault(), s.stopPropagation();
                                                                 let r = i.getAsFile();
                                                                 if (r) {
                                                                     if (!r.name || "image.png" === r.name) {
@@ -3187,9 +2979,17 @@ let {
                                                                             type: r.type
                                                                         })
                                                                     }
-                                                                    let m = await $(r);
-                                                                    if (v.imageHashes.has(m)) return;
-                                                                    v.isUploadingImage = !0, t("imageUpload", {
+                                                                    let m = await (async e => {
+                                                                        try {
+                                                                            let t = await e.arrayBuffer(),
+                                                                                a = await crypto.subtle.digest("SHA-256", t);
+                                                                            return Array.from(new Uint8Array(a)).map(e => e.toString(16).padStart(2, "0")).join("")
+                                                                        } catch (s) {
+                                                                            return `${e.size}_${e.name}_${e.lastModified}`
+                                                                        }
+                                                                    })(r);
+                                                                    if (y.imageHashes.has(m)) return;
+                                                                    y.isUploadingImage = !0, t("imageUpload", {
                                                                         status: "start"
                                                                     });
                                                                     try {
@@ -3210,52 +3010,50 @@ let {
                                                                             f;
                                                                         try {
                                                                             f = await p.text()
-                                                                        } catch (y) {
-                                                                            throw console.error("Could not read response body:", y), Error("Failed to read server response")
+                                                                        } catch (v) {
+                                                                            throw console.error("Could not read response body:", v), Error("Failed to read server response")
                                                                         }
                                                                         if (p.ok) {
-                                                                            let k;
-                                                                            if (h && h.includes("application/json")) try {
-                                                                                k = JSON.parse(f)
-                                                                            } catch (C) {
-                                                                                throw console.error("Failed to parse JSON:", C), console.error("Response was:", f), Error("Server returned invalid JSON. Check console for details.")
-                                                                            } else {
-                                                                                if (console.error("Non-JSON response from server. Content-Type:", h), console.error("Response body:", f), f.includes("<!DOCTYPE") || f.includes("<html")) throw Error("Server returned HTML instead of JSON. The upload.php file may not be installed or configured correctly.");
-                                                                                throw Error("Server returned non-JSON response. Check console for server output.")
+                                                                            let C;
+                                                                            if (!h || !h.includes("application/json")) throw console.error("Non-JSON response from server. Content-Type:", h), console.error("Response body:", f), f.includes("<!DOCTYPE") || f.includes("<html") ? Error("Server returned HTML instead of JSON. The upload.php file may not be installed or configured correctly.") : Error("Server returned non-JSON response. Check console for server output.");
+                                                                            try {
+                                                                                C = JSON.parse(f)
+                                                                            } catch (k) {
+                                                                                throw console.error("Failed to parse JSON:", k), console.error("Response was:", f), Error("Server returned invalid JSON. Check console for details.")
                                                                             }
-                                                                            if (k.success && k.url) {
+                                                                            if (C.success && C.url) {
                                                                                 let E = {
-                                                                                    url: k.url,
+                                                                                    url: C.url,
                                                                                     name: r.name,
                                                                                     type: r.type,
                                                                                     size: r.size,
                                                                                     hash: m
                                                                                 };
-                                                                                v.uploadedImages.push(E), v.imageHashes.add(m), t("imageUploaded", v.uploadedImages), v.isUploadingImage = !1, t("imageUpload", {
+                                                                                y.uploadedImages.push(E), y.imageHashes.add(m), t("imageUploaded", y.uploadedImages), y.isUploadingImage = !1, t("imageUpload", {
                                                                                     status: "complete",
-                                                                                    url: k.url
+                                                                                    url: C.url
                                                                                 })
-                                                                            } else v.isUploadingImage = !1, t("imageUpload", {
+                                                                            } else y.isUploadingImage = !1, t("imageUpload", {
                                                                                 status: "error",
-                                                                                error: k.error || "Unknown error"
-                                                                            }), console.error("Upload failed:", k.error || "Unknown error")
+                                                                                error: C.error || "Unknown error"
+                                                                            }), console.error("Upload failed:", C.error || "Unknown error")
                                                                         } else {
-                                                                            v.isUploadingImage = !1;
-                                                                            let N = `HTTP ${p.status}`;
+                                                                            y.isUploadingImage = !1;
+                                                                            let $ = `HTTP ${p.status}`;
                                                                             if (t("imageUpload", {
                                                                                     status: "error",
-                                                                                    error: N
-                                                                                }), console.error("Upload failed with status:", p.status), console.error("Response body was:", f), f.includes("<!DOCTYPE") || f.includes("<html")) N = "Server returned HTML. Upload endpoint may not exist or PHP has errors. Check console.";
+                                                                                    error: $
+                                                                                }), console.error("Upload failed with status:", p.status), console.error("Response body was:", f), f.includes("<!DOCTYPE") || f.includes("<html")) $ = "Server returned HTML. Upload endpoint may not exist or PHP has errors. Check console.";
                                                                             else if (h && h.includes("application/json")) try {
                                                                                 let b = JSON.parse(f);
-                                                                                b.error && (N = b.error)
-                                                                            } catch (V) {}
+                                                                                b.error && ($ = b.error)
+                                                                            } catch (N) {}
                                                                         }
-                                                                    } catch (I) {
-                                                                        v.isUploadingImage = !1, t("imageUpload", {
+                                                                    } catch (V) {
+                                                                        y.isUploadingImage = !1, t("imageUpload", {
                                                                             status: "error",
-                                                                            error: I.message
-                                                                        }), console.error("Upload error:", I)
+                                                                            error: V.message
+                                                                        }), console.error("Upload error:", V)
                                                                     }
                                                                 }
                                                                 return !0
@@ -3263,67 +3061,67 @@ let {
                                                         }
                                                         return !1
                                                     },
-                                                    keydown(e, s) {
+                                                    keydown(e, a) {
                                                         if (debugLog("INPUT_KEYDOWN", "Key pressed", {
-                                                                key: s.key,
-                                                                shiftKey: s.shiftKey,
-                                                                ctrlKey: s.ctrlKey,
-                                                                altKey: s.altKey,
-                                                                showMentions: v.showMentionSuggestions,
+                                                                key: a.key,
+                                                                shiftKey: a.shiftKey,
+                                                                ctrlKey: a.ctrlKey,
+                                                                altKey: a.altKey,
+                                                                showMentions: y.showMentionSuggestions,
                                                                 editorDestroyed: !g.value || g.value.isDestroyed,
                                                                 viewDestroyed: !e,
                                                                 isFocused: document.activeElement === e.dom
-                                                            }), "ArrowUp" === s.key && !v.showMentionSuggestions) {
+                                                            }), "ArrowUp" === a.key && !y.showMentionSuggestions) {
                                                             let {
-                                                                from: a,
+                                                                from: s,
                                                                 to: n
                                                             } = e.state.selection, o = e.state.doc.textContent;
-                                                            if (0 === a && 0 === n || "" === o || v.historyPosition >= 0) return s.preventDefault(), s.stopPropagation(), C(), !0
+                                                            if (0 === s && 0 === n || "" === o || y.historyPosition >= 0) return a.preventDefault(), a.stopPropagation(), C(), !0
                                                         }
-                                                        if ("ArrowDown" === s.key && !v.showMentionSuggestions) {
+                                                        if ("ArrowDown" === a.key && !y.showMentionSuggestions) {
                                                             let {
                                                                 from: i,
                                                                 to: l
                                                             } = e.state.selection, r = e.state.doc.content.size, c = e.state.doc.textContent;
-                                                            if (i >= r - 1 && l >= r - 1 || "" === c || v.historyPosition >= 0) return s.preventDefault(), s.stopPropagation(), E(), !0
+                                                            if (i >= r - 1 && l >= r - 1 || "" === c || y.historyPosition >= 0) return a.preventDefault(), a.stopPropagation(), k(), !0
                                                         }
-                                                        if (v.showMentionSuggestions) {
-                                                            if ("Enter" === s.key || "Tab" === s.key) return !1;
-                                                            if ("Escape" === s.key) return v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0, !0
+                                                        if (y.showMentionSuggestions) {
+                                                            if ("Enter" === a.key || "Tab" === a.key) return !1;
+                                                            if ("Escape" === a.key) return y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0, !0
                                                         }
-                                                        if ("Enter" === s.key && !s.shiftKey && !v.showMentionSuggestions) return debugLog("INPUT_ENTER", "Enter key pressed in input", {
-                                                            shiftKey: s.shiftKey,
-                                                            showMentions: v.showMentionSuggestions,
-                                                            contentLength: R ? R().length : 0,
-                                                            historyPosition: v.historyPosition
-                                                        }), s.preventDefault(), s.stopPropagation(), t("enter"), debugLog("INPUT_ENTER_EMIT", "Enter event emitted"), !0;
-                                                        if (s.ctrlKey || s.metaKey) {
+                                                        if ("Enter" === a.key && !a.shiftKey && !y.showMentionSuggestions) return debugLog("INPUT_ENTER", "Enter key pressed in input", {
+                                                            shiftKey: a.shiftKey,
+                                                            showMentions: y.showMentionSuggestions,
+                                                            contentLength: T ? T().length : 0,
+                                                            historyPosition: y.historyPosition
+                                                        }), a.preventDefault(), a.stopPropagation(), t("enter"), debugLog("INPUT_ENTER_EMIT", "Enter event emitted"), !0;
+                                                        if (a.ctrlKey || a.metaKey) {
                                                             let d = g.value;
                                                             if (!d || d.isDestroyed) return !1;
-                                                            switch (s.key.toLowerCase()) {
+                                                            switch (a.key.toLowerCase()) {
                                                                 case "b":
-                                                                    return s.preventDefault(), w(() => {
+                                                                    return a.preventDefault(), V(() => {
                                                                         d.chain().focus().toggleBold().run()
                                                                     }), !0;
                                                                 case "i":
-                                                                    return s.preventDefault(), w(() => {
+                                                                    return a.preventDefault(), V(() => {
                                                                         d.chain().focus().toggleItalic().run()
                                                                     }), !0;
                                                                 case "u":
-                                                                    return s.preventDefault(), w(() => {
+                                                                    return a.preventDefault(), V(() => {
                                                                         d.chain().focus().toggleUnderline().run()
                                                                     }), !0;
                                                                 case "s":
-                                                                    if (s.shiftKey) return s.preventDefault(), w(() => {
+                                                                    if (a.shiftKey) return a.preventDefault(), V(() => {
                                                                         d.chain().focus().toggleStrike().run()
                                                                     }), !0;
                                                                     break;
                                                                 case "e":
-                                                                    return s.preventDefault(), w(() => {
+                                                                    return a.preventDefault(), V(() => {
                                                                         d.chain().focus().toggleCode().run()
                                                                     }), !0;
                                                                 case "h":
-                                                                    if (s.shiftKey) return s.preventDefault(), w(() => {
+                                                                    if (a.shiftKey) return a.preventDefault(), V(() => {
                                                                         d.commands.toggleSpoiler && d.chain().focus().toggleSpoiler().run()
                                                                     }), !0
                                                             }
@@ -3334,37 +3132,39 @@ let {
                                             },
                                             onUpdate({
                                                 editor: e,
-                                                transaction: s
+                                                transaction: a
                                             }) {
-                                                if (v.isDestroyed || !v.editorReady || !s.docChanged || s.getMeta("preventUpdate")) return; - 1 === v.historyPosition || s.getMeta("fromHistory") || (v.historyPosition = -1, v.currentDraft = {
+                                                var s;
+                                                if (y.isDestroyed || !y.editorReady || !a.docChanged || a.getMeta("preventUpdate")) return; - 1 === y.historyPosition || a.getMeta("fromHistory") || (y.historyPosition = -1, y.currentDraft = {
                                                     text: "",
                                                     html: "",
                                                     json: null
                                                 });
                                                 let {
-                                                    $from: a
-                                                } = e.state.selection, n = a.marks(), o = n.some(e => "spoiler" === e.type.name);
-                                                if (o && s.docChanged) {
-                                                    let i = a.nodeAfter,
-                                                        l = a.nodeBefore,
-                                                        r = l ? l.text?.slice(-1) : "";
-                                                    (" " === r || i && i.text?.startsWith(" ")) && setTimeout(() => {
+                                                    $from: n
+                                                } = e.state.selection;
+                                                if (n.marks().some(e => "spoiler" === e.type.name) && a.docChanged) {
+                                                    let o = n.nodeAfter,
+                                                        i = n.nodeBefore;
+                                                    (" " === (i ? i.text?.slice(-1) : "") || o && o.text?.startsWith(" ")) && setTimeout(() => {
                                                         e && !e.isDestroyed && e.commands.unsetMark("spoiler")
                                                     }, 0)
                                                 }
-                                                let c = R();
-                                                _(c), T(c);
-                                                let d = Date.now();
-                                                d - v.lastTypingEmit > 1e3 && (v.lastTypingEmit = d, t("typing"))
+                                                let l = T();
+                                                b(l), s = l, clearTimeout(f), f = setTimeout(() => {
+                                                    s !== v && (v = s, t("update:modelValue", s))
+                                                }, 10);
+                                                let r = Date.now();
+                                                r - y.lastTypingEmit > 1e3 && (y.lastTypingEmit = r, t("typing"))
                                             },
                                             onSelectionUpdate({
                                                 editor: e
                                             }) {
                                                 let {
                                                     from: t,
-                                                    to: s
-                                                } = e.state.selection, a = t !== s;
-                                                v.showBubbleMenu = a, a && (v.activeFormats.bold = e.isActive("bold"), v.activeFormats.italic = e.isActive("italic"), v.activeFormats.underline = e.isActive("underline"), v.activeFormats.strike = e.isActive("strike"), v.activeFormats.code = e.isActive("code"), v.activeFormats.spoiler = e.isActive("spoiler"))
+                                                    to: a
+                                                } = e.state.selection, s = t !== a;
+                                                y.showBubbleMenu = s, s && (y.activeFormats.bold = e.isActive("bold"), y.activeFormats.italic = e.isActive("italic"), y.activeFormats.underline = e.isActive("underline"), y.activeFormats.strike = e.isActive("strike"), y.activeFormats.code = e.isActive("code"), y.activeFormats.spoiler = e.isActive("spoiler"))
                                             },
                                             onCreate({
                                                 editor: t
@@ -3374,92 +3174,53 @@ let {
                                                     isInitialized: !0,
                                                     hasElement: !!p.value,
                                                     hasDom: !!t.view.dom
-                                                }), v.editorReady = !0, v.isInitialized = !0, g.value = t, t.on("transaction", ({
+                                                }), y.editorReady = !0, y.isInitialized = !0, g.value = t, t.on("transaction", ({
                                                     transaction: e
                                                 }) => {
                                                     if (!e.docChanged) return;
-                                                    let s = !1,
-                                                        a = [];
+                                                    let a = !1,
+                                                        s = [];
                                                     t.state.doc.descendants((e, n) => {
                                                         if ("mention" === e.type.name) {
                                                             let o = n + e.nodeSize;
                                                             if (o < t.state.doc.content.size) {
-                                                                let i = t.state.doc.resolve(o),
-                                                                    l = i.nodeAfter;
-                                                                l && l.isText && l.text?.startsWith(" ") || (a.push(o), s = !0)
-                                                            } else a.push(o), s = !0
+                                                                let i = t.state.doc.resolve(o).nodeAfter;
+                                                                i && i.isText && i.text?.startsWith(" ") || (s.push(o), a = !0)
+                                                            } else s.push(o), a = !0
                                                         }
-                                                    }), s && a.length > 0 && n.add(() => {
+                                                    }), a && s.length > 0 && n.add(() => {
                                                         if (t.isDestroyed) return;
-                                                        a.sort((e, t) => t - e);
+                                                        s.sort((e, t) => t - e);
                                                         let e = t.state.tr;
-                                                        a.forEach(t => {
+                                                        s.forEach(t => {
                                                             t <= e.doc.content.size && e.insertText(" ", t)
                                                         }), e.docChanged && t.view.dispatch(e)
                                                     })
-                                                }), (y = R()) && _(y), c(() => {
+                                                }), (v = T()) && b(v), c(() => {
                                                     let e = p.value?.querySelector(".ProseMirror");
-                                                    e && (e.style.fontFamily = I(), v.textDirection && (e.setAttribute("data-dir", v.textDirection), e.style.direction = v.textDirection, e.style.textAlign = "rtl" === v.textDirection ? "right" : "left"))
+                                                    e && (e.style.fontFamily = $(), y.textDirection && (e.setAttribute("data-dir", y.textDirection), e.style.direction = y.textDirection, e.style.textAlign = "rtl" === y.textDirection ? "right" : "left"))
                                                 }), e.disabled || setTimeout(() => {
-                                                    t && !t.isDestroyed && v.editorReady && t.commands.focus("end")
+                                                    t && !t.isDestroyed && y.editorReady && t.commands.focus("end")
                                                 }, 100)
                                             },
                                             onDestroy() {
-                                                v.editorReady = !1, v.isDestroyed = !0
+                                                y.editorReady = !1, y.isDestroyed = !0
                                             }
                                         });
-                                        g.value = D
-                                    } catch (P) {
-                                        console.error("Error creating TipTap editor:", P), debugLog("EDITOR_ERROR", "Failed to create editor", {
-                                            error: P.toString(),
-                                            message: P.message,
-                                            stack: P.stack
-                                        }), v.isInitialized = !1
+                                        g.value = P
+                                    } catch (D) {
+                                        console.error("Error creating TipTap editor:", D), debugLog("EDITOR_ERROR", "Failed to create editor", {
+                                            error: D.toString(),
+                                            message: D.message,
+                                            stack: D.stack
+                                        }), y.isInitialized = !1
                                     }
                                 };
                             await o()
-                        }, x = null, D = e => {
-                            if (g.value && !g.value.isDestroyed && v.editorReady) {
-                                if (x) {
-                                    try {
-                                        x(e), v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0, g.value.commands.focus()
-                                    } catch (t) {
-                                        console.error("Error inserting mention:", t);
-                                        try {
-                                            g.value.chain().focus().insertContent({
-                                                type: "mention",
-                                                attrs: {
-                                                    id: e.id,
-                                                    label: e.label || e.id
-                                                }
-                                            }).insertContent(" ").run()
-                                        } catch (s) {
-                                            console.error("Fallback mention insertion failed:", s)
-                                        }
-                                    }
-                                    return
-                                }
+                        }, M = null, _ = () => {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
                                 try {
-                                    g.value.chain().focus().insertContent({
-                                        type: "mention",
-                                        attrs: {
-                                            id: e.id,
-                                            label: e.label || e.id
-                                        }
-                                    }).insertContent(" ").run(), v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0
-                                } catch (a) {
-                                    console.error("Direct mention insertion failed, trying plain text:", a);
-                                    try {
-                                        g.value.chain().focus().insertContent(`@${e.label||e.id} `).run(), v.showMentionSuggestions = !1, v.mentionSuggestions = [], v.selectedMentionIndex = 0
-                                    } catch (n) {
-                                        console.error("Plain text insertion also failed:", n)
-                                    }
-                                }
-                            }
-                        }, P = () => {
-                            g.value && !g.value.isDestroyed && v.editorReady && w(() => {
-                                try {
-                                    y = "", g.value.chain().clearContent().focus().run(), v.uploadedImages = [], v.imageHashes.clear(), v.isUploadingImage = !1, v.historyPosition = -1, v.currentDraft = {
+                                    v = "", g.value.chain().clearContent().focus().run(), y.uploadedImages = [], y.imageHashes.clear(), y.isUploadingImage = !1, y.historyPosition = -1, y.currentDraft = {
                                         text: "",
                                         html: "",
                                         json: null
@@ -3468,25 +3229,144 @@ let {
                                     console.error("Error clearing content:", e)
                                 }
                             })
-                        }, B = t => {
-                            g.value && !g.value.isDestroyed && v.editorReady && w(() => {
+                        }, w = () => {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
+                                try {
+                                    g.value.commands.focus("end")
+                                } catch (e) {
+                                    console.error("Error focusing:", e)
+                                }
+                            })
+                        }, T = () => {
+                            if (!g.value || g.value.isDestroyed) return "";
+                            try {
+                                let e = g.value.state.doc,
+                                    t = "";
+                                if (e.descendants((e, a) => {
+                                        if ("text" === e.type.name) t += e.text;
+                                        else if ("mention" === e.type.name) {
+                                            let s = e.attrs.id || e.attrs.label;
+                                            t += `@${s}`
+                                        } else if ("image" === e.type.name) {
+                                            let n = e.attrs.alt || "",
+                                                o = (e.attrs.src, e.attrs["data-emoji"]),
+                                                i = e.attrs["data-native-emoji"];
+                                            o ? t += o : i ? t += i : n && (n.startsWith(":") && n.endsWith(":") ? t += n : n.match(/^\d+$/) ? t += ":" + n + ":" : t += n)
+                                        } else "hardBreak" !== e.type.name && "paragraph" !== e.type.name || t && !t.endsWith("\n") && (t += "\n")
+                                    }), y.stickers.length > 0) {
+                                    let a = y.stickers.map(e => e.code).join(" ");
+                                    t = a + (t ? " " + t : "")
+                                }
+                                return t.replace(/\n$/, "")
+                            } catch (s) {
+                                console.error("Error getting text:", s);
+                                try {
+                                    return g.value.getText()
+                                } catch (n) {
+                                    return ""
+                                }
+                            }
+                        }, S = () => {
+                            if (!g.value || g.value.isDestroyed) return "";
+                            try {
+                                return g.value.getHTML()
+                            } catch (e) {
+                                return console.error("Error getting HTML:", e), ""
+                            }
+                        }, x = !1;
+                    i(() => e.modelValue, e => {
+                        if (x) return void(x = !1);
+                        if (!g.value || g.value.isDestroyed || !y.editorReady) return;
+                        let t = g.value.getText();
+                        e !== t && e !== v && V(() => {
+                            try {
+                                x = !0, v = e || "", g.value.state.tr.setMeta("preventUpdate", !0), g.value.commands.setContent(e || "", !1, {
+                                    preserveWhitespace: "full"
+                                })
+                            } catch (t) {
+                                console.error("Error updating content from prop:", t)
+                            }
+                        })
+                    }), i(() => e.messageFont, () => {
+                        if (p.value) {
+                            let e = p.value.querySelector(".ProseMirror");
+                            e && (e.style.fontFamily = $())
+                        }
+                    });
+                    let P = null;
+                    return l(() => {
+                        debugLog("INPUT_COMPONENT_MOUNT", "Input component mounting", {
+                            disabled: e.disabled,
+                            hasModelValue: !!e.modelValue,
+                            currentChannel: e.currentChannel,
+                            hasPermissions: !!e.permissions,
+                            hasEmojiData: !!e.emojiData
+                        }), I(), setTimeout(() => {
+                            debugLog("INPUT_AUTOFOCUS", "Setting up autofocus"), P = (() => {
+                                let e = null,
+                                    t = () => {
+                                        let e = document.activeElement;
+                                        if (e) {
+                                            let t = e.tagName.toLowerCase(),
+                                                a = e.classList.contains("ProseMirror") || e.closest(".tiptap-editor");
+                                            if (("input" === t || "textarea" === t || "select" === t) && !a || "true" === e.contentEditable && !a) return !1
+                                        }
+                                        return !0
+                                    },
+                                    a = () => {
+                                        t() && y.editorReady && g.value && !g.value.isDestroyed && (g.value.isFocused || w())
+                                    },
+                                    s = t => {
+                                        t.target.closest("button, a, input, textarea, select, [contenteditable], .emoji-picker, .options-panel, .channels-panel, .poll-modal") || (clearTimeout(e), e = setTimeout(a, 100))
+                                    },
+                                    n = e => {
+                                        if (t() && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                                            let s = e.key;
+                                            1 === s.length && /[a-zA-Z0-9]/.test(s) && a()
+                                        }
+                                    },
+                                    o = () => {
+                                        document.hidden || setTimeout(a, 200)
+                                    };
+                                return document.addEventListener("click", s), document.addEventListener("keydown", n), document.addEventListener("visibilitychange", o), window.addEventListener("focus", a), setTimeout(a, 500), () => {
+                                    clearTimeout(e), document.removeEventListener("click", s), document.removeEventListener("keydown", n), document.removeEventListener("visibilitychange", o), window.removeEventListener("focus", a)
+                                }
+                            })()
+                        }, 1e3)
+                    }), r(() => {
+                        if (y.isDestroyed = !0, y.editorReady = !1, P && (P(), P = null), clearTimeout(f), g.value) {
+                            try {
+                                g.value.destroy()
+                            } catch (e) {
+                                console.error("Error destroying editor on unmount:", e)
+                            }
+                            g.value = null
+                        }
+                        u = []
+                    }), {
+                        editorElement: p,
+                        state: y,
+                        clearContent: _,
+                        clear: _,
+                        insertText(t) {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
                                 try {
                                     if ("string" == typeof t) {
-                                        let s = [],
-                                            a = 0,
+                                        let a = [],
+                                            s = 0,
                                             n = /:(\d+):/g,
                                             o;
                                         for (; null !== (o = n.exec(t));) {
-                                            if (o.index > a) {
-                                                let i = t.substring(a, o.index);
-                                                s.push({
+                                            if (o.index > s) {
+                                                let i = t.substring(s, o.index);
+                                                a.push({
                                                     type: "text",
                                                     text: i
                                                 })
                                             }
                                             let l = parseInt(o[1], 10),
                                                 r = e.emojis?.[l];
-                                            r ? s.push({
+                                            r ? a.push({
                                                 type: "image",
                                                 attrs: {
                                                     src: r,
@@ -3498,24 +3378,19 @@ let {
                                                     draggable: "false",
                                                     style: "width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;"
                                                 }
-                                            }) : s.push({
+                                            }) : a.push({
                                                 type: "text",
                                                 text: o[0]
-                                            }), a = o.index + o[0].length
+                                            }), s = o.index + o[0].length
                                         }
-                                        if (a < t.length) {
-                                            let c = t.substring(a);
-                                            s.push({
+                                        if (s < t.length) {
+                                            let c = t.substring(s);
+                                            a.push({
                                                 type: "text",
                                                 text: c
                                             })
                                         }
-                                        if (s.length > 0) {
-                                            g.value.chain().focus().setContent(s, !1).run();
-                                            return
-                                        }
-                                        g.value.chain().focus().setContent(t, !1).run();
-                                        return
+                                        return a.length > 0 ? void g.value.chain().focus().setContent(a, !1).run() : void g.value.chain().focus().setContent(t, !1).run()
                                     }
                                     if ("object" == typeof t && (t.isCustom || t.native)) {
                                         if (t.isCustom && t.src) g.value.chain().focus().insertContent([{
@@ -3532,7 +3407,7 @@ let {
                                             text: " "
                                         }]).run();
                                         else if (t.native) {
-                                            let d = V(t.native);
+                                            let d = E(t.native);
                                             d ? g.value.chain().focus().insertContent([{
                                                 type: "image",
                                                 attrs: {
@@ -3553,8 +3428,9 @@ let {
                                     console.error("Error inserting text:", m)
                                 }
                             })
-                        }, j = e => {
-                            g.value && !g.value.isDestroyed && v.editorReady && w(() => {
+                        },
+                        insertEmoji(e) {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
                                 try {
                                     if ("object" == typeof e && e.isCustom && e.src) {
                                         let t = e.shortcodes || e.native || e.name || "";
@@ -3567,9 +3443,9 @@ let {
                                             style: "width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;"
                                         }).insertContent(" ").run()
                                     } else if ("object" == typeof e && e.native) {
-                                        let s = V(e.native);
-                                        s ? g.value.chain().focus().setImage({
-                                            src: s,
+                                        let a = E(e.native);
+                                        a ? g.value.chain().focus().setImage({
+                                            src: a,
                                             alt: e.native,
                                             title: e.name || e.native,
                                             class: "apple-emoji",
@@ -3577,73 +3453,33 @@ let {
                                             style: "width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin: 0 2px;"
                                         }).insertContent(" ").run() : g.value.chain().focus().insertContent(e.native + " ").run()
                                     } else {
-                                        let a = "string" == typeof e ? e : e.native || e;
-                                        g.value.chain().focus().insertContent(a + " ").run()
+                                        let s = "string" == typeof e ? e : e.native || e;
+                                        g.value.chain().focus().insertContent(s + " ").run()
                                     }
                                 } catch (n) {
                                     console.error("Error inserting emoji:", n)
                                 }
                             })
-                        }, A = () => {
-                            g.value && !g.value.isDestroyed && v.editorReady && w(() => {
-                                try {
-                                    g.value.commands.focus("end")
-                                } catch (e) {
-                                    console.error("Error focusing:", e)
-                                }
-                            })
-                        }, L = () => {
-                            g.value && !g.value.isDestroyed && v.editorReady && w(() => {
+                        },
+                        focus: w,
+                        blur() {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
                                 try {
                                     g.value.commands.blur()
                                 } catch (e) {
                                     console.error("Error blurring:", e)
                                 }
                             })
-                        }, R = () => {
-                            if (!g.value || g.value.isDestroyed) return "";
-                            try {
-                                let e = g.value.state.doc,
-                                    t = "";
-                                if (e.descendants((e, s) => {
-                                        if ("text" === e.type.name) t += e.text;
-                                        else if ("mention" === e.type.name) {
-                                            let a = e.attrs.id || e.attrs.label;
-                                            t += `@${a}`
-                                        } else if ("image" === e.type.name) {
-                                            let n = e.attrs.alt || "";
-                                            e.attrs.src;
-                                            let o = e.attrs["data-emoji"],
-                                                i = e.attrs["data-native-emoji"];
-                                            o ? t += o : i ? t += i : n && (n.startsWith(":") && n.endsWith(":") ? t += n : n.match(/^\d+$/) ? t += ":" + n + ":" : t += n)
-                                        } else("hardBreak" === e.type.name || "paragraph" === e.type.name) && t && !t.endsWith("\n") && (t += "\n")
-                                    }), v.stickers.length > 0) {
-                                    let s = v.stickers.map(e => e.code).join(" ");
-                                    t = s + (t ? " " + t : "")
-                                }
-                                return t.replace(/\n$/, "")
-                            } catch (a) {
-                                console.error("Error getting text:", a);
-                                try {
-                                    return g.value.getText()
-                                } catch (n) {
-                                    return ""
-                                }
-                            }
-                        }, U = () => {
-                            if (!g.value || g.value.isDestroyed) return "";
-                            try {
-                                return g.value.getHTML()
-                            } catch (e) {
-                                return console.error("Error getting HTML:", e), ""
-                            }
-                        }, F = () => {
+                        },
+                        getText: T,
+                        getHTML: S,
+                        getFormattedContent() {
                             if (!g.value || g.value.isDestroyed) return "";
                             try {
                                 let e = g.value.state.doc,
                                     t = "",
-                                    s = !0;
-                                if (e.descendants((e, a) => {
+                                    a = !0;
+                                if (e.descendants((e, s) => {
                                         if ("text" === e.type.name) {
                                             let n = e.text;
                                             e.marks.forEach(e => {
@@ -3657,151 +3493,114 @@ let {
                                                 l = e.attrs["data-emoji"],
                                                 r = e.attrs["data-native-emoji"];
                                             l ? t += l : r ? t += r : i && (i.startsWith(":") && i.endsWith(":") ? t += i : i.match(/^\d+$/) ? t += ":" + i + ":" : t += i)
-                                        } else "hardBreak" === e.type.name ? t += "\n" : "paragraph" === e.type.name && (!s && a > 0 && (t += "\n"), s = !1)
-                                    }), v.stickers.length > 0) {
-                                    let a = v.stickers.map(e => e.code).join(" ");
-                                    t = a + (t ? " " + t : "")
+                                        } else "hardBreak" === e.type.name ? t += "\n" : "paragraph" === e.type.name && (!a && s > 0 && (t += "\n"), a = !1)
+                                    }), y.stickers.length > 0) {
+                                    let s = y.stickers.map(e => e.code).join(" ");
+                                    t = s + (t ? " " + t : "")
                                 }
                                 return t = t.replace(/\n+$/, "")
                             } catch (n) {
-                                return console.error("Error getting formatted content:", n), R()
-                            }
-                        }, O = !1;
-                    i(() => e.modelValue, e => {
-                        if (O) {
-                            O = !1;
-                            return
-                        }
-                        if (!g.value || g.value.isDestroyed || !v.editorReady) return;
-                        let t = g.value.getText();
-                        e !== t && e !== y && w(() => {
-                            try {
-                                O = !0, y = e || "";
-                                let t = g.value.state.tr;
-                                t.setMeta("preventUpdate", !0), g.value.commands.setContent(e || "", !1, {
-                                    preserveWhitespace: "full"
-                                })
-                            } catch (s) {
-                                console.error("Error updating content from prop:", s)
-                            }
-                        })
-                    }), i(() => e.messageFont, () => {
-                        if (p.value) {
-                            let e = p.value.querySelector(".ProseMirror");
-                            e && (e.style.fontFamily = I())
-                        }
-                    });
-                    let z = () => {
-                            let e = null,
-                                t = () => {
-                                    let e = document.activeElement;
-                                    if (e) {
-                                        let t = e.tagName.toLowerCase(),
-                                            s = e.classList.contains("ProseMirror") || e.closest(".tiptap-editor");
-                                        if (("input" === t || "textarea" === t || "select" === t) && !s || "true" === e.contentEditable && !s) return !1
-                                    }
-                                    return !0
-                                },
-                                s = () => {
-                                    t() && v.editorReady && g.value && !g.value.isDestroyed && !g.value.isFocused && A()
-                                },
-                                a = t => {
-                                    let a = t.target,
-                                        n = a.closest("button, a, input, textarea, select, [contenteditable], .emoji-picker, .options-panel, .channels-panel, .poll-modal");
-                                    n || (clearTimeout(e), e = setTimeout(s, 100))
-                                },
-                                n = e => {
-                                    if (t() && !e.ctrlKey && !e.altKey && !e.metaKey) {
-                                        let a = e.key;
-                                        1 === a.length && /[a-zA-Z0-9]/.test(a) && s()
-                                    }
-                                },
-                                o = () => {
-                                    document.hidden || setTimeout(s, 200)
-                                };
-                            return document.addEventListener("click", a), document.addEventListener("keydown", n), document.addEventListener("visibilitychange", o), window.addEventListener("focus", s), setTimeout(s, 500), () => {
-                                clearTimeout(e), document.removeEventListener("click", a), document.removeEventListener("keydown", n), document.removeEventListener("visibilitychange", o), window.removeEventListener("focus", s)
+                                return console.error("Error getting formatted content:", n), T()
                             }
                         },
-                        H = null;
-                    l(() => {
-                        debugLog("INPUT_COMPONENT_MOUNT", "Input component mounting", {
-                            disabled: e.disabled,
-                            hasModelValue: !!e.modelValue,
-                            currentChannel: e.currentChannel,
-                            hasPermissions: !!e.permissions,
-                            hasEmojiData: !!e.emojiData
-                        }), S(), setTimeout(() => {
-                            debugLog("INPUT_AUTOFOCUS", "Setting up autofocus"), H = z()
-                        }, 1e3)
-                    }), r(() => {
-                        if (v.isDestroyed = !0, v.editorReady = !1, H && (H(), H = null), clearTimeout(f), g.value) {
-                            try {
-                                g.value.destroy()
-                            } catch (e) {
-                                console.error("Error destroying editor on unmount:", e)
-                            }
-                            g.value = null
-                        }
-                        u = []
-                    });
-                    let q = e => {
-                        g.value && !g.value.isDestroyed && v.editorReady && w(() => {
-                            try {
-                                switch (e) {
-                                    case "bold":
-                                        g.value.chain().focus().toggleBold().run();
-                                        break;
-                                    case "italic":
-                                        g.value.chain().focus().toggleItalic().run();
-                                        break;
-                                    case "underline":
-                                        g.value.chain().focus().toggleUnderline().run();
-                                        break;
-                                    case "strike":
-                                        g.value.chain().focus().toggleStrike().run();
-                                        break;
-                                    case "code":
-                                        g.value.chain().focus().toggleCode().run();
-                                        break;
-                                    case "spoiler":
-                                        g.value.chain().focus().toggleSpoiler().run()
+                        selectMention(e) {
+                            if (g.value && !g.value.isDestroyed && y.editorReady) {
+                                if (M) try {
+                                    M(e), y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0, g.value.commands.focus()
+                                } catch (t) {
+                                    console.error("Error inserting mention:", t);
+                                    try {
+                                        g.value.chain().focus().insertContent({
+                                            type: "mention",
+                                            attrs: {
+                                                id: e.id,
+                                                label: e.label || e.id
+                                            }
+                                        }).insertContent(" ").run()
+                                    } catch (a) {
+                                        console.error("Fallback mention insertion failed:", a)
+                                    }
+                                } else try {
+                                    g.value.chain().focus().insertContent({
+                                        type: "mention",
+                                        attrs: {
+                                            id: e.id,
+                                            label: e.label || e.id
+                                        }
+                                    }).insertContent(" ").run(), y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0
+                                } catch (s) {
+                                    console.error("Direct mention insertion failed, trying plain text:", s);
+                                    try {
+                                        g.value.chain().focus().insertContent(`@${e.label||e.id} `).run(), y.showMentionSuggestions = !1, y.mentionSuggestions = [], y.selectedMentionIndex = 0
+                                    } catch (n) {
+                                        console.error("Plain text insertion also failed:", n)
+                                    }
                                 }
-                                setTimeout(() => {
-                                    v.activeFormats.bold = g.value.isActive("bold"), v.activeFormats.italic = g.value.isActive("italic"), v.activeFormats.underline = g.value.isActive("underline"), v.activeFormats.strike = g.value.isActive("strike"), v.activeFormats.code = g.value.isActive("code"), v.activeFormats.spoiler = g.value.isActive("spoiler")
-                                }, 0)
-                            } catch (t) {
-                                console.error("Error formatting text:", t)
                             }
-                        })
-                    };
-                    return {
-                        editorElement: p,
-                        state: v,
-                        clearContent: P,
-                        clear: P,
-                        insertText: B,
-                        insertEmoji: j,
-                        focus: A,
-                        blur: L,
-                        getText: R,
-                        getHTML: U,
-                        getFormattedContent: F,
-                        selectMention: D,
-                        formatText: q,
-                        removeSticker: b,
-                        getUploadedImages: () => v.uploadedImages,
+                        },
+                        formatText(e) {
+                            g.value && !g.value.isDestroyed && y.editorReady && V(() => {
+                                try {
+                                    switch (e) {
+                                        case "bold":
+                                            g.value.chain().focus().toggleBold().run();
+                                            break;
+                                        case "italic":
+                                            g.value.chain().focus().toggleItalic().run();
+                                            break;
+                                        case "underline":
+                                            g.value.chain().focus().toggleUnderline().run();
+                                            break;
+                                        case "strike":
+                                            g.value.chain().focus().toggleStrike().run();
+                                            break;
+                                        case "code":
+                                            g.value.chain().focus().toggleCode().run();
+                                            break;
+                                        case "spoiler":
+                                            g.value.chain().focus().toggleSpoiler().run()
+                                    }
+                                    setTimeout(() => {
+                                        y.activeFormats.bold = g.value.isActive("bold"), y.activeFormats.italic = g.value.isActive("italic"), y.activeFormats.underline = g.value.isActive("underline"), y.activeFormats.strike = g.value.isActive("strike"), y.activeFormats.code = g.value.isActive("code"), y.activeFormats.spoiler = g.value.isActive("spoiler")
+                                    }, 0)
+                                } catch (t) {
+                                    console.error("Error formatting text:", t)
+                                }
+                            })
+                        },
+                        removeSticker(e) {
+                            var a;
+                            let s = `:${e}:`;
+                            y.actualText = y.actualText.replace(s, "").trim(), a = y.actualText, y.stickers = [], y.actualText = a, y.displayText = a, t("update:modelValue", y.actualText)
+                        },
+                        getUploadedImages: () => y.uploadedImages,
                         clearUploadedImages() {
-                            v.uploadedImages = [], v.imageHashes.clear(), v.isUploadingImage = !1
+                            y.uploadedImages = [], y.imageHashes.clear(), y.isUploadingImage = !1
                         },
                         removeUploadedImage(e) {
-                            let s = v.uploadedImages[e];
-                            s && s.hash && v.imageHashes.delete(s.hash), v.uploadedImages.splice(e, 1), t("imageUploaded", v.uploadedImages)
+                            let a = y.uploadedImages[e];
+                            a && a.hash && y.imageHashes.delete(a.hash), y.uploadedImages.splice(e, 1), t("imageUploaded", y.uploadedImages)
                         },
-                        isUploadingImage: o(() => v.isUploadingImage),
-                        addToHistory: k,
+                        isUploadingImage: o(() => y.isUploadingImage),
+                        addToHistory(e) {
+                            if (!e || "" === e.trim()) return;
+                            let t = S(),
+                                a = g.value ? g.value.getJSON() : null,
+                                s = {
+                                    text: e,
+                                    html: t,
+                                    json: a,
+                                    timestamp: Date.now()
+                                },
+                                n = y.messageHistory.findIndex(t => "string" == typeof t && t === e || t.text === e);
+                            n > -1 && y.messageHistory.splice(n, 1), y.messageHistory.push(s), y.messageHistory.length > 20 && (y.messageHistory = y.messageHistory.slice(-20)), y.historyPosition = -1, y.currentDraft = {
+                                text: "",
+                                html: "",
+                                json: null
+                            }
+                        },
                         navigateHistoryUp: C,
-                        navigateHistoryDown: E
+                        navigateHistoryDown: k
                     }
                 },
                 render: function(e, t) {
@@ -3881,13 +3680,13 @@ let {
                         default: _withCtx(() => [e.state.showMentionSuggestions && e.state.mentionSuggestions.length ? (_openBlock(), _createElementBlock("div", {
                             key: 0,
                             class: "mention-suggestions-panel"
-                        }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.state.mentionSuggestions, (t, s) => (_openBlock(), _createElementBlock("div", {
+                        }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.state.mentionSuggestions, (t, a) => (_openBlock(), _createElementBlock("div", {
                             key: t.id,
                             class: _normalizeClass(["mention-suggestion-item", {
-                                selected: s === e.state.selectedMentionIndex
+                                selected: a === e.state.selectedMentionIndex
                             }]),
-                            onClick: s => e.selectMention(t),
-                            onMouseenter: t => e.state.selectedMentionIndex = s
+                            onClick: a => e.selectMention(t),
+                            onMouseenter: t => e.state.selectedMentionIndex = a
                         }, [_createCommentVNode(" Avatar "), _createElementVNode("div", {
                             class: _normalizeClass(["mention-avatar", {
                                 "special-mention": "special" === t.type
@@ -3921,9 +3720,9 @@ let {
                     })], 2)
                 }
             },
-            TypingIndicator: a,
+            TypingIndicator: s,
             EmojiPicker: e,
-            SearchBar: s,
+            SearchBar: a,
             PollsPanel: {
                 props: {
                     currentChannel: String,
@@ -3933,7 +3732,7 @@ let {
                 setup(e, {
                     emit: t
                 }) {
-                    let s = M({
+                    let a = reactive({
                             question: "",
                             options: ["", ""],
                             duration: 60,
@@ -3960,66 +3759,39 @@ let {
                             minOptions: 2,
                             maxOptions: 4
                         }),
-                        a = k(() => e.permissions?.createPolls !== !1),
-                        n = k(() => {
-                            let e = s.options.map(e => e.trim().toLowerCase()).filter(e => e.length > 0),
+                        s = computed(() => !1 !== e.permissions?.createPolls),
+                        n = computed(() => {
+                            let e = a.options.map(e => e.trim().toLowerCase()).filter(e => e.length > 0),
                                 t = new Set(e);
                             return e.length !== t.size
                         }),
-                        o = k(() => s.question.trim().length >= s.minQuestionLength),
-                        i = k(() => {
-                            if (s.question.trim().length < s.minQuestionLength || s.question.trim().length > s.maxQuestionLength || n.value) return !1;
-                            let e = s.options.filter(e => e.trim().length >= s.minOptionLength && e.trim().length <= s.maxOptionLength);
-                            return e.length >= s.minOptions
-                        }),
-                        l = k(() => {
-                            let e = Math.floor(s.duration / 60),
-                                t = s.duration % 60;
+                        o = computed(() => a.question.trim().length >= a.minQuestionLength),
+                        i = computed(() => !(a.question.trim().length < a.minQuestionLength) && !(a.question.trim().length > a.maxQuestionLength) && !n.value && a.options.filter(e => e.trim().length >= a.minOptionLength && e.trim().length <= a.maxOptionLength).length >= a.minOptions),
+                        l = computed(() => {
+                            let e = Math.floor(a.duration / 60),
+                                t = a.duration % 60;
                             return e > 0 && t > 0 ? `${e} دقيقة و ${t} ثانية` : e > 0 ? 1 === e ? "دقيقة واحدة" : `${e} دقائق` : `${t} ثانية`
                         }),
-                        r = k(() => `${s.question.length} / ${s.maxQuestionLength}`),
-                        c = k(() => {
-                            if (s.options.length >= s.maxOptions) return !1;
-                            let e = s.options.every(e => e.trim().length > 0);
-                            return e
-                        }),
+                        r = computed(() => `${a.question.length} / ${a.maxQuestionLength}`),
+                        c = computed(() => !(a.options.length >= a.maxOptions) && a.options.every(e => e.trim().length > 0)),
                         d = () => {
-                            c.value && s.options.push("")
+                            a.question = "", a.options = ["", ""], a.duration = 300, a.error = null, a.success = null
                         },
-                        m = e => {
-                            s.options.length > s.minOptions && s.options.splice(e, 1)
-                        },
-                        g = (e, t) => {
-                            s.options[e] = t
-                        },
-                        p = e => {
-                            if (!e || 0 === e.trim().length) return !1;
-                            let t = e.trim().toLowerCase(),
-                                a = s.options.filter(e => e.trim().toLowerCase() === t).length;
-                            return a > 1
-                        },
-                        u = e => {
-                            s.duration = e
-                        },
-                        h = () => {
-                            s.question = "", s.options = ["", ""], s.duration = 300, s.error = null, s.success = null
-                        },
-                        f = async () => {
-                            if (i.value && !s.isCreating) {
-                                s.isCreating = !0, s.error = null, s.success = null;
+                        m = async () => {
+                            if (i.value && !a.isCreating) {
+                                a.isCreating = !0, a.error = null, a.success = null;
                                 try {
-                                    let a = s.options.map(e => e.trim()).filter(e => e.length >= s.minOptionLength),
+                                    let s = a.options.map(e => e.trim()).filter(e => e.length >= a.minOptionLength),
                                         n = {
                                             channelId: e.currentChannel,
-                                            question: s.question.trim(),
-                                            options: a,
-                                            duration: s.duration
+                                            question: a.question.trim(),
+                                            options: s,
+                                            duration: a.duration
                                         },
                                         o = "function" == typeof GetParentResourceName ? GetParentResourceName() : "Easy-Chat-Max";
                                     if (window.RequestThrottler && !window.RequestThrottler.canRequest("createPoll", 1e4)) {
                                         let l = window.RequestThrottler.getCooldown("createPoll", 1e4);
-                                        s.error = `يرجى الانتظار ${Math.ceil(l/1e3)} ثانية قبل إنشاء استطلاع آخر`;
-                                        return
+                                        return void(a.error = `يرجى الانتظار ${Math.ceil(l/1e3)} ثانية قبل إنشاء استطلاع آخر`)
                                     }
                                     let r = await fetch(`https://${o}/createPoll`, {
                                             method: "POST",
@@ -4029,38 +3801,50 @@ let {
                                             body: JSON.stringify(n)
                                         }),
                                         c = await r.json();
-                                    "ok" === c || c.success ? (s.success = "تم إنشاء الاستطلاع بنجاح!", h(), setTimeout(() => {
+                                    "ok" === c || c.success ? (a.success = "تم إنشاء الاستطلاع بنجاح!", d(), setTimeout(() => {
                                         t("close")
-                                    }, 1500)) : s.error = c.message || "فشل في إنشاء الاستطلاع"
-                                } catch (d) {
-                                    console.error("[PollsPanel] Error creating poll:", d), s.error = "حدث خطأ أثناء إنشاء الاستطلاع"
+                                    }, 1500)) : a.error = c.message || "فشل في إنشاء الاستطلاع"
+                                } catch (m) {
+                                    console.error("[PollsPanel] Error creating poll:", m), a.error = "حدث خطأ أثناء إنشاء الاستطلاع"
                                 } finally {
-                                    s.isCreating = !1
+                                    a.isCreating = !1
                                 }
                             }
-                        }, y = e => {
-                            "Enter" === e.key && !e.shiftKey && i.value && (e.preventDefault(), f())
                         };
-                    return V(() => {
+                    return onMounted(() => {
                         let e = document.querySelector(".poll-question-input");
                         e && e.focus()
                     }), {
-                        ...D(s),
-                        canCreatePoll: a,
+                        ...toRefs(a),
+                        canCreatePoll: s,
                         canAddOption: c,
                         isFormValid: i,
                         isQuestionValid: o,
                         hasDuplicateOptions: n,
                         formattedDuration: l,
                         questionCharCount: r,
-                        addOption: d,
-                        removeOption: m,
-                        updateOption: g,
-                        isDuplicateOption: p,
-                        setDuration: u,
-                        resetForm: h,
-                        createPoll: f,
-                        handleKeyPress: y
+                        addOption() {
+                            c.value && a.options.push("")
+                        },
+                        removeOption(e) {
+                            a.options.length > a.minOptions && a.options.splice(e, 1)
+                        },
+                        updateOption(e, t) {
+                            a.options[e] = t
+                        },
+                        isDuplicateOption(e) {
+                            if (!e || 0 === e.trim().length) return !1;
+                            let t = e.trim().toLowerCase();
+                            return a.options.filter(e => e.trim().toLowerCase() === t).length > 1
+                        },
+                        setDuration(e) {
+                            a.duration = e
+                        },
+                        resetForm: d,
+                        createPoll: m,
+                        handleKeyPress(e) {
+                            "Enter" === e.key && !e.shiftKey && i.value && (e.preventDefault(), m())
+                        }
                     }
                 },
                 render: function(e, t) {
@@ -4121,28 +3905,28 @@ let {
                         class: "fa-solid fa-exclamation-triangle"
                     }), _createTextVNode(" لا يمكن إضافة خيارات مكررة ")])) : _createCommentVNode("v-if", !0), _createElementVNode("div", {
                         class: "poll-options-list"
-                    }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.options, (t, s) => (_openBlock(), _createElementBlock("div", {
-                        key: s,
+                    }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.options, (t, a) => (_openBlock(), _createElementBlock("div", {
+                        key: a,
                         class: "poll-option-item"
                     }, [e.options.length > e.minOptions ? (_openBlock(), _createElementBlock("button", {
                         key: 0,
-                        onClick: t => e.removeOption(s),
+                        onClick: t => e.removeOption(a),
                         class: "remove-option-btn",
                         title: "حذف"
                     }, [_createElementVNode("i", {
                         class: "fa-solid fa-minus"
                     })], 8, ["onClick"])) : _createCommentVNode("v-if", !0), _createElementVNode("input", {
                         value: t,
-                        onInput: t => e.updateOption(s, t.target.value),
+                        onInput: t => e.updateOption(a, t.target.value),
                         class: _normalizeClass(["poll-option-input", {
                             "has-error": e.isDuplicateOption(t)
                         }]),
-                        placeholder: "اكتب الخيار رقم " + (s + 1),
+                        placeholder: "اكتب الخيار رقم " + (a + 1),
                         maxlength: e.maxOptionLength,
                         onKeydown: e.handleKeyPress
                     }, null, 42, ["value", "onInput", "placeholder", "maxlength", "onKeydown"]), _createElementVNode("div", {
                         class: "option-number"
-                    }, _toDisplayString(s + 1), 1)]))), 128)), e.options.length < e.maxOptions ? (_openBlock(), _createElementBlock("button", {
+                    }, _toDisplayString(a + 1), 1)]))), 128)), e.options.length < e.maxOptions ? (_openBlock(), _createElementBlock("button", {
                         key: 0,
                         onClick: e.addOption,
                         class: _normalizeClass(["add-option-btn", {
@@ -4162,7 +3946,7 @@ let {
                         class: "duration-quick-select"
                     }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.durationPresets.slice(0, 4), t => (_openBlock(), _createElementBlock("button", {
                         key: t.value,
-                        onClick: s => e.setDuration(t.value),
+                        onClick: a => e.setDuration(t.value),
                         class: _normalizeClass(["duration-btn", {
                             active: e.duration === t.value
                         }])
@@ -4216,20 +4000,20 @@ let {
                     emit: t
                 }) {
                     let {
-                        reactive: s,
-                        computed: a,
+                        reactive: a,
+                        computed: s,
                         onMounted: n,
                         onUnmounted: o,
                         nextTick: i,
                         toRefs: l,
                         watch: r
-                    } = Vue, c = s({
+                    } = Vue, c = a({
                         staticChannels: [{
                             id: "شات العام",
                             title: "شات العام",
                             color: "#ffffff",
                             canSend: !0
-                        }, ]
+                        }]
                     });
                     r(() => e.channels, e => {
                         if (e && e.length > 0) {
@@ -4261,23 +4045,20 @@ let {
                     }, {
                         deep: !0
                     }), r(() => e.show, e => {});
-                    let d = s => {
-                            if (s.altKey && s.key >= "1" && s.key <= "9") {
-                                let a = parseInt(s.key) - 1;
-                                a < c.staticChannels.length && m(c.staticChannels[a].id);
-                                return
-                            }
-                            if ((s.ctrlKey || s.metaKey) && "k" === s.key) {
-                                s.preventDefault(), t("close");
-                                return
-                            }
-                            if (e.show) switch (s.key) {
-                                case "ArrowDown":
-                                case "ArrowUp":
-                                case "Enter":
-                                    break;
-                                case "Escape":
-                                    t("close")
+                    let d = a => {
+                            if (a.altKey && a.key >= "1" && a.key <= "9") {
+                                let s = parseInt(a.key) - 1;
+                                s < c.staticChannels.length && m(c.staticChannels[s].id)
+                            } else {
+                                if ((a.ctrlKey || a.metaKey) && "k" === a.key) return a.preventDefault(), void t("close");
+                                if (e.show) switch (a.key) {
+                                    case "ArrowDown":
+                                    case "ArrowUp":
+                                    case "Enter":
+                                        break;
+                                    case "Escape":
+                                        t("close")
+                                }
                             }
                         },
                         m = e => {
@@ -4294,14 +4075,14 @@ let {
                                 console.error("Failed to switch channel:", e)
                             }), t("switch-channel", e, "static")
                         },
-                        g = s => {
+                        g = a => {
                             if (!e.show) return;
-                            let a = document.querySelector(".quick-channel-switcher"),
+                            let s = document.querySelector(".quick-channel-switcher"),
                                 n = document.querySelector(".channels-toggle-btn");
-                            !a || a.contains(s.target) || n?.contains(s.target) || t("close")
+                            !s || s.contains(a.target) || n?.contains(a.target) || t("close")
                         },
-                        p = a(() => c.staticChannels),
-                        u = a(() => {
+                        p = s(() => c.staticChannels),
+                        u = s(() => {
                             let t = c.staticChannels.find(t => t.id === e.currentChannel || t.title === e.currentChannel);
                             return t ? t.title : e.currentChannel
                         });
@@ -4334,13 +4115,13 @@ let {
                             class: "channel-dropdown"
                         }, [_createCommentVNode(" Channels List "), _createElementVNode("div", {
                             class: "channel-list"
-                        }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.filteredChannels, (t, s) => (_openBlock(), _createElementBlock("div", {
+                        }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.filteredChannels, (t, a) => (_openBlock(), _createElementBlock("div", {
                             key: t.id,
                             class: _normalizeClass(["channel-option", {
                                 active: e.currentChannel === t.id || e.currentChannel === t.title,
                                 "has-unread": t.unreadCount > 0
                             }]),
-                            onClick: s => e.switchChannel(t.id)
+                            onClick: a => e.switchChannel(t.id)
                         }, [_createElementVNode("span", {
                             class: "channel-hash",
                             style: _normalizeStyle({
@@ -4571,11 +4352,10 @@ let {
                             t.length >= 2 && (e = t[1])
                         }
                         if (!e && this.messageContext.user_id && (e = this.messageContext.user_id), !e && this.messageContext.args && Array.isArray(this.messageContext.args)) {
-                            let s = this.messageContext.args[3];
-                            s && (e = s)
+                            let a = this.messageContext.args[3];
+                            a && (e = a)
                         }
-                        let a = e && String(e) === String(this.userId);
-                        return a
+                        return e && String(e) === String(this.userId)
                     },
                     isPinnedMessage() {
                         return this.messageContext?.isPinned || !1
@@ -4630,16 +4410,15 @@ let {
                     getAppleEmojiUrl(e) {
                         if (window.sharedEmojiData && window.sharedEmojiData.getAppleEmojiUrl) return window.sharedEmojiData.getAppleEmojiUrl(e);
                         let t = [];
-                        for (let s = 0; s < e.length; s++) {
-                            let a = e.codePointAt(s);
-                            a > 65535 && s++, t.push(a.toString(16).padStart(4, "0"))
+                        for (let a = 0; a < e.length; a++) {
+                            let s = e.codePointAt(a);
+                            s > 65535 && a++, t.push(s.toString(16).padStart(4, "0"))
                         }
-                        let n = t.join("-");
-                        return `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${n}.png`
+                        return `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${t.join("-")}.png`
                     },
                     filterNumberInput(e) {
                         let t = String.fromCharCode(e.which);
-                        if (!/^[-0-9]$/.test(t) || "-" === t && (e.target.value.length > 0 || e.target.selectionStart > 0) || "-" === t && e.target.value.includes("-")) return e.preventDefault(), !1
+                        return /^[-0-9]$/.test(t) ? "-" === t && (e.target.value.length > 0 || e.target.selectionStart > 0) || "-" === t && e.target.value.includes("-") ? (e.preventDefault(), !1) : void 0 : (e.preventDefault(), !1)
                     },
                     handlePaste(e) {
                         e.preventDefault();
@@ -4651,11 +4430,9 @@ let {
                             if (!e?.startsWith(":") || !e?.endsWith(":")) return null;
                             let t = parseInt(e.slice(1, -1));
                             if (isNaN(t)) return null;
-                            let s = this.chat?.Settings?.Filter?.Emojis?.[t];
-                            if (!s) return null;
-                            if (!s.startsWith("http") && !s.startsWith("//")) return `../../emojis/${s}`;
-                            return s
-                        } catch (a) {
+                            let a = this.chat?.Settings?.Filter?.Emojis?.[t];
+                            return a ? a.startsWith("http") || a.startsWith("//") ? a : `../../emojis/${a}` : null
+                        } catch (s) {
                             return null
                         }
                     },
@@ -4692,11 +4469,7 @@ let {
                     manualMuteUser() {
                         if (!this.manualMuteUserId || this.isManualMuting) return;
                         let e = parseInt(this.manualMuteUserId);
-                        if (isNaN(e) || e <= 0) {
-                            this.showMuteError("معرف المستخدم غير صحيح");
-                            return
-                        }
-                        this.isManualMuting = !0, this.muteError = "", this.muteSuccess = "", fetch("https://Easy-Chat-Max/manualMuteUser", {
+                        isNaN(e) || e <= 0 ? this.showMuteError("معرف المستخدم غير صحيح") : (this.isManualMuting = !0, this.muteError = "", this.muteSuccess = "", fetch("https://Easy-Chat-Max/manualMuteUser", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -4719,7 +4492,7 @@ let {
                             console.error("Failed to mute user:", e), this.showMuteError("حدث خطأ أثناء محاولة الكتم")
                         }).finally(() => {
                             this.isManualMuting = !1
-                        })
+                        }))
                     },
                     showMuteError(e) {
                         this.muteError = e, setTimeout(() => {
@@ -4733,8 +4506,8 @@ let {
                             let t = Math.floor(e / 60);
                             return `${t} ${1===t?"ساعة":"ساعات"}`
                         } {
-                            let s = Math.floor(e / 1440);
-                            return `${s} ${1===s?"يوم":"أيام"}`
+                            let a = Math.floor(e / 1440);
+                            return `${a} ${1===a?"يوم":"أيام"}`
                         }
                     },
                     checkUserMuteStatus() {
@@ -4810,11 +4583,7 @@ let {
                         return "غير معروف"
                     },
                     selectTab(e) {
-                        if ("reactions" === e && !this.hasReactions && !this.reactionLoading) {
-                            this.activeTab = "general";
-                            return
-                        }
-                        this.activeTab = e, "appearance" === e && this.restartAnimationLoop(), "reactions" === e && this.messageContext?.gId && this.fetchReactionDetails(this.messageContext.gId)
+                        "reactions" !== e || this.hasReactions || this.reactionLoading ? (this.activeTab = e, "appearance" === e && this.restartAnimationLoop(), "reactions" === e && this.messageContext?.gId && this.fetchReactionDetails(this.messageContext.gId)) : this.activeTab = "general"
                     },
                     selectTheme(e) {
                         this.$emit("theme-change", e)
@@ -4857,11 +4626,7 @@ let {
                     rgbToHex(e) {
                         if (!e) return "#ffffff";
                         let t = e.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-                        if (!t) return "#ffffff";
-                        let s = parseInt(t[1]),
-                            a = parseInt(t[2]),
-                            n = parseInt(t[3]);
-                        return "#" + (16777216 + (s << 16) + (a << 8) + n).toString(16).slice(1)
+                        return t ? "#" + (16777216 + (parseInt(t[1]) << 16) + (parseInt(t[2]) << 8) + parseInt(t[3])).toString(16).slice(1) : "#ffffff"
                     },
                     fetchReactionDetails(e) {
                         e && (this.reactionLoading = !0, this.reactionError = null, this.reactionDetails = {}, this.activeReactionTab = null, fetch("https://Easy-Chat-Max/getReactionDetails", {
@@ -5226,7 +4991,7 @@ let {
                         class: "emoji-filters-compact"
                     }, [_createCommentVNode(" Individual Emojis "), (_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.getReactionTabs(), t => (_openBlock(), _createElementBlock("button", {
                         key: t,
-                        onClick: _withModifiers(s => e.setActiveReactionTab(t), ["stop"]),
+                        onClick: _withModifiers(a => e.setActiveReactionTab(t), ["stop"]),
                         class: _normalizeClass(["filter-btn", {
                             active: e.activeReactionTab === t
                         }])
@@ -5251,7 +5016,7 @@ let {
                         class: "btn-count"
                     }, _toDisplayString(e.reactionDetails[t].length), 1), _createCommentVNode(" Admin Remove All Button "), e.permissions?.RemoveAllReactions ? (_openBlock(), _createElementBlock("button", {
                         key: 2,
-                        onClick: _withModifiers(s => e.removeAllReactions(t), ["stop"]),
+                        onClick: _withModifiers(a => e.removeAllReactions(t), ["stop"]),
                         class: "remove-all-btn",
                         title: "حذف جميع التفاعلات"
                     }, [_createElementVNode("i", {
@@ -5284,7 +5049,7 @@ let {
                     }, "ID: " + _toDisplayString(t.id), 1)]), e.permissions?.RemoveReaction ? (_openBlock(), _createElementBlock("button", {
                         key: 1,
                         class: "remove-btn-compact",
-                        onClick: _withModifiers(s => e.removeUserReaction(t.id, e.activeReactionTab), ["stop"]),
+                        onClick: _withModifiers(a => e.removeUserReaction(t.id, e.activeReactionTab), ["stop"]),
                         title: "حذف التفاعل"
                     }, [_createElementVNode("i", {
                         class: "fas fa-trash"
@@ -5400,7 +5165,7 @@ let {
                         class: _normalizeClass(["duration-option", {
                             selected: e.selectedMuteDuration === t.value
                         }]),
-                        onClick: s => e.selectedMuteDuration = t.value
+                        onClick: a => e.selectedMuteDuration = t.value
                     }, _toDisplayString(t.label), 11, ["onClick"]))), 128))])]), _createCommentVNode(" Mute Action Button "), _createElementVNode("button", {
                         class: "mute-action-btn",
                         onClick: t => e.muteUser()
@@ -5500,7 +5265,7 @@ let {
                         class: _normalizeClass(["theme-card", {
                             active: e.currentTheme === t.id
                         }]),
-                        onClick: s => e.selectTheme(t.id)
+                        onClick: a => e.selectTheme(t.id)
                     }, [_createElementVNode("div", {
                         class: "theme-preview"
                     }, [(_openBlock(), _createElementBlock("div", {
@@ -5952,7 +5717,7 @@ let {
                         class: "muted-card-id"
                     }, "ID: " + _toDisplayString(t.id), 1)]), _createElementVNode("button", {
                         class: "muted-card-action",
-                        onClick: s => e.unmuteSingleUser(t.id),
+                        onClick: a => e.unmuteSingleUser(t.id),
                         title: "إلغاء الكتم"
                     }, [_createElementVNode("i", {
                         class: "fa-solid fa-unlock"
@@ -5978,8 +5743,8 @@ let {
             let {
                 onMounted: e,
                 onUnmounted: t,
-                watch: s,
-                nextTick: a,
+                watch: a,
+                nextTick: s,
                 computed: c
             } = Vue, g = e => {
                 if (!e) return "";
@@ -5990,29 +5755,24 @@ let {
                     return t = 3 === e.args.length ? 2 : 2 === e.args.length ? 1 : 0, e.args[t] || ""
                 }
                 return ""
-            }, p = !1, u = 0, h = [], f = (e, t, s = null) => {
-                let a = new Date().toLocaleTimeString(),
+            }, p = !1, u = 0, h = [], f = (e, t, a = null) => {
+                let s = (new Date).toLocaleTimeString(),
                     n = null;
-                if (s) try {
-                    n = JSON.parse(JSON.stringify(s))
+                if (a) try {
+                    n = JSON.parse(JSON.stringify(a))
                 } catch (o) {
-                    n = String(s)
+                    n = String(a)
                 }
                 let i = {
-                    timestamp: a,
+                    timestamp: s,
                     category: e,
                     message: t,
                     data: n
                 };
                 if (h.push(i), h.length > 100 && h.shift(), !p) return;
-                let l = `[${a}][Chat Debug][${e}] ${t}`;
-                s ? console.log(l + " | Data:", JSON.stringify(n, null, 2)) : console.log(l)
-            }, y = () => {
-                console.log("%c[Chat Debug] === DUMPING BUFFERED LOGS ===", "color: #ffcc00; font-weight: bold"), console.log(`[Chat Debug] Showing last ${h.length} log entries`), h.forEach((e, t) => {
-                    let s = `[${e.timestamp}][BUFFERED][${e.category}] ${e.message}`;
-                    e.data ? console.log(s + " | Data:", JSON.stringify(e.data, null, 2)) : console.log(s)
-                }), console.log("%c[Chat Debug] === END OF BUFFERED LOGS ===", "color: #ffcc00; font-weight: bold")
-            }, v = M({
+                let l = `[${s}][Chat Debug][${e}] ${t}`;
+                a ? console.log(l + " | Data:", JSON.stringify(n, null, 2)) : console.log(l)
+            }, v = reactive({
                 chat: {},
                 preInitialized: !1,
                 debugMode: !1,
@@ -6126,35 +5886,33 @@ let {
                     onConfirm: null,
                     onCancel: null
                 }
-            }), k = {
-                inputRef: w(null),
-                messagesRef: w(null),
-                emojiPickerContainer: w(null),
-                optionsDropdownRef: w(null),
-                optionsPanelRef: w(null)
+            }), y = {
+                inputRef: ref(null),
+                messagesRef: ref(null),
+                emojiPickerContainer: ref(null),
+                optionsDropdownRef: ref(null),
+                optionsPanelRef: ref(null)
             };
             o.init(e => {
                 v.typingUsers = e
             }), window.GroupingCache = {
                 cache: new Map,
                 getGroupingKey: (e, t) => e && t ? `${e.gId||"none"}_${t.gId||"none"}` : null,
-                shouldGroup(e, t, s) {
+                shouldGroup(e, t, a) {
                     if (!e || !t) return !1;
-                    let a = this.getGroupingKey(e, t);
-                    if (this.cache.has(a)) return this.cache.get(a);
+                    let s = this.getGroupingKey(e, t);
+                    if (this.cache.has(s)) return this.cache.get(s);
                     let n = !1;
-                    if (!e.forceUngrouped && s?.enableMessageGrouping && e.gId && t.gId) {
+                    if (!e.forceUngrouped && a?.enableMessageGrouping && e.gId && t.gId) {
                         let o = e => e.userId ? String(e.userId) : e.args && e.args.length > 0 ? String(e.args[0] || "unknown") : e.author || "unknown",
-                            i = o(e),
-                            l = o(t);
-                        if (i === l && "unknown" !== i && e.channel === t.channel && !t.edited) {
-                            let r = parseInt(e.timestamp) || Date.now(),
-                                c = parseInt(t.timestamp) || Date.now(),
-                                d = s?.groupingTimeWindow || 3e5;
-                            n = Math.abs(r - c) <= d && r >= c
+                            i = o(e);
+                        if (i === o(t) && "unknown" !== i && e.channel === t.channel && !t.edited) {
+                            let l = parseInt(e.timestamp) || Date.now(),
+                                r = parseInt(t.timestamp) || Date.now();
+                            n = Math.abs(l - r) <= (a?.groupingTimeWindow || 3e5) && l >= r
                         }
                     }
-                    return this.cache.set(a, n), n
+                    return this.cache.set(s, n), n
                 },
                 invalidate(e) {
                     for (let [t] of this.cache) t.includes(e) && this.cache.delete(t)
@@ -6163,7 +5921,7 @@ let {
                     this.cache.clear()
                 }
             };
-            let C = {
+            let C, k, E, $, b, N, V, I, M = {
                     cache: new Map,
                     getFlags(e) {
                         if (!e || !e.gId) return {};
@@ -6180,9 +5938,9 @@ let {
                         };
                         return t.shouldPreserve = t.isPinned && !t.isPoll, this.cache.set(e.gId, t), t
                     },
-                    updateFlag(e, t, s) {
-                        let a = this.cache.get(e);
-                        a && (a[t] = s, ("isPinned" === t || "isActivePoll" === t) && (a.shouldPreserve = a.isPinned && !a.isPoll || a.isActivePoll))
+                    updateFlag(e, t, a) {
+                        let s = this.cache.get(e);
+                        s && (s[t] = a, "isPinned" !== t && "isActivePoll" !== t || (s.shouldPreserve = s.isPinned && !s.isPoll || s.isActivePoll))
                     },
                     clear(e) {
                         e ? this.cache.delete(e) : this.cache.clear()
@@ -6191,23 +5949,22 @@ let {
                         this.clear(e)
                     }
                 },
-                E = {
+                _ = {
                     getChannelKey: e => `static:${e}`,
                     getChannelMessages(e) {
-                        let t = this.getChannelKey(e),
-                            s = v.channelMessagesMap.get(t) || [];
-                        return [...s]
+                        let t = this.getChannelKey(e);
+                        return [...v.channelMessagesMap.get(t) || []]
                     },
                     addChannelMessage(e, t) {
-                        $.invalidate();
-                        let s = this.getChannelKey(e),
-                            a = v.channelMessagesMap.get(s) || [];
-                        if (a.length >= 35) {
+                        w.invalidate();
+                        let a = this.getChannelKey(e),
+                            s = v.channelMessagesMap.get(a) || [];
+                        if (s.length >= 35) {
                             let n = [],
                                 o = [];
-                            for (let i = 0; i < a.length; i++) {
-                                let l = a[i],
-                                    r = C.getFlags(l),
+                            for (let i = 0; i < s.length; i++) {
+                                let l = s[i],
+                                    r = M.getFlags(l),
                                     c = r.isPinned || v.pinnedMessage && v.pinnedMessage.gId === l.gId;
                                 r.isActivePoll || c ? n.push(l) : o.push(l)
                             }
@@ -6218,17 +5975,17 @@ let {
                                     let p = m[g];
                                     p && p.gId && v.messageIdIndex.delete(p.gId)
                                 }
-                                a = [...n, ...o.slice(-d)]
+                                s = [...n, ...o.slice(-d)]
                             }
                         }
-                        t.displayOrder || (t.displayOrder = t.timestamp || Date.now()), a.push(t), v.channelMessagesMap.set(s, a), $.invalidate(), t && t.gId && v.messageIdIndex.set(t.gId, t), e === v.currentChannel && (v.channelMessagesMap = new Map(v.channelMessagesMap))
+                        t.displayOrder || (t.displayOrder = t.timestamp || Date.now()), s.push(t), v.channelMessagesMap.set(a, s), w.invalidate(), t && t.gId && v.messageIdIndex.set(t.gId, t), e === v.currentChannel && (v.channelMessagesMap = new Map(v.channelMessagesMap))
                     },
                     clearChannelMessages(e, t = !0) {
-                        let s = this.getChannelKey(e),
-                            a = v.channelMessagesMap.get(s) || [],
+                        let a = this.getChannelKey(e),
+                            s = v.channelMessagesMap.get(a) || [],
                             n = [];
-                        for (let o = 0; o < a.length; o++) {
-                            let i = a[o],
+                        for (let o = 0; o < s.length; o++) {
+                            let i = s[o],
                                 l = "poll" === i.type && i.pollData && !0 === i.pollData.active,
                                 r = i.isPinned || v.pinnedMessage && v.pinnedMessage.gId === i.gId;
                             t && (l || r) ? (n.push(i), f("POLL_PRESERVE", `Preserving ${l?"poll":"pinned"} message`, {
@@ -6237,10 +5994,10 @@ let {
                                 pollActive: l
                             })) : i && i.gId && v.messageIdIndex.delete(i.gId)
                         }
-                        v.channelMessagesMap.set(s, n), $.invalidate()
+                        v.channelMessagesMap.set(a, n), w.invalidate()
                     }
                 },
-                $ = {
+                w = {
                     cachedMessages: null,
                     lastChannel: null,
                     lastPinnedId: null,
@@ -6250,89 +6007,85 @@ let {
                     invalidate() {
                         this.cachedMessages = null
                     },
-                    isValid(e, t, s) {
-                        return null !== this.cachedMessages && this.lastChannel === e && this.lastMessageCount === t.length && this.lastPinnedId === (s?.gId || null) && this.lastPinnedChannel === (s?.channel || null)
+                    isValid(e, t, a) {
+                        return null !== this.cachedMessages && this.lastChannel === e && this.lastMessageCount === t.length && this.lastPinnedId === (a?.gId || null) && this.lastPinnedChannel === (a?.channel || null)
                     },
-                    update(e, t, s, a) {
-                        this.cachedMessages = a, this.lastChannel = e, this.lastMessageCount = t.length, this.lastPinnedId = s?.gId || null, this.lastPinnedChannel = s?.channel || null, this.lastUpdateTime = Date.now()
+                    update(e, t, a, s) {
+                        this.cachedMessages = s, this.lastChannel = e, this.lastMessageCount = t.length, this.lastPinnedId = a?.gId || null, this.lastPinnedChannel = a?.channel || null, this.lastUpdateTime = Date.now()
                     }
                 },
-                N, b, V, I, _, T, S, P, B = {
+                T = {
                     currentChannelMessages: c(() => {
-                        E.getChannelKey(v.currentChannel);
-                        let e = E.getChannelMessages(v.currentChannel);
-                        if ($.isValid(v.currentChannel, e, v.pinnedMessage)) return $.cachedMessages;
+                        _.getChannelKey(v.currentChannel);
+                        let e = _.getChannelMessages(v.currentChannel);
+                        if (w.isValid(v.currentChannel, e, v.pinnedMessage)) return w.cachedMessages;
                         let t = [],
-                            s = [];
-                        for (let a = 0; a < e.length; a++) {
-                            let n = e[a],
-                                o = C.getFlags(n);
-                            if (o.isPoll && (n.isPinned = !1), !o.isPoll && v.pinnedMessage && v.pinnedMessage.gId === n.gId && v.pinnedMessage.channel === v.currentChannel) {
-                                s.push({
-                                    ...v.pinnedMessage,
-                                    isPinned: !0,
-                                    forceUngrouped: !0,
-                                    displayOrder: Number.MAX_SAFE_INTEGER
-                                });
-                                continue
-                            }
-                            t.push(n)
+                            a = [];
+                        for (let s = 0; s < e.length; s++) {
+                            let n = e[s],
+                                o = M.getFlags(n);
+                            o.isPoll && (n.isPinned = !1), o.isPoll || !v.pinnedMessage || v.pinnedMessage.gId !== n.gId || v.pinnedMessage.channel !== v.currentChannel ? t.push(n) : a.push({
+                                ...v.pinnedMessage,
+                                isPinned: !0,
+                                forceUngrouped: !0,
+                                displayOrder: Number.MAX_SAFE_INTEGER
+                            })
                         }
-                        if (s.length > 0) {
-                            let i = new Set(s.map(e => e.gId)),
+                        if (a.length > 0) {
+                            let i = new Set(a.map(e => e.gId)),
                                 l = [];
                             for (let r = 0; r < t.length; r++) i.has(t[r].gId) || l.push(t[r]);
-                            t = l, s.sort((e, t) => (e.displayOrder || 0) - (t.displayOrder || 0)), t.push(...s)
+                            t = l, a.sort((e, t) => (e.displayOrder || 0) - (t.displayOrder || 0)), t.push(...a)
                         }
-                        return $.update(v.currentChannel, e, v.pinnedMessage, t), t
+                        return w.update(v.currentChannel, e, v.pinnedMessage, t), t
                     }),
                     hasAdminPermissions: c(() => v.permissions.Mute || v.permissions.Delete || v.permissions.Clear || v.permissions.Disable || v.permissions.Pin || v.permissions.CreatePoll),
                     showExpansion: c(() => {
-                        let e = k.inputRef.value?.stickers?.length > 0;
+                        let e = y.inputRef.value?.stickers?.length > 0;
                         return v.replyingTo || v.showEmojis || v.showChannelsPanel || v.showPollsPanel || v.showOptionsPanel || e
                     }),
-                    lastFiveMessages: (N = [], b = null, V = 0, c(() => {
-                        if (v.currentChannel === b) {
+                    lastFiveMessages: (C = [], k = null, E = 0, c(() => {
+                        if (v.currentChannel === k) {
                             let e = null;
                             for (let t = 0; t < v.channels.length; t++)
                                 if (v.channels[t].Title === v.currentChannel) {
                                     e = v.channels[t];
                                     break
-                                } if (e && e.messages.length === V) return N
+                                } if (e && e.messages.length === E) return C
                         }
-                        let s = null;
-                        for (let a = 0; a < v.channels.length; a++)
-                            if (v.channels[a].Title === v.currentChannel) {
-                                s = v.channels[a];
+                        let a = null;
+                        for (let s = 0; s < v.channels.length; s++)
+                            if (v.channels[s].Title === v.currentChannel) {
+                                a = v.channels[s];
                                 break
-                            } if (!s) return N = [], b = v.currentChannel, V = 0, N;
+                            } if (!a) return C = [], k = v.currentChannel, E = 0, C;
                         let n = new Set,
                             o = [];
-                        for (let i = s.messages.length - 1; i >= 0 && o.length < 5; i--) {
-                            let l = s.messages[i];
+                        for (let i = a.messages.length - 1; i >= 0 && o.length < 5; i--) {
+                            let l = a.messages[i];
                             if (l.gId) {
                                 let r = l.gId.split("_")[1];
                                 n.has(r) || (n.add(r), o.push(l))
                             }
                         }
-                        return N = o, b = v.currentChannel, V = s.messages.length, N
+                        return C = o, k = v.currentChannel, E = a.messages.length, C
                     })),
-                    hasMultipleChannels: (I = null, _ = -1, c(() => {
+                    hasMultipleChannels: ($ = null, b = -1, c(() => {
                         let e = v.channels ? v.channels.length : 0;
-                        return _ === e && null !== I ? I : (_ = e, I = v.channels && v.channels.length > 1)
+                        return b === e && null !== $ || (b = e, $ = v.channels && v.channels.length > 1), $
                     })),
-                    totalUnreadCount: (T = null, S = 0, P = null, c(() => {
+                    totalUnreadCount: (N = null, V = 0, I = null, c(() => {
                         let e = Date.now(),
                             t = v.currentChannel;
-                        if (null !== T && e - S < 100 && P === t) return T;
-                        let s = 0;
-                        for (let a = 0; a < v.channels.length; a++) {
-                            let n = v.channels[a];
-                            n.Title !== t && (s += n.unreadCount || 0)
+                        if (null !== N && e - V < 100 && I === t) return N;
+                        let a = 0;
+                        for (let s = 0; s < v.channels.length; s++) {
+                            let n = v.channels[s];
+                            n.Title !== t && (a += n.unreadCount || 0)
                         }
                         return v.permissions.Channels && v.permissions.Channels.forEach(e => {
-                            e.Title !== t && (s += e.unreadCount || 0)
-                        }), S = e, P = t, T = s, s
+                            e.Title !== t && (a += e.unreadCount || 0)
+                        }), V = e, I = t, N = a, a
                     })),
                     currentChannelColor: c(() => {
                         let e = null;
@@ -6347,22 +6100,19 @@ let {
                         let e = v.replyingTo.fullText || v.replyingTo.text || "",
                             t = e;
                         if (t = (t = t.replace(/:(\d+):/g, (e, t) => {
-                                let s = parseInt(t),
-                                    a = v.discordAssets?.emojiByIndex?.get(s);
-                                return a && a.url ? `<img src="${a.url}" class="reply-emoji custom-emoji-msg" alt=":${t}:">` : e
+                                let a = parseInt(t),
+                                    s = v.discordAssets?.emojiByIndex?.get(a);
+                                return s && s.url ? `<img src="${s.url}" class="reply-emoji custom-emoji-msg" alt=":${t}:">` : e
                             })).replace(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu, e => {
                                 let t = [];
-                                for (let s = 0; s < e.length; s++) {
-                                    let a = e.charCodeAt(s);
-                                    if (a >= 55296 && a <= 56319 && s + 1 < e.length) {
-                                        let n = a,
-                                            o = e.charCodeAt(++s),
-                                            i = (n - 55296) * 1024 + (o - 56320) + 65536;
-                                        t.push(i.toString(16))
-                                    } else t.push(a.toString(16).padStart(4, "0"))
+                                for (let a = 0; a < e.length; a++) {
+                                    let s = e.charCodeAt(a);
+                                    if (s >= 55296 && s <= 56319 && a + 1 < e.length) {
+                                        let n = 1024 * (s - 55296) + (e.charCodeAt(++a) - 56320) + 65536;
+                                        t.push(n.toString(16))
+                                    } else t.push(s.toString(16).padStart(4, "0"))
                                 }
-                                let l = t.join("-");
-                                return `<img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${l}.png" class="reply-emoji emoji-apple" alt="${e}" loading="lazy">`
+                                return `<img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${t.join("-")}.png" class="reply-emoji emoji-apple" alt="${e}" loading="lazy">`
                             }), [
                                 [/\[spoiler\]([\s\S]*?)\[\/spoiler\]/gi, '<span class="spoiler">$1</span>'],
                                 [/\[b\]([\s\S]*?)\[\/b\]/gi, "<strong>$1</strong>"],
@@ -6370,31 +6120,31 @@ let {
                                 [/\[u\]([\s\S]*?)\[\/u\]/gi, "<u>$1</u>"],
                                 [/\[s\]([\s\S]*?)\[\/s\]/gi, "<s>$1</s>"],
                                 [/\[code\]([\s\S]*?)\[\/code\]/gi, "<code>$1</code>"]
-                            ].forEach(([e, s]) => {
-                                t = t.replace(e, s)
+                            ].forEach(([e, a]) => {
+                                t = t.replace(e, a)
                             }), t = (t = (t = (t = (t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")).replace(/\*([^*]+)\*/g, "<em>$1</em>")).replace(/_([^_]+)_/g, "<em>$1</em>")).replace(/~~([^~]+)~~/g, "<s>$1</s>")).replace(/`([^`]+)`/g, "<code>$1</code>"), e.length > 50) {
-                            let s = document.createElement("div");
-                            s.innerHTML = t;
-                            let a = 0,
+                            let a = document.createElement("div");
+                            a.innerHTML = t;
+                            let s = 0,
                                 n = e => {
-                                    if (a >= 50) return "";
+                                    if (s >= 50) return "";
                                     if (e.nodeType === Node.TEXT_NODE) {
-                                        let t = 50 - a;
-                                        return e.textContent.length <= t ? (a += e.textContent.length, e.textContent) : (a = 50, e.textContent.substring(0, t) + "...")
+                                        let t = 50 - s;
+                                        return e.textContent.length <= t ? (s += e.textContent.length, e.textContent) : (s = 50, e.textContent.substring(0, t) + "...")
                                     }
                                     if (e.nodeType === Node.ELEMENT_NODE) {
-                                        if ("IMG" === e.tagName) return (a += 2) <= 50 ? e.outerHTML : "";
-                                        let s = `<${e.tagName.toLowerCase()}`;
-                                        for (let o of e.attributes) s += ` ${o.name}="${o.value}"`;
-                                        for (let i of (s += ">", e.childNodes))
-                                            if (s += n(i), a >= 50) break;
-                                        return s + `</${e.tagName.toLowerCase()}>`
+                                        if ("IMG" === e.tagName) return (s += 2) <= 50 ? e.outerHTML : "";
+                                        let a = `<${e.tagName.toLowerCase()}`;
+                                        for (let o of e.attributes) a += ` ${o.name}="${o.value}"`;
+                                        for (let i of (a += ">", e.childNodes))
+                                            if (a += n(i), s >= 50) break;
+                                        return a + `</${e.tagName.toLowerCase()}>`
                                     }
                                     return ""
                                 },
                                 o = "";
-                            for (let i of s.childNodes)
-                                if (o += n(i), a >= 50) break;
+                            for (let i of a.childNodes)
+                                if (o += n(i), s >= 50) break;
                             t = o
                         }
                         let l = "#ffffff";
@@ -6411,12 +6161,9 @@ let {
                         }
                     })
                 },
-                j = () => {
-                    i.scrollToBottom(!0)
-                },
-                A = {
+                S = {
                     openSearch() {
-                        v.search.show = !0, v.search.query = "", v.search.highlightedMessageId = null, v.showOptionsPanel = !1, a(() => {
+                        v.search.show = !0, v.search.query = "", v.search.highlightedMessageId = null, v.showOptionsPanel = !1, s(() => {
                             let e = document.querySelector(".search-input-minimal");
                             e?.focus()
                         })
@@ -6435,49 +6182,45 @@ let {
                                 t.replaceChild(document.createTextNode(e.textContent), e), t.normalize()
                             }), document.querySelectorAll(".search-match").forEach(e => {
                                 e.classList.remove("search-match")
-                            }), !v.search.query) {
-                            v.search.highlightedMessageId = null;
-                            return
-                        }
+                            }), !v.search.query) return void(v.search.highlightedMessageId = null);
                         let e = v.search.query.toLowerCase(),
                             t = null,
-                            s = (e, t) => {
-                                let a = e.textContent,
-                                    n = a.toLowerCase(),
-                                    o = n.indexOf(t);
-                                if (-1 !== o) {
-                                    let i = a.substring(0, o),
-                                        l = a.substring(o, o + t.length),
-                                        r = a.substring(o + t.length),
-                                        c = e.parentNode,
-                                        d = document.createDocumentFragment();
-                                    i && d.appendChild(document.createTextNode(i));
-                                    let m = document.createElement("span");
-                                    if (m.className = "search-highlight-text", m.textContent = l, d.appendChild(m), r) {
-                                        let g = document.createTextNode(r);
-                                        d.appendChild(g), c.replaceChild(d, e), s(g, t)
-                                    } else c.replaceChild(d, e);
+                            a = (e, t) => {
+                                let s = e.textContent,
+                                    n = s.toLowerCase().indexOf(t);
+                                if (-1 !== n) {
+                                    let o = s.substring(0, n),
+                                        i = s.substring(n, n + t.length),
+                                        l = s.substring(n + t.length),
+                                        r = e.parentNode,
+                                        c = document.createDocumentFragment();
+                                    o && c.appendChild(document.createTextNode(o));
+                                    let d = document.createElement("span");
+                                    if (d.className = "search-highlight-text", d.textContent = i, c.appendChild(d), l) {
+                                        let m = document.createTextNode(l);
+                                        c.appendChild(m), r.replaceChild(c, e), a(m, t)
+                                    } else r.replaceChild(c, e);
                                     return !0
                                 }
                                 return !1
                             },
                             n = t => {
-                                let a = !1;
+                                let s = !1;
                                 if (t.classList?.contains("search-highlight-text") || t.classList?.contains("message-time") || t.classList?.contains("message-actions") || t.classList?.contains("reaction-pill")) return !1;
                                 let o = Array.from(t.childNodes);
-                                for (let i of o) i.nodeType === Node.TEXT_NODE ? s(i, e) && (a = !0) : i.nodeType === Node.ELEMENT_NODE && n(i) && (a = !0);
-                                return a
+                                for (let i of o) i.nodeType === Node.TEXT_NODE ? a(i, e) && (s = !0) : i.nodeType === Node.ELEMENT_NODE && n(i) && (s = !0);
+                                return s
                             };
-                        B.currentChannelMessages.value.forEach(e => {
-                            let s = document.querySelector(`[data-msg-id="${e.gId}"]`);
-                            if (!s) return;
-                            let a = s.closest(".message-item");
-                            a && n(a) && (a.classList.add("search-match"), t || (t = e.gId))
-                        }), v.search.matchCount = document.querySelectorAll(".search-highlight-text").length, t && (v.search.highlightedMessageId = t, a(() => {
+                        T.currentChannelMessages.value.forEach(e => {
+                            let a = document.querySelector(`[data-msg-id="${e.gId}"]`);
+                            if (!a) return;
+                            let s = a.closest(".message-item");
+                            s && n(s) && (s.classList.add("search-match"), t || (t = e.gId))
+                        }), v.search.matchCount = document.querySelectorAll(".search-highlight-text").length, t && (v.search.highlightedMessageId = t, s(() => {
                             let e = document.querySelector(`[data-msg-id="${t}"]`);
                             if (e) {
-                                let s = e.closest(".message-item");
-                                s?.scrollIntoView({
+                                let a = e.closest(".message-item");
+                                a?.scrollIntoView({
                                     behavior: "smooth",
                                     block: "center"
                                 })
@@ -6485,9 +6228,9 @@ let {
                         }))
                     }
                 },
-                L = {
+                x = {
                     requestAssetsFromClient() {
-                        !v.discordAssets.isLoaded && !v.discordAssets.isLoading && (v.discordAssets.isLoading = !0, fetch("https://Easy-Chat-Max/RequestAssets", {
+                        v.discordAssets.isLoaded || v.discordAssets.isLoading || (v.discordAssets.isLoading = !0, fetch("https://Easy-Chat-Max/RequestAssets", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -6499,12 +6242,12 @@ let {
                             console.error("Failed to request assets:", e), v.discordAssets.isLoading = !1
                         }))
                     },
-                    ...A,
+                    ...S,
                     clearChatWindowTimer() {
                         v.showChatWindowTimer && (clearTimeout(v.showChatWindowTimer), v.showChatWindowTimer = null)
                     },
                     resetChatWindowTimer() {
-                        L.clearChatWindowTimer(), v.showChatWindowTimer = setTimeout(() => {
+                        x.clearChatWindowTimer(), v.showChatWindowTimer = setTimeout(() => {
                             v.showInput
                         }, 5e3)
                     },
@@ -6518,23 +6261,21 @@ let {
                             body: JSON.stringify({})
                         }).then(() => {
                             v.messageIdIndex.clear(), v.channelMessagesMap.forEach((e, t) => {
-                                let s = [];
-                                for (let a = 0; a < e.length; a++) {
-                                    let n = e[a],
-                                        o = C.getFlags(n);
-                                    o.shouldPreserve && (s.push(n), n.gId && v.messageIdIndex.set(n.gId, n))
+                                let a = [];
+                                for (let s = 0; s < e.length; s++) {
+                                    let n = e[s];
+                                    M.getFlags(n).shouldPreserve && (a.push(n), n.gId && v.messageIdIndex.set(n.gId, n))
                                 }
-                                e.length = 0, e.push(...s)
+                                e.length = 0, e.push(...a)
                             });
                             for (let e = 0; e < v.channels.length; e++) {
                                 let t = v.channels[e],
-                                    s = [];
-                                for (let a = 0; a < t.messages.length; a++) {
-                                    let n = t.messages[a],
-                                        o = C.getFlags(n);
-                                    o.shouldPreserve && s.push(n)
+                                    a = [];
+                                for (let s = 0; s < t.messages.length; s++) {
+                                    let n = t.messages[s];
+                                    M.getFlags(n).shouldPreserve && a.push(n)
                                 }
-                                t.messages = s
+                                t.messages = a
                             }
                         }).catch(() => {})
                     },
@@ -6553,81 +6294,70 @@ let {
                     handleOptionsPanelAction(e) {
                         switch (e) {
                             case "search":
-                                L.openSearch();
+                                x.openSearch();
                                 break;
                             case "poll":
                                 v.showPollsPanel = !0, v.showOptionsPanel = !1;
                                 break;
                             case "hide-chat":
-                                v.isChatHidden = !0, v.showWindow = !1, v.showOptionsPanel = !1, L.clearChatWindowTimer(), L.hideInput(!0);
+                                v.isChatHidden = !0, v.showWindow = !1, v.showOptionsPanel = !1, x.clearChatWindowTimer(), x.hideInput(!0);
                                 break;
                             case "clear-my-chat":
                                 let t = null;
-                                for (let s = 0; s < v.channels.length; s++)
-                                    if (v.channels[s].Title === v.currentChannel) {
-                                        t = v.channels[s];
+                                for (let a = 0; a < v.channels.length; a++)
+                                    if (v.channels[a].Title === v.currentChannel) {
+                                        t = v.channels[a];
                                         break
                                     } if (t) {
-                                    let a = [];
+                                    let s = [];
                                     for (let n = 0; n < t.messages.length; n++) {
                                         let o = t.messages[n];
-                                        if (o.isPinned && "poll" !== o.type) {
-                                            a.push(o);
-                                            continue
-                                        }
-                                        "poll" === o.type && o.pollData && !0 === o.pollData.active && a.push(o)
+                                        o.isPinned && "poll" !== o.type ? s.push(o) : "poll" === o.type && o.pollData && !0 === o.pollData.active && s.push(o)
                                     }
-                                    t.messages = a
+                                    t.messages = s
                                 }
-                                let i = E.getChannelKey(v.currentChannel),
+                                let i = _.getChannelKey(v.currentChannel),
                                     l = v.channelMessagesMap.get(i);
                                 if (l) {
                                     let r = [];
                                     for (let c = 0; c < l.length; c++) {
-                                        let d = l[c],
-                                            m = d.isPinned && "poll" !== d.type || "poll" === d.type && d.pollData && !0 === d.pollData.active;
-                                        m ? r.push(d) : d && d.gId && v.messageIdIndex.delete(d.gId)
+                                        let d = l[c];
+                                        d.isPinned && "poll" !== d.type || "poll" === d.type && d.pollData && !0 === d.pollData.active ? r.push(d) : d && d.gId && v.messageIdIndex.delete(d.gId)
                                     }
                                     v.channelMessagesMap.set(i, r)
                                 }
                                 v.showOptionsPanel = !1;
                                 break;
                             case "clear-all":
-                                L.clearChatForAll();
+                                x.clearChatForAll();
                                 break;
                             case "toggle-chat":
-                                L.disableChatForAll()
+                                x.disableChatForAll()
                         }
                     },
                     handleOptionsPanelToggle(e) {
                         switch (e) {
                             case "hideAvatars":
-                                v.storage.hideAvatars = !v.storage.hideAvatars, H();
+                                v.storage.hideAvatars = !v.storage.hideAvatars, A();
                                 break;
                             case "isMuted":
-                                v.storage.isMuted = !v.storage.isMuted, H();
+                                v.storage.isMuted = !v.storage.isMuted, A();
                                 break;
                             case "enableMessageGrouping":
-                                v.storage.enableMessageGrouping = !v.storage.enableMessageGrouping, H();
+                                v.storage.enableMessageGrouping = !v.storage.enableMessageGrouping, A();
                                 break;
                             case "showTypingIndicator":
-                                v.storage.showTypingIndicator = !v.storage.showTypingIndicator, H(), v.storage.showTypingIndicator || o.clear()
+                                v.storage.showTypingIndicator = !v.storage.showTypingIndicator, A(), v.storage.showTypingIndicator || o.clear()
                         }
-                        H()
+                        A()
                     },
                     handleNameColorUpdate(e) {
                         if (v.permissions.VIP.Message.Color) {
-                            if (null === e) {
-                                v.storage.customMessageColor = null, v.permissions.VIP.Message.Color || (v.storage.messageColorRgb = null, v.storage.color = null), H(), L.showNotification("تم إزالة تدرج VIP، احتفاظ بلون العنوان");
-                                return
-                            }
+                            if (null === e) return v.storage.customMessageColor = null, v.permissions.VIP.Message.Color || (v.storage.messageColorRgb = null, v.storage.color = null), A(), void x.showNotification("تم إزالة تدرج VIP، احتفاظ بلون العنوان");
                             if (/^#[0-9A-F]{6}$/i.test(e)) {
-                                let t = parseInt(e.substr(1, 2), 16),
-                                    s = parseInt(e.substr(3, 2), 16),
-                                    a = parseInt(e.substr(5, 2), 16),
-                                    n = `rgb(${t},${s},${a})`;
-                                v.storage.messageColorRgb = n, v.storage.customMessageColor = n, v.storage.color = n, v.storage.cosmeticsEnabled = !1, H(), H(), L.showNotification("تم تحديث لون الاسم")
-                            } else L.showModal({
+                                let t = `rgb(${parseInt(e.substr(1,2),16)},${parseInt(e.substr(3,2),16)},${parseInt(e.substr(5,2),16)})`;
+                                v.storage.messageColorRgb = t, v.storage.customMessageColor = t, v.storage.color = t, v.storage.cosmeticsEnabled = !1, A(), A(), x.showNotification("تم تحديث لون الاسم")
+                            } else x.showModal({
                                 type: "error",
                                 title: "خطأ",
                                 text: "اللون المدخل غير صحيح",
@@ -6636,19 +6366,19 @@ let {
                         }
                     },
                     handleCosmeticsToggle(e) {
-                        v.permissions.VIP.Cosmetics && (e && v.storage.customMessageColor && (v.storage.messageColorRgb = null, v.storage.color = null, v.storage.customMessageColor = null), v.storage.cosmeticsEnabled = e, H(), L.showNotification(e ? "تم تفعيل التأثيرات" : "تم إلغاء التأثيرات"))
+                        v.permissions.VIP.Cosmetics && (e && v.storage.customMessageColor && (v.storage.messageColorRgb = null, v.storage.color = null, v.storage.customMessageColor = null), v.storage.cosmeticsEnabled = e, A(), x.showNotification(e ? "تم تفعيل التأثيرات" : "تم إلغاء التأثيرات"))
                     },
                     handleSettingUpdate(e, t) {
-                        v.storage[e] = t, "messageStyle" === e && document.documentElement.setAttribute("data-message-style", t), "defaultMessageAnimation" === e && L.showNotification("تم تحديث حركة الرسائل الافتراضية")
+                        v.storage[e] = t, "messageStyle" === e && document.documentElement.setAttribute("data-message-style", t), "defaultMessageAnimation" === e && x.showNotification("تم تحديث حركة الرسائل الافتراضية")
                     },
                     toggleChannelsPanel() {
                         v.showQuickChannelSwitcher = !v.showQuickChannelSwitcher, v.showQuickChannelSwitcher && (v.showEmojis = !1, v.reactingMessageId = null, v.activePickerTab = "emojis", v.showPollModal = !1, v.showPollsPanel = !1)
                     },
                     handlePollMessage(e) {
                         let t = (e.channel || "").trim(),
-                            s = (v.currentChannel || "").trim(),
-                            n = t || s;
-                        if (t && s && t !== s) return;
+                            a = (v.currentChannel || "").trim(),
+                            n = t || a;
+                        if (t && a && t !== a) return;
                         let o = null;
                         if (e.pollData?.creatorId) {
                             let l = null;
@@ -6661,7 +6391,7 @@ let {
                                 o = c?.icon
                             }
                         }
-                        let d = e.pollData?.active === void 0 || e.pollData.active,
+                        let d = void 0 === e.pollData?.active || e.pollData.active,
                             m = {
                                 gId: e.id || `poll_${Date.now()}_${Math.random()}`,
                                 type: "poll",
@@ -6687,7 +6417,7 @@ let {
                                 cosmetics: null,
                                 bgColor: null
                             },
-                            g = E.getChannelKey(n),
+                            g = _.getChannelKey(n),
                             p = v.channelMessagesMap.get(g) || [],
                             u = p.find(t => "poll" === t.type && t.pollData?.id === e.pollData?.id);
                         if (u) Object.assign(u, m), m.gId && v.messageIdIndex.set(m.gId, u);
@@ -6698,49 +6428,49 @@ let {
                             }
                             p.push(m), m.gId && v.messageIdIndex.set(m.gId, m)
                         }
-                        v.channelMessagesMap.set(g, p), $.invalidate(), v.channelMessagesMap = new Map(v.channelMessagesMap);
+                        v.channelMessagesMap.set(g, p), w.invalidate(), v.channelMessagesMap = new Map(v.channelMessagesMap);
                         let f = null;
-                        for (let y = 0; y < v.channels.length; y++)
-                            if (v.channels[y].Title === n) {
-                                f = v.channels[y];
+                        for (let C = 0; C < v.channels.length; C++)
+                            if (v.channels[C].Title === n) {
+                                f = v.channels[C];
                                 break
                             } if (f) {
-                            let N = f.messages.find(t => "poll" === t.type && t.pollData?.id === e.pollData?.id);
-                            if (N) Object.assign(N, m);
+                            let k = f.messages.find(t => "poll" === t.type && t.pollData?.id === e.pollData?.id);
+                            if (k) Object.assign(k, m);
                             else {
                                 if (f.messages.length >= 35) {
-                                    let b = f.messages.findIndex(e => {
+                                    let E = f.messages.findIndex(e => {
                                         let t = "poll" === e.type && e.pollData && !0 === e.pollData.active,
-                                            s = e.isPinned || v.pinnedMessage && v.pinnedMessage.gId === e.gId;
-                                        return !t && !s
+                                            a = e.isPinned || v.pinnedMessage && v.pinnedMessage.gId === e.gId;
+                                        return !t && !a
                                     });
-                                    if (-1 !== b) {
-                                        let V = f.messages[b];
-                                        V && V.gId && C.invalidate(V.gId), f.messages.splice(b, 1)
+                                    if (-1 !== E) {
+                                        let $ = f.messages[E];
+                                        $ && $.gId && M.invalidate($.gId), f.messages.splice(E, 1)
                                     }
                                 }
                                 f.messages.push(m)
                             }
                             v.channels = [...v.channels]
                         }
-                        a(() => {
-                            n === s && k.messagesRef.value && i.softScrollToBottom()
+                        s(() => {
+                            n === a && y.messagesRef.value && i.softScrollToBottom()
                         })
                     },
                     updatePoll(e) {
                         v.activePolls[e.id] = e, v.currentChannelPoll?.id === e.id && (v.currentChannelPoll = e);
-                        let t = E.getChannelKey(v.currentChannel),
-                            s = v.channelMessagesMap.get(t) || [],
-                            a = s.find(t => t.pollData?.id === e.id);
-                        if (a) {
+                        let t = _.getChannelKey(v.currentChannel),
+                            a = v.channelMessagesMap.get(t) || [],
+                            s = a.find(t => t.pollData?.id === e.id);
+                        if (s) {
                             let n = {
-                                    ...a,
+                                    ...s,
                                     pollData: {
                                         ...e
                                     },
                                     lastUpdate: Date.now()
                                 },
-                                o = s.indexOf(a); - 1 !== o && (s[o] = n, n.gId && v.messageIdIndex.set(n.gId, n))
+                                o = a.indexOf(s); - 1 !== o && (a[o] = n, n.gId && v.messageIdIndex.set(n.gId, n))
                         }
                         v.channelMessagesMap = new Map(v.channelMessagesMap);
                         let i = null;
@@ -6762,23 +6492,23 @@ let {
                             }
                             v.channels = [...v.channels]
                         }
-                        $.invalidate(), v.forceUpdate = Date.now()
+                        w.invalidate(), v.forceUpdate = Date.now()
                     },
                     startReply(e) {
                         if (!e || !e.gId) return;
                         let t = e.args[0] || e.author || "غير معروف",
-                            s = g(e),
-                            a = document.createElement("div");
-                        a.innerHTML = s, s = a.textContent || a.innerText || "", v.replyingTo = {
+                            a = g(e),
+                            s = document.createElement("div");
+                        s.innerHTML = a, a = s.textContent || s.innerText || "", v.replyingTo = {
                             gId: e.gId,
                             author: t,
-                            text: s,
-                            fullText: s,
-                            textProcessed: s,
-                            displayText: s.substring(0, 50) + (s.length > 50 ? "..." : ""),
+                            text: a,
+                            fullText: a,
+                            textProcessed: a,
+                            displayText: a.substring(0, 50) + (a.length > 50 ? "..." : ""),
                             color: e.color || null,
                             args: e.args || null
-                        }, v.showChannelsPanel && (v.showChannelsPanel = !1), k.inputRef.value?.focus()
+                        }, v.showChannelsPanel && (v.showChannelsPanel = !1), y.inputRef.value?.focus()
                     },
                     togglePicker() {
                         v.showEmojis ? "emojis" === v.activePickerTab ? v.activePickerTab = "stickers" : (v.activePickerTab = "emojis", v.showEmojis = !1) : (v.showEmojis = !0, v.activePickerTab = "emojis")
@@ -6795,7 +6525,7 @@ let {
                             if (v.pinnedMessage?.gId === e.gId) {
                                 v.pinnedMessage = null;
                                 let t = v.messageIdIndex.get(e.gId);
-                                t && (t.isPinned = !1, C.updateFlag(e.gId, "isPinned", !1), $.invalidate()), L.showNotification("تم إلغاء تثبيت الرسالة"), fetch("https://Easy-Chat-Max/unpinMessage", {
+                                t && (t.isPinned = !1, M.updateFlag(e.gId, "isPinned", !1), w.invalidate()), x.showNotification("تم إلغاء تثبيت الرسالة"), fetch("https://Easy-Chat-Max/unpinMessage", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -6808,16 +6538,16 @@ let {
                                     console.error("فشل إلغاء تثبيت الرسالة:", e)
                                 })
                             } else {
-                                let s = v.messageIdIndex.get(e.gId);
-                                s && (s.isPinned = !0, C.updateFlag(e.gId, "isPinned", !0), $.invalidate());
-                                let a = v.messageIdIndex.get(e.gId) || e;
+                                let a = v.messageIdIndex.get(e.gId);
+                                a && (a.isPinned = !0, M.updateFlag(e.gId, "isPinned", !0), w.invalidate());
+                                let s = v.messageIdIndex.get(e.gId) || e;
                                 v.pinnedMessage = {
-                                    ...a,
+                                    ...s,
                                     channel: v.currentChannel,
-                                    reactions: a.reactions ? {
-                                        ...a.reactions
+                                    reactions: s.reactions ? {
+                                        ...s.reactions
                                     } : {}
-                                }, L.showNotification("تم تثبيت الرسالة"), fetch("https://Easy-Chat-Max/pinMessage", {
+                                }, x.showNotification("تم تثبيت الرسالة"), fetch("https://Easy-Chat-Max/pinMessage", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -6845,7 +6575,7 @@ let {
                                 duration: e.duration
                             })
                         }).then(() => {
-                            L.showNotification(`تم كتم المستخدم لمدة ${e.duration} دقيقة`)
+                            x.showNotification(`تم كتم المستخدم لمدة ${e.duration} دقيقة`)
                         }).catch(e => {
                             console.error("فشل كتم المستخدم:", e)
                         })
@@ -6853,7 +6583,7 @@ let {
                     unmuteSender(e) {
                         if (!e || !e.gId || !v.permissions.Mute) return;
                         let t = e.gId.split("_")[1];
-                        t && L.showModal({
+                        t && x.showModal({
                             type: "info",
                             title: "إلغاء الكتم",
                             text: `هل تريد السماح لـ ${e.author||e.args?.[0]||"هذا المستخدم"} بالإرسال؟`,
@@ -6871,9 +6601,9 @@ let {
                                         senderName: e.author || e.args?.[0] || "غير معروف"
                                     })
                                 }).then(() => {
-                                    L.showNotification("تم إلغاء الكتم بنجاح", "success")
+                                    x.showNotification("تم إلغاء الكتم بنجاح", "success")
                                 }).catch(e => {
-                                    console.error("فشل إلغاء كتم المرسل:", e), L.showNotification("فشل إلغاء الكتم", "error")
+                                    console.error("فشل إلغاء كتم المرسل:", e), x.showNotification("فشل إلغاء الكتم", "error")
                                 })
                             }
                         })
@@ -6881,21 +6611,18 @@ let {
                     showMessageOptions(e) {
                         let t = e.message;
                         if (t && t.gId) {
-                            if (v.selectedMessageId === t.gId && v.showOptionsPanel) {
-                                v.messageContext = null, v.selectedMessageId = null, v.showOptionsPanel = !1;
-                                return
-                            }
-                            t.isPinned = v.pinnedMessage?.gId === t.gId, v.messageContext = t, v.selectedMessageId = t.gId, v.showOptionsPanel = !0, a(() => {
-                                k.optionsPanelRef.value && t.gId && k.optionsPanelRef.value.fetchReactionDetails(t.gId)
+                            if (v.selectedMessageId === t.gId && v.showOptionsPanel) return v.messageContext = null, v.selectedMessageId = null, void(v.showOptionsPanel = !1);
+                            t.isPinned = v.pinnedMessage?.gId === t.gId, v.messageContext = t, v.selectedMessageId = t.gId, v.showOptionsPanel = !0, s(() => {
+                                y.optionsPanelRef.value && t.gId && y.optionsPanelRef.value.fetchReactionDetails(t.gId)
                             })
                         }
                     },
                     showLinkModal(e) {
                         let {
                             url: t,
-                            callback: s
+                            callback: a
                         } = e;
-                        L.showModal({
+                        x.showModal({
                             type: "warning",
                             title: "فتح رابط خارجي",
                             text: `هل أنت متأكد أنك تريد فتح هذا الرابط؟
@@ -6905,7 +6632,7 @@ ${t}`,
                             confirmText: "فتح الرابط",
                             cancelText: "إلغاء",
                             onConfirm() {
-                                s && "function" == typeof s && s()
+                                a && "function" == typeof a && a()
                             }
                         })
                     },
@@ -6914,65 +6641,65 @@ ${t}`,
                     },
                     handleMessageAction(e, t) {
                         if (!e || !t || !t.gId) return;
-                        let s = () => {
+                        let a = () => {
                             v.showOptionsPanel = !1, v.messageContext = null, v.selectedMessageId = null
                         };
                         switch (e) {
                             case "reply":
-                                s(), L.startReply(t), a(() => {
-                                    let e = k.inputRef.value?.editor;
+                                a(), x.startReply(t), s(() => {
+                                    let e = y.inputRef.value?.editor;
                                     e && e.commands.focus()
                                 });
                                 break;
                             case "copy":
-                                L.copyMessageText(t), s();
+                                x.copyMessageText(t), a();
                                 break;
                             case "react":
-                                v.reactingMessageId = t.gId, v.activePickerTab = "emojis", v.showEmojis = !0, s();
+                                v.reactingMessageId = t.gId, v.activePickerTab = "emojis", v.showEmojis = !0, a();
                                 break;
                             case "edit":
-                                s(), L.handleEditMessage(t);
+                                a(), x.handleEditMessage(t);
                                 break;
                             case "delete-own":
-                                s(), L.handleDeleteOwnMessage(t);
+                                a(), x.handleDeleteOwnMessage(t);
                                 break;
                             case "admin-delete":
-                                s(), L.handleAdminDeleteMessage(t);
+                                a(), x.handleAdminDeleteMessage(t);
                                 break;
                             case "pin":
-                                L.pinMessage(t), s();
+                                x.pinMessage(t), a();
                                 break;
                             case "copyId":
-                                L.copyMessageId(t), s();
+                                x.copyMessageId(t), a();
                                 break;
                             case "mute-with-duration":
-                                L.muteSenderWithDuration(t), s();
+                                x.muteSenderWithDuration(t), a();
                                 break;
                             case "unmute":
-                                L.unmuteSender(t), s();
+                                x.unmuteSender(t), a();
                                 break;
                             default:
-                                s()
+                                a()
                         }
                     },
                     handleEditMessage(e) {
                         if (!e || !e.gId) return;
                         let t = g(e),
-                            s = document.createElement("div");
-                        s.innerHTML = t;
-                        let a = s.textContent || s.innerText || "";
-                        L.showModal({
+                            a = document.createElement("div");
+                        a.innerHTML = t;
+                        let s = a.textContent || a.innerText || "";
+                        x.showModal({
                             type: "question",
                             title: "تعديل الرسالة",
                             text: "قم بتعديل رسالتك:",
                             input: !0,
-                            inputValue: a,
+                            inputValue: s,
                             inputPlaceholder: "اكتب رسالتك المعدلة هنا...",
                             confirmText: "حفظ التعديل",
                             cancelText: "إلغاء",
                             showCancel: !0,
                             onConfirm(t) {
-                                t && t.trim() && t !== a && fetch("https://Easy-Chat-Max/editMessage", {
+                                t && t.trim() && t !== s && fetch("https://Easy-Chat-Max/editMessage", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -6982,9 +6709,9 @@ ${t}`,
                                         Msg: t.trim()
                                     })
                                 }).then(() => {
-                                    L.showNotification("تم تعديل الرسالة بنجاح")
+                                    x.showNotification("تم تعديل الرسالة بنجاح")
                                 }).catch(e => {
-                                    console.error("Failed to edit message:", e), L.showModal({
+                                    console.error("Failed to edit message:", e), x.showModal({
                                         type: "error",
                                         title: "خطأ",
                                         text: "فشل تعديل الرسالة. حاول مرة أخرى."
@@ -7003,7 +6730,7 @@ ${t}`,
                                 gId: e.gId
                             })
                         }).then(() => {
-                            L.showNotification("تم حذف رسالتك")
+                            x.showNotification("تم حذف رسالتك")
                         }).catch(e => {
                             console.error("Failed to delete own message:", e)
                         })
@@ -7018,7 +6745,7 @@ ${t}`,
                                 gId: e.gId
                             })
                         }).then(() => {
-                            L.showNotification("تم حذف الرسالة بصلاحيات إدارية")
+                            x.showNotification("تم حذف الرسالة بصلاحيات إدارية")
                         }).catch(e => {
                             console.error("Failed to admin delete message:", e)
                         })
@@ -7026,27 +6753,27 @@ ${t}`,
                     copyMessageText(e) {
                         if (!e || !e.gId) return;
                         let t = g(e),
-                            s = document.createElement("div");
-                        s.innerHTML = t;
-                        let a = s.textContent || s.innerText || "";
-                        a && navigator.clipboard ? navigator.clipboard.writeText(a).then(() => {
-                            L.showNotification("تم نسخ الرسالة")
+                            a = document.createElement("div");
+                        a.innerHTML = t;
+                        let s = a.textContent || a.innerText || "";
+                        s && navigator.clipboard ? navigator.clipboard.writeText(s).then(() => {
+                            x.showNotification("تم نسخ الرسالة")
                         }).catch(() => {
-                            L.fallbackCopy(a)
-                        }) : a && L.fallbackCopy(a)
+                            x.fallbackCopy(s)
+                        }) : s && x.fallbackCopy(s)
                     },
                     copyMessageId(e) {
                         if (!e || !e.gId) return;
                         let t = e.gId;
                         t && navigator.clipboard ? navigator.clipboard.writeText(t).then(() => {
-                            L.showNotification("تم نسخ المعرف")
+                            x.showNotification("تم نسخ المعرف")
                         }).catch(() => {
-                            L.fallbackCopy(t)
-                        }) : t && L.fallbackCopy(t)
+                            x.fallbackCopy(t)
+                        }) : t && x.fallbackCopy(t)
                     },
                     fallbackCopy(e) {
                         let t = document.createElement("textarea");
-                        t.value = e, t.style.position = "fixed", t.style.opacity = "0", document.body.appendChild(t), t.select(), document.execCommand("copy"), document.body.removeChild(t), L.showNotification("تم النسخ")
+                        t.value = e, t.style.position = "fixed", t.style.opacity = "0", document.body.appendChild(t), t.select(), document.execCommand("copy"), document.body.removeChild(t), x.showNotification("تم النسخ")
                     },
                     showNotification(e) {
                         let t = document.createElement("div");
@@ -7058,15 +6785,12 @@ ${t}`,
                     },
                     handleReaction(e, t) {
                         if (!e) return;
-                        let s = v.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"];
-                        if (!(t && s.includes(t))) {
+                        let a = v.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"];
+                        if (!t || !a.includes(t)) {
                             if (t) {
-                                let a = `${e}_${t}`;
-                                if (v.pendingReactions && v.pendingReactions[a]) return;
-                                if (v.pendingReactions || (v.pendingReactions = {}), v.pendingReactions[a] = !0, !l.canRequest(`reaction-${e}`, 300)) {
-                                    delete v.pendingReactions[a];
-                                    return
-                                }
+                                let s = `${e}_${t}`;
+                                if (v.pendingReactions && v.pendingReactions[s]) return;
+                                if (v.pendingReactions || (v.pendingReactions = {}), v.pendingReactions[s] = !0, !l.canRequest(`reaction-${e}`, 300)) return void delete v.pendingReactions[s];
                                 fetch("https://Easy-Chat-Max/addReaction", {
                                     method: "POST",
                                     headers: {
@@ -7081,14 +6805,11 @@ ${t}`,
                                 }).catch(e => {
                                     console.error("Failed to add reaction:", e)
                                 }).finally(() => {
-                                    delete v.pendingReactions[a]
+                                    delete v.pendingReactions[s]
                                 })
                             } else {
-                                let n = L.findMessageById(e);
-                                if (n && n.reactions) {
-                                    let o = Object.keys(n.reactions).filter(e => "_lastUpdate" !== e && "_lock" !== e && n.reactions[e] && n.reactions[e].length > 0).length;
-                                    if (o >= 4) return
-                                }
+                                let n = x.findMessageById(e);
+                                if (n && n.reactions && Object.keys(n.reactions).filter(e => "_lastUpdate" !== e && "_lock" !== e && n.reactions[e] && n.reactions[e].length > 0).length >= 4) return;
                                 v.reactingMessageId = e, v.activePickerTab = "emojis", v.showEmojis = !0, v.showChannelsPanel = !1, v.showExpansion = !0
                             }
                         }
@@ -7106,15 +6827,15 @@ ${t}`,
                     }, 3e3),
                     handleEmojiSelect(e) {
                         let t = v.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"],
-                            s = e.native || "";
-                        if (!t.includes(s) && (!e.isCustom || v.permissions.VIP?.ServerEmojis)) {
+                            a = e.native || "";
+                        if (!t.includes(a) && (!e.isCustom || v.permissions.VIP?.ServerEmojis)) {
                             if (v.reactingMessageId) {
                                 let n = e.native || e.shortcodes;
-                                e.isCustom && (n = e.shortcodes), L.handleReaction(v.reactingMessageId, n), v.reactingMessageId = null, v.showEmojis = !1
-                            } else k.inputRef.value?.insertEmoji ? k.inputRef.value.insertEmoji(e) : k.inputRef.value?.insertText && k.inputRef.value.insertText(e), a(() => {
-                                if (k.inputRef.value?.focus) {
-                                    k.inputRef.value.focus();
-                                    let e = k.inputRef.value?.editorElement;
+                                e.isCustom && (n = e.shortcodes), x.handleReaction(v.reactingMessageId, n), v.reactingMessageId = null, v.showEmojis = !1
+                            } else y.inputRef.value?.insertEmoji ? y.inputRef.value.insertEmoji(e) : y.inputRef.value?.insertText && y.inputRef.value.insertText(e), s(() => {
+                                if (y.inputRef.value?.focus) {
+                                    y.inputRef.value.focus();
+                                    let e = y.inputRef.value?.editorElement;
                                     if (e) {
                                         let t = e.querySelector(".ProseMirror");
                                         t && t.focus()
@@ -7125,14 +6846,14 @@ ${t}`,
                     },
                     handleStickerSelect(e) {
                         if (!v.permissions.VIP?.Stickers) return;
-                        v.uploadedImages.length > 0 && (v.uploadedImages = [], k.inputRef.value?.clearUploadedImages && k.inputRef.value.clearUploadedImages()), v.selectedSticker = e;
+                        v.uploadedImages.length > 0 && (v.uploadedImages = [], y.inputRef.value?.clearUploadedImages && y.inputRef.value.clearUploadedImages()), v.selectedSticker = e;
                         let t = document.querySelector(".sticker-preview-item");
                         t && (t.classList.add("replacing"), setTimeout(() => {
                             t.classList.remove("replacing")
-                        }, 400)), v.showEmojis = !1, a(() => {
-                            if (k.inputRef.value?.focus) {
-                                k.inputRef.value.focus();
-                                let e = k.inputRef.value?.editorElement;
+                        }, 400)), v.showEmojis = !1, s(() => {
+                            if (y.inputRef.value?.focus) {
+                                y.inputRef.value.focus();
+                                let e = y.inputRef.value?.editorElement;
                                 if (e) {
                                     let t = e.querySelector(".ProseMirror");
                                     t && t.focus()
@@ -7144,9 +6865,7 @@ ${t}`,
                         "start" === e.status ? v.isUploadingImage = !0 : "complete" === e.status ? v.isUploadingImage = !1 : "error" === e.status && (v.isUploadingImage = !1, console.error("Image upload error:", e.error))
                     },
                     handleImageUploaded(e) {
-                        v.selectedSticker && (v.selectedSticker = null), v.uploadedImages = e;
-                        let t = document.querySelectorAll(".image-button-badge");
-                        t.forEach(e => {
+                        v.selectedSticker && (v.selectedSticker = null), v.uploadedImages = e, document.querySelectorAll(".image-button-badge").forEach(e => {
                             e.classList.add("replacing"), setTimeout(() => {
                                 e.classList.remove("replacing")
                             }, 400)
@@ -7161,90 +6880,73 @@ ${t}`,
                                 currentChannel: v.currentChannel,
                                 showInput: v.showInput,
                                 modalShowing: v.modal.show
-                            }), v.chatDisabled) {
-                            f("SEND_BLOCKED", "Chat is disabled", {
-                                chatDisabled: v.chatDisabled
-                            });
-                            return
-                        }
+                            }), v.chatDisabled) return void f("SEND_BLOCKED", "Chat is disabled", {
+                            chatDisabled: v.chatDisabled
+                        });
                         let e = v.message;
-                        if (k.inputRef.value?.getFormattedContent ? f("MSG_FORMAT", "Got formatted content", {
-                                formatted: e = k.inputRef.value.getFormattedContent()
-                            }) : k.inputRef.value?.getText && f("MSG_FORMAT", "Got plain text", {
-                                text: e = k.inputRef.value.getText()
-                            }), v.isUploadingImage) {
-                            L.showNotification("يرجى الانتظار حتى يتم رفع الصورة", "info");
-                            return
-                        }
+                        if (y.inputRef.value?.getFormattedContent ? f("MSG_FORMAT", "Got formatted content", {
+                                formatted: e = y.inputRef.value.getFormattedContent()
+                            }) : y.inputRef.value?.getText && f("MSG_FORMAT", "Got plain text", {
+                                text: e = y.inputRef.value.getText()
+                            }), v.isUploadingImage) return void x.showNotification("يرجى الانتظار حتى يتم رفع الصورة", "info");
                         if (v.modal.show) return;
                         let t = null,
-                            s = null;
+                            a = null;
                         v.selectedSticker && v.permissions.VIP?.Stickers && (t = {
                             url: v.selectedSticker.src || v.selectedSticker.url,
                             name: v.selectedSticker.name,
                             shortcode: v.selectedSticker.shortcodes
-                        }), v.uploadedImages.length > 0 && (s = v.uploadedImages.map(e => ({
+                        }), v.uploadedImages.length > 0 && (a = v.uploadedImages.map(e => ({
                             url: e.url,
                             name: e.name,
                             type: e.type,
                             size: e.size
                         })));
                         let n = !m.isEmpty(e),
-                            o = t || s;
+                            o = t || a;
                         if (f("MSG_PREPARE", "Preparing message for send", {
                                 hasText: n,
                                 hasMedia: o,
                                 messageLength: e ? e.length : 0,
                                 stickerData: !!t,
-                                imagesCount: s ? s.length : 0,
+                                imagesCount: a ? a.length : 0,
                                 currentChannel: v.currentChannel,
                                 isDisabled: v.isDisabled
-                            }), !n && !o) {
-                            f("MSG_EMPTY", "Message rejected - no text or media", {
-                                messageToSend: e,
-                                trimmedLength: e ? e.trim().length : 0
-                            }), L.hideInput(!0);
-                            return
-                        }
+                            }), !n && !o) return f("MSG_EMPTY", "Message rejected - no text or media", {
+                            messageToSend: e,
+                            trimmedLength: e ? e.trim().length : 0
+                        }), void x.hideInput(!0);
                         let r = e;
                         if (!v.permissions.VIP?.ServerEmojis) {
                             let c = /:\d+:/.test(r);
-                            r = r.replace(/:\d+:/g, ""), c && L.showNotification("تم إزالة الايموجيات الخاصة", "warning")
-                        }
-                        let d = v.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"];
-                        d.forEach(e => {
+                            r = r.replace(/:\d+:/g, ""), c && x.showNotification("تم إزالة الايموجيات الخاصة", "warning")
+                        }(v.config?.Settings?.Filter?.InappropriateEmojis || ["\uD83C\uDF46", "\uD83C\uDF51", "\uD83E\uDD52", "\uD83C\uDF2D", "\uD83E\uDD55", "\uD83C\uDF4C", "\uD83C\uDF52", "\uD83D\uDCA6", "\uD83D\uDC49", "\uD83D\uDC4C", "\uD83D\uDD95"]).forEach(e => {
                             r = r.replace(RegExp(e, "g"), "")
                         });
-                        let g = r.trim(),
-                            [p, u] = v.chat?.Settings?.Filter?.Length || [1, 500];
+                        let d = r.trim(),
+                            [g, p] = v.chat?.Settings?.Filter?.Length || [1, 500];
                         if (!o && !v.permissions.Bypass) {
-                            if (0 === g.length) {
-                                f("MSG_REJECTED", "Message empty after trim", {
-                                    originalLength: r.length,
-                                    trimmedLength: g.length
-                                }), L.showNotification("لا يمكن أن تكون الرسالة فارغة", "error");
-                                return
-                            }
-                            let h = v.chat?.Settings?.Filter?.Images?.Enabled && v.permissions.ImagesAndLinks?.[0] ? r.replace(/(https?:\/\/[^\s]+?\.(?:png|jpg|gif|jpeg|webp)(?:\?[^\s]*)?)/gi, "").length : r.length;
+                            if (0 === d.length) return f("MSG_REJECTED", "Message empty after trim", {
+                                originalLength: r.length,
+                                trimmedLength: d.length
+                            }), void x.showNotification("لا يمكن أن تكون الرسالة فارغة", "error");
+                            let u = v.chat?.Settings?.Filter?.Images?.Enabled && v.permissions.ImagesAndLinks?.[0] ? r.replace(/(https?:\/\/[^\s]+?\.(?:png|jpg|gif|jpeg|webp)(?:\?[^\s]*)?)/gi, "").length : r.length;
                             if (f("MSG_LENGTH_CHECK", "Checking message length", {
-                                    effectiveLength: h,
-                                    minLength: p,
-                                    maxLength: u,
-                                    passedCheck: h >= p && h <= u
-                                }), h < p || h > u) {
-                                f("MSG_REJECTED", "Message length out of bounds", {
-                                    effectiveLength: h,
-                                    minLength: p,
-                                    maxLength: u
-                                }), L.showModal({
-                                    type: "error",
-                                    title: "خطأ",
-                                    text: `لا يمكنك ارسال رسالة تقل عن ${p} حرف او اعلى من ${u} حرف`
-                                });
-                                return
-                            }
+                                    effectiveLength: u,
+                                    minLength: g,
+                                    maxLength: p,
+                                    passedCheck: u >= g && u <= p
+                                }), u < g || u > p) return f("MSG_REJECTED", "Message length out of bounds", {
+                                effectiveLength: u,
+                                minLength: g,
+                                maxLength: p
+                            }), void x.showModal({
+                                type: "error",
+                                title: "خطأ",
+                                text: `لا يمكنك ارسال رسالة تقل عن ${g} حرف او اعلى من ${p} حرف`
+                            })
                         }
-                        let y = v.replyingTo ? {
+                        let h = v.replyingTo ? {
                             gId: v.replyingTo.gId,
                             author: v.replyingTo.author,
                             text: v.replyingTo.text,
@@ -7254,31 +6956,28 @@ ${t}`,
                             color: v.replyingTo.color,
                             args: v.replyingTo.args
                         } : null;
-                        if (!l.canRequest("sendMessage", 500)) {
-                            f("MSG_THROTTLED", "Message blocked by throttler", {
-                                waitTime: "500ms"
-                            });
-                            return
-                        }
+                        if (!l.canRequest("sendMessage", 500)) return void f("MSG_THROTTLED", "Message blocked by throttler", {
+                            waitTime: "500ms"
+                        });
                         let C = {
                             message: r,
                             channel: v.currentChannel || "شات العام",
                             userId: v.userId,
                             customColor: v.permissions.VIP.Message.Color ? v.storage?.customMessageColor : null,
-                            cosmetics: !!v.permissions.VIP.Cosmetics && v.storage?.cosmeticsEnabled === !0 && !v.storage?.customMessageColor,
+                            cosmetics: !(!v.permissions.VIP.Cosmetics || !0 !== v.storage?.cosmeticsEnabled || v.storage?.customMessageColor),
                             messageAnimation: v.permissions.VIP.Message.Entrance ? v.storage?.sendAnimation || "fadeIn" : null,
-                            font: v.permissions.VIP.Message.Font && v.storage?.messageFont && v.storage?.messageFont !== "default" ? v.storage?.messageFont : null,
-                            nameAnimation: v.permissions.VIP.Message.NameAnim && v.storage?.nameAnimation && v.storage?.nameAnimation !== "none" ? v.storage?.nameAnimation : null,
-                            replyTo: y,
+                            font: v.permissions.VIP.Message.Font && v.storage?.messageFont && "default" !== v.storage?.messageFont ? v.storage?.messageFont : null,
+                            nameAnimation: v.permissions.VIP.Message.NameAnim && v.storage?.nameAnimation && "none" !== v.storage?.nameAnimation ? v.storage?.nameAnimation : null,
+                            replyTo: h,
                             sticker: t,
-                            images: s
+                            images: a
                         };
                         f("MSG_SEND_ATTEMPT", "Attempting to send message", {
                             messageLength: r.length,
                             channel: C.channel,
-                            hasReply: !!y,
+                            hasReply: !!h,
                             hasSticker: !!t,
-                            hasImages: !!(s && s.length > 0),
+                            hasImages: !!(a && a.length > 0),
                             userId: v.userId
                         }), fetch("https://Easy-Chat-Max/sendMessage", {
                             method: "POST",
@@ -7295,16 +6994,16 @@ ${t}`,
                                 error: e.toString(),
                                 message: e.message
                             })
-                        }), k.inputRef.value?.addToHistory && "" !== r.trim() && k.inputRef.value.addToHistory(r);
-                        let E = s && s.length > 0;
-                        v.replyingTo = null, v.selectedSticker = null, v.uploadedImages = [], k.inputRef.value?.clearContent && k.inputRef.value.clearContent(), a(() => {
+                        }), y.inputRef.value?.addToHistory && "" !== r.trim() && y.inputRef.value.addToHistory(r);
+                        let k = a && a.length > 0;
+                        v.replyingTo = null, v.selectedSticker = null, v.uploadedImages = [], y.inputRef.value?.clearContent && y.inputRef.value.clearContent(), s(() => {
                             v.message = ""
-                        }), L.hideInput(!0), E && i.handleImageMessage(), v.showChannelsPanel && (v.showChannelsPanel = !1, v.showExpansion = !1)
+                        }), x.hideInput(!0), k && i.handleImageMessage(), v.showChannelsPanel && (v.showChannelsPanel = !1, v.showExpansion = !1)
                     },
                     hideInput(e = !1) {
-                        L.setNuiFocus(!1, !1), k.inputRef.value?.clearContent && k.inputRef.value.clearContent(), a(() => {
+                        x.setNuiFocus(!1, !1), y.inputRef.value?.clearContent && y.inputRef.value.clearContent(), s(() => {
                             v.message = ""
-                        }), v.showInput = !1, v.showEmojis = !1, v.reactingMessageId = null, i.state.container && !i.isNearBottom() && i.scrollToBottom(!0), L.resetChatWindowTimer()
+                        }), v.showInput = !1, v.showEmojis = !1, v.reactingMessageId = null, i.state.container && !i.isNearBottom() && i.scrollToBottom(!0), x.resetChatWindowTimer()
                     },
                     onMessage({
                         message: e
@@ -7318,7 +7017,7 @@ ${t}`,
                             timestamp: e.timestamp,
                             hasGId: !!e.gId
                         });
-                        let s = e.channel,
+                        let a = e.channel,
                             n = v.channels.find(t => t.Title === e.channel)?.bgColor,
                             o = {
                                 ...e,
@@ -7342,12 +7041,9 @@ ${t}`,
                             gId: e.gId
                         });
                         else {
-                            if (v.recentMessageHashes || (v.recentMessageHashes = new Map), v.recentMessageHashes.has(e.gId)) {
-                                f("NUI_DEDUP", `Message #${t} blocked as duplicate (gId exists)`, {
-                                    gId: e.gId
-                                });
-                                return
-                            }
+                            if (v.recentMessageHashes || (v.recentMessageHashes = new Map), v.recentMessageHashes.has(e.gId)) return void f("NUI_DEDUP", `Message #${t} blocked as duplicate (gId exists)`, {
+                                gId: e.gId
+                            });
                             let r = e.timestamp || Date.now();
                             if (v.recentMessageHashes.set(e.gId, {
                                     time: r,
@@ -7363,60 +7059,59 @@ ${t}`,
                         let p = !1;
                         if (o.replyTo && v.userId) {
                             let h = v.messageIdIndex.get(o.replyTo.gId),
-                                y = String(v.userId);
+                                C = String(v.userId);
                             if (h) {
-                                let $ = null;
+                                let k = null;
                                 if (h.gId && "string" == typeof h.gId) {
-                                    let N = h.gId.split("_");
-                                    N.length >= 2 && /^\d+$/.test(N[1]) && ($ = N[1])
-                                }!$ && h.userId && ($ = String(h.userId));
-                                let b = null;
+                                    let E = h.gId.split("_");
+                                    E.length >= 2 && /^\d+$/.test(E[1]) && (k = E[1])
+                                }!k && h.userId && (k = String(h.userId));
+                                let $ = null;
                                 if (o.gId && "string" == typeof o.gId) {
-                                    let V = o.gId.split("_");
-                                    V.length >= 2 && /^\d+$/.test(V[1]) && (b = V[1])
-                                }!b && o.userId && (b = String(o.userId)), $ !== y || b === y || (p = !0, o.isReplyToMe = !0, v.storage?.isMuted || m.playSound("sounds/mention.mp3"))
+                                    let b = o.gId.split("_");
+                                    b.length >= 2 && /^\d+$/.test(b[1]) && ($ = b[1])
+                                }!$ && o.userId && ($ = String(o.userId)), k === C && $ !== C && (p = !0, o.isReplyToMe = !0, v.storage?.isMuted || m.playSound("sounds/mention.mp3"))
                             }
                         }
                         if (v.userId && !p) {
-                            let I = "";
-                            e.text ? I = e.text : e.message ? I = e.message : e.args && Array.isArray(e.args) && (2 === e.args.length ? I = e.args[1] : 3 === e.args.length ? I = e.args[2] : 1 === e.args.length && (I = e.args[0]));
-                            let _ = String(v.userId),
-                                M = /@everyone|@here/i.test(I),
-                                w = [RegExp(`@${_}\\b`), RegExp(`<@${_}>`), RegExp(`@<${_}>`), RegExp(`<@!${_}>`)],
-                                T = w.some(e => e.test(I));
-                            (M || T) && (o.hasMention = !0, v.storage?.isMuted || m.playSound("sounds/mention.mp3"))
+                            let N = "";
+                            e.text ? N = e.text : e.message ? N = e.message : e.args && Array.isArray(e.args) && (2 === e.args.length ? N = e.args[1] : 3 === e.args.length ? N = e.args[2] : 1 === e.args.length && (N = e.args[0]));
+                            let V = String(v.userId),
+                                I = /@everyone|@here/i.test(N),
+                                w = [RegExp(`@${V}\\b`), RegExp(`<@${V}>`), RegExp(`@<${V}>`), RegExp(`<@!${V}>`)].some(e => e.test(N));
+                            (I || w) && (o.hasMention = !0, v.storage?.isMuted || m.playSound("sounds/mention.mp3"))
                         }
                         if (window.MentionService && o && window.MentionService.updateKnownUsers([o]), f("NUI_MSG_ADD", `Adding message #${t} to channel`, {
-                                channel: s,
+                                channel: a,
                                 gId: o.gId,
                                 hasReply: !!o.replyTo,
                                 hasMention: !!o.hasMention
-                            }), E.addChannelMessage(s, o), s !== v.currentChannel && !v.isChatHidden) {
-                            let S = v.channels.find(t => t.Title === e.channel);
-                            S && (S.unreadCount || (S.unreadCount = 0), S.unreadCount++);
-                            let x = v.permissions.Channels?.find(t => t.Title === e.channel);
-                            x && (x.unreadCount || (x.unreadCount = 0), x.unreadCount++)
+                            }), _.addChannelMessage(a, o), a !== v.currentChannel && !v.isChatHidden) {
+                            let T = v.channels.find(t => t.Title === e.channel);
+                            T && (T.unreadCount || (T.unreadCount = 0), T.unreadCount++);
+                            let S = v.permissions.Channels?.find(t => t.Title === e.channel);
+                            S && (S.unreadCount || (S.unreadCount = 0), S.unreadCount++)
                         }
-                        let D = v.channels.find(t => t.Title === e.channel);
-                        if (D) {
-                            if (D.messages.length >= 35) {
-                                let P = D.messages.findIndex(e => {
+                        let x = v.channels.find(t => t.Title === e.channel);
+                        if (x) {
+                            if (x.messages.length >= 35) {
+                                let P = x.messages.findIndex(e => {
                                     let t = "poll" === e.type && e.pollData && !0 === e.pollData.active,
-                                        s = e.isPinned || v.pinnedMessage && v.pinnedMessage.gId === e.gId;
-                                    return !t && !s
+                                        a = e.isPinned || v.pinnedMessage && v.pinnedMessage.gId === e.gId;
+                                    return !t && !a
                                 });
                                 if (-1 !== P) {
-                                    let B = D.messages[P];
-                                    B && B.gId && C.invalidate(B.gId), D.messages.splice(P, 1)
+                                    let D = x.messages[P];
+                                    D && D.gId && M.invalidate(D.gId), x.messages.splice(P, 1)
                                 } else {
-                                    let j = D.messages[0];
-                                    j && j.gId && C.invalidate(j.gId), D.messages.shift()
+                                    let B = x.messages[0];
+                                    B && B.gId && M.invalidate(B.gId), x.messages.shift()
                                 }
                             }
-                            D.messages.push(o)
+                            x.messages.push(o)
                         }
-                        a(() => {
-                            k.messagesRef.value && i.softScrollToBottom()
+                        s(() => {
+                            y.messagesRef.value && i.softScrollToBottom()
                         })
                     },
                     getMessageIdNumber: e => parseInt(e.gId.split("_")[1], 10),
@@ -7426,9 +7121,9 @@ ${t}`,
                     }) {
                         v.userId = e.user_id;
                         let t = v.chat?.Settings?.Filter?.Emojis,
-                            s = v.chat?.Settings?.Filter?.Stickers;
-                        if ((0 === Object.keys(v.chat).length || 1 === Object.keys(v.chat).length && v.chat.Settings) && (Object.assign(v.chat, e.config), t && (!e.config?.Settings?.Filter?.Emojis || 0 === e.config.Settings.Filter.Emojis.length) && (v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), v.chat.Settings.Filter.Emojis = t), s && (!e.config?.Settings?.Filter?.Stickers || 0 === e.config.Settings.Filter.Stickers.length) && (v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), v.chat.Settings.Filter.Stickers = s), e.config?.Settings?.UI)) {
-                            let a = e.config.Settings.UI,
+                            a = v.chat?.Settings?.Filter?.Stickers;
+                        if ((0 === Object.keys(v.chat).length || 1 === Object.keys(v.chat).length && v.chat.Settings) && (Object.assign(v.chat, e.config), !t || e.config?.Settings?.Filter?.Emojis && 0 !== e.config.Settings.Filter.Emojis.length || (v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), v.chat.Settings.Filter.Emojis = t), !a || e.config?.Settings?.Filter?.Stickers && 0 !== e.config.Settings.Filter.Stickers.length || (v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), v.chat.Settings.Filter.Stickers = a), e.config?.Settings?.UI)) {
+                            let s = e.config.Settings.UI,
                                 n = "storage",
                                 o = {};
                             try {
@@ -7437,7 +7132,7 @@ ${t}`,
                                 o = {}
                             }
                             let l = !1;
-                            if (void 0 === o.enableMessageGrouping && a.MessageGrouping && (o.enableMessageGrouping = a.MessageGrouping.DefaultEnabled, v.storage.enableMessageGrouping = a.MessageGrouping.DefaultEnabled, v.storage.groupingTimeWindow = a.MessageGrouping.TimeWindow || 3e5, l = !0, H()), a.TypingIndicator && (a.TypingIndicator.Enabled ? void 0 === o.showTypingIndicator && (o.showTypingIndicator = !0, v.storage.showTypingIndicator = !0, l = !0, H()) : (o.showTypingIndicator = !1, v.storage.showTypingIndicator = !1, v.typingDisabledByServer = !0, l = !0, H())), l) try {
+                            if (void 0 === o.enableMessageGrouping && s.MessageGrouping && (o.enableMessageGrouping = s.MessageGrouping.DefaultEnabled, v.storage.enableMessageGrouping = s.MessageGrouping.DefaultEnabled, v.storage.groupingTimeWindow = s.MessageGrouping.TimeWindow || 3e5, l = !0, A()), s.TypingIndicator && (s.TypingIndicator.Enabled ? void 0 === o.showTypingIndicator && (o.showTypingIndicator = !0, v.storage.showTypingIndicator = !0, l = !0, A()) : (o.showTypingIndicator = !1, v.storage.showTypingIndicator = !1, v.typingDisabledByServer = !0, l = !0, A())), l) try {
                                 localStorage.setItem(n, JSON.stringify(o))
                             } catch (r) {
                                 console.error("Failed to update storage:", r)
@@ -7448,20 +7143,19 @@ ${t}`,
                             Cosmetics: !1,
                             Stickers: !1,
                             ServerEmojis: !1
-                        }), e.Permissions.VIP.Message && Object.assign(v.permissions.VIP.Message, e.Permissions.VIP.Message), void 0 !== e.Permissions.VIP.Cosmetics && (v.permissions.VIP.Cosmetics = e.Permissions.VIP.Cosmetics, !0 === e.Permissions.VIP.Cosmetics && void 0 === v.storage.cosmeticsEnabled && (v.storage.cosmeticsEnabled = !0, H())), void 0 !== e.Permissions.VIP.Stickers && (v.permissions.VIP.Stickers = e.Permissions.VIP.Stickers), void 0 !== e.Permissions.VIP.ServerEmojis && (v.permissions.VIP.ServerEmojis = e.Permissions.VIP.ServerEmojis)), void 0 === e.Permissions.Cosmetics || e.Permissions.VIP?.Cosmetics || (v.permissions.VIP.Cosmetics = e.Permissions.Cosmetics, !0 === e.Permissions.Cosmetics && void 0 === v.storage.cosmeticsEnabled && (v.storage.cosmeticsEnabled = !0, H())), Object.keys(e.Permissions).forEach(t => {
+                        }), e.Permissions.VIP.Message && Object.assign(v.permissions.VIP.Message, e.Permissions.VIP.Message), void 0 !== e.Permissions.VIP.Cosmetics && (v.permissions.VIP.Cosmetics = e.Permissions.VIP.Cosmetics, !0 === e.Permissions.VIP.Cosmetics && void 0 === v.storage.cosmeticsEnabled && (v.storage.cosmeticsEnabled = !0, A())), void 0 !== e.Permissions.VIP.Stickers && (v.permissions.VIP.Stickers = e.Permissions.VIP.Stickers), void 0 !== e.Permissions.VIP.ServerEmojis && (v.permissions.VIP.ServerEmojis = e.Permissions.VIP.ServerEmojis)), void 0 === e.Permissions.Cosmetics || e.Permissions.VIP?.Cosmetics || (v.permissions.VIP.Cosmetics = e.Permissions.Cosmetics, !0 === e.Permissions.Cosmetics && void 0 === v.storage.cosmeticsEnabled && (v.storage.cosmeticsEnabled = !0, A())), Object.keys(e.Permissions).forEach(t => {
                             "VIP" !== t && "Cosmetics" !== t && (v.permissions[t] = e.Permissions[t])
                         })), void 0 !== e.isDisabled && (v.chatDisabled = e.isDisabled);
-                        let c = v.permissions.Channels || [],
-                            d = c.map(e => ({
+                        let c = (v.permissions.Channels || []).map(e => ({
                                 ...e,
                                 messages: [],
                                 unreadCount: 0,
-                                orgColor: L.detectAndChangeAlpha(e.color, .4),
-                                bgColor: `linear-gradient(90deg, ${L.detectAndChangeAlpha(e.color,.5)} 0%, ${L.detectAndChangeAlpha(e.color,.1)} 72%, rgba(0,0,0,0) 92%)`
+                                orgColor: x.detectAndChangeAlpha(e.color, .4),
+                                bgColor: `linear-gradient(90deg, ${x.detectAndChangeAlpha(e.color,.5)} 0%, ${x.detectAndChangeAlpha(e.color,.1)} 72%, rgba(0,0,0,0) 92%)`
                             })),
-                            m = new Set(v.channels.map(e => e.Title)),
-                            g = d.filter(e => !m.has(e.Title));
-                        v.channels.push(...g)
+                            d = new Set(v.channels.map(e => e.Title)),
+                            m = c.filter(e => !d.has(e.Title));
+                        v.channels.push(...m)
                     },
                     setNuiFocus(e, t) {
                         fetch("https://Easy-Chat-Max/SetNuiFocus", {
@@ -7478,7 +7172,7 @@ ${t}`,
                         })
                     },
                     onOpen() {
-                        !v.isPauseMenuActive && (v.showInput = !0, v.showWindow = !0, v.isChatHidden = !1, L.clearChatWindowTimer(), setTimeout(() => k.inputRef.value?.focus(), 100), L.setNuiFocus(!0, !0))
+                        v.isPauseMenuActive || (v.showInput = !0, v.showWindow = !0, v.isChatHidden = !1, x.clearChatWindowTimer(), setTimeout(() => y.inputRef.value?.focus(), 100), x.setNuiFocus(!0, !0))
                     },
                     showModal(e) {
                         Object.assign(v.modal, {
@@ -7502,36 +7196,33 @@ ${t}`,
                         v.modal.show = !1, v.modal.inputValue = ""
                     },
                     confirmModal() {
-                        v.modal.onConfirm && v.modal.onConfirm(v.modal.inputValue), L.closeModal()
+                        v.modal.onConfirm && v.modal.onConfirm(v.modal.inputValue), x.closeModal()
                     },
                     cancelModal() {
-                        v.modal.onCancel && v.modal.onCancel(), L.closeModal()
+                        v.modal.onCancel && v.modal.onCancel(), x.closeModal()
                     },
                     detectAndChangeAlpha(e, t) {
-                        let s = {
+                        let a = {
                             hex: /^#([A-Fa-f0-9]{3}){1,2}$/,
                             rgb: /^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/,
                             rgba: /^rgba\((\d{1,3}), (\d{1,3}), (\d{1,3}), (0|1|0?\.\d+)\)$/
                         };
-                        if (s.hex.test(e)) {
-                            let a = e,
-                                n = parseInt(4 === a.length ? a[1] + a[1] : a.substr(1, 2), 16),
-                                o = parseInt(4 === a.length ? a[2] + a[2] : a.substr(3, 2), 16),
-                                i = parseInt(4 === a.length ? a[3] + a[3] : a.substr(5, 2), 16);
+                        if (a.hex.test(e)) {
+                            let s = e;
+                            return `rgba(${parseInt(4===s.length?s[1]+s[1]:s.substr(1,2),16)},${parseInt(4===s.length?s[2]+s[2]:s.substr(3,2),16)},${parseInt(4===s.length?s[3]+s[3]:s.substr(5,2),16)},${t})`
+                        }
+                        if (a.rgb.test(e)) {
+                            let [, n, o, i] = e.match(a.rgb);
                             return `rgba(${n},${o},${i},${t})`
                         }
-                        if (s.rgb.test(e)) {
-                            let [, l, r, c] = e.match(s.rgb);
+                        if (a.rgba.test(e)) {
+                            let [, l, r, c] = e.match(a.rgba);
                             return `rgba(${l},${r},${c},${t})`
-                        }
-                        if (s.rgba.test(e)) {
-                            let [, d, m, g] = e.match(s.rgba);
-                            return `rgba(${d},${m},${g},${t})`
                         }
                         return e
                     }
                 },
-                R = () => {
+                P = () => {
                     let e = e => {
                         try {
                             let t = e.data || e.detail;
@@ -7541,82 +7232,71 @@ ${t}`,
                                 channel: t.message?.channel,
                                 hasArgs: !!t.message?.args
                             } : null);
-                            let s = {
+                            let a = {
                                 PRE_INIT() {
                                     t.data && (v.userId = t.data.user_id, v.chat.Settings || (v.chat.Settings = {}), v.chat.Settings.Filter || (v.chat.Settings.Filter = {}), t.data.emojis && (v.chat.Settings.Filter.Emojis = t.data.emojis), t.data.stickers && (v.chat.Settings.Filter.Stickers = t.data.stickers), t.data.logo && (v.chat.LOGO = t.data.logo), v.preInitialized = !0)
                                 },
                                 SET_DEBUG_MODE() {
-                                    window.ChatDebug.setEnabled(t.enabled);
-                                    p = t.enabled;
-                                    v.debugMode = t.enabled;
-                                    console.log(`%c[Chat Debug] Debug mode ${t.enabled?"ENABLED":"DISABLED"}`, "color: #00ff00; font-weight: bold");
-                                    if (t.enabled) {
-                                        console.log("%c[Chat Debug] Current Status:", "color: #00ff00");
-                                        console.log({
-                                            messagesProcessed: window.ChatDebug.messageCounter,
-                                            cachedMessages: v.recentMessageHashes ? v.recentMessageHashes.size : 0,
-                                            currentChannel: v.currentChannel,
-                                            channelsCount: v.channels.length,
-                                            bufferSize: `${window.ChatDebug.logBuffer.length}/${window.ChatDebug.maxLogBuffer}`,
-                                            activePolls: Array.from(v.channelMessagesMap.values()).flat().filter(e => "poll" === e.type && e.pollData?.active).length
-                                        });
-                                        console.log("%c[Chat Debug] New logs will now be printed in real-time", "color: #ffcc00");
-                                    } else {
-                                        console.log("%c[Chat Debug] Logs will continue to be buffered (last 100 entries)", "color: #ffcc00");
-                                    }
+                                    p = t.enabled, v.debugMode = t.enabled, console.log("%c[Chat Debug] Debug mode " + (p ? "ENABLED" : "DISABLED"), "color: #00ff00; font-weight: bold"), p ? (console.log("%c[Chat Debug] === DUMPING BUFFERED LOGS ===", "color: #ffcc00; font-weight: bold"), console.log(`[Chat Debug] Showing last ${h.length} log entries`), h.forEach((e, t) => {
+                                        let a = `[${e.timestamp}][BUFFERED][${e.category}] ${e.message}`;
+                                        e.data ? console.log(a + " | Data:", JSON.stringify(e.data, null, 2)) : console.log(a)
+                                    }), console.log("%c[Chat Debug] === END OF BUFFERED LOGS ===", "color: #ffcc00; font-weight: bold"), console.log("%c[Chat Debug] Current Status:", "color: #00ff00"), console.log({
+                                        messagesProcessed: u,
+                                        cachedMessages: v.recentMessageHashes ? v.recentMessageHashes.size : 0,
+                                        currentChannel: v.currentChannel,
+                                        channelsCount: v.channels.length,
+                                        bufferSize: `${h.length}/100`,
+                                        activePolls: Array.from(v.channelMessagesMap.values()).flat().filter(e => "poll" === e.type && e.pollData?.active).length
+                                    }), console.log("%c[Chat Debug] New logs will now be printed in real-time", "color: #ffcc00")) : console.log("%c[Chat Debug] Logs will continue to be buffered (last 100 entries)", "color: #ffcc00")
                                 },
-                                ON_MESSAGE: () => L.onMessage(t),
+                                ON_MESSAGE: () => x.onMessage(t),
                                 ON_MESSAGE_EDIT() {
                                     let e = t._message || t.message || t,
-                                        s = e.gId,
-                                        a = e.Msg || e.message || e.text || "";
-                                    if (!s) return;
+                                        a = e.gId,
+                                        s = e.Msg || e.message || e.text || "";
+                                    if (!a) return;
                                     let n = new Map,
                                         o = !1;
                                     for (let [i, l] of v.channelMessagesMap) {
-                                        let r = l.findIndex(e => e.gId === s);
+                                        let r = l.findIndex(e => e.gId === a);
                                         if (-1 !== r) {
                                             let c = JSON.parse(JSON.stringify({
                                                 ...l[r],
-                                                text: a,
-                                                message: a,
+                                                text: s,
+                                                message: s,
                                                 edited: !0,
                                                 isEdited: !0,
                                                 editedTimestamp: Date.now()
                                             }));
                                             if (c.args && Array.isArray(c.args)) {
                                                 let m = 3 === c.args.length ? 2 : 2 === c.args.length ? 1 : 0;
-                                                c.args[m] = a
+                                                c.args[m] = s
                                             }
                                             let g = [...l];
-                                            g[r] = c, n.set(i, g), v.messageIdIndex.set(s, c), o = !0
+                                            g[r] = c, n.set(i, g), v.messageIdIndex.set(a, c), o = !0
                                         } else n.set(i, [...l])
                                     }
-                                    o && (C.invalidate(s), window.GroupingCache?.invalidate(s), $.invalidate(), v.channelMessagesMap = n, v.forceUpdate = Date.now(), d.emit("message-edited", e))
+                                    o && (M.invalidate(a), window.GroupingCache?.invalidate(a), w.invalidate(), v.channelMessagesMap = n, v.forceUpdate = Date.now(), d.emit("message-edited", e))
                                 },
                                 ON_MESSAGE_DELETE() {
                                     let e = t._message || t.message || t;
-                                    if (!e || !e.gId) {
-                                        console.error("Cannot delete message without gId:", e);
-                                        return
-                                    }
-                                    let s = e.gId;
-                                    v.pinnedMessage && v.pinnedMessage.gId === s && (v.pinnedMessage = null);
-                                    let a = !1,
-                                        n = v.messageIdIndex.get(s);
-                                    if (n)
-                                        for (let [o, i] of v.channelMessagesMap) {
-                                            let l = i.findIndex(e => e && e.gId === s);
-                                            if (-1 !== l) {
-                                                i.splice(l, 1), $.invalidate(), C.invalidate(s), window.GroupingCache?.invalidate(s), v.messageIdIndex.delete(s), a = !0;
+                                    if (!e || !e.gId) return void console.error("Cannot delete message without gId:", e);
+                                    let a = e.gId;
+                                    v.pinnedMessage && v.pinnedMessage.gId === a && (v.pinnedMessage = null);
+                                    let s = !1;
+                                    if (v.messageIdIndex.get(a))
+                                        for (let [n, o] of v.channelMessagesMap) {
+                                            let i = o.findIndex(e => e && e.gId === a);
+                                            if (-1 !== i) {
+                                                o.splice(i, 1), w.invalidate(), M.invalidate(a), window.GroupingCache?.invalidate(a), v.messageIdIndex.delete(a), s = !0;
                                                 break
                                             }
                                         }
-                                    for (let r of v.channels) {
-                                        if (!r.messages) continue;
-                                        let c = r.messages.findIndex(e => e && e.gId === s);
-                                        if (-1 !== c) {
-                                            r.messages.splice(c, 1), C.invalidate(s), window.GroupingCache?.invalidate(s), a = !0;
+                                    for (let l of v.channels) {
+                                        if (!l.messages) continue;
+                                        let r = l.messages.findIndex(e => e && e.gId === a);
+                                        if (-1 !== r) {
+                                            l.messages.splice(r, 1), M.invalidate(a), window.GroupingCache?.invalidate(a), s = !0;
                                             break
                                         }
                                     }
@@ -7626,58 +7306,50 @@ ${t}`,
                                     f("CLEAR_EVENT", `Clear chat received for channel: ${e}`, {
                                         notForEveryone: t.notForEveryone
                                     });
-                                    let s = null;
-                                    for (let a = 0; a < v.channels.length; a++)
-                                        if (v.channels[a].Title === e) {
-                                            s = v.channels[a];
+                                    let a = null;
+                                    for (let s = 0; s < v.channels.length; s++)
+                                        if (v.channels[s].Title === e) {
+                                            a = v.channels[s];
                                             break
-                                        } if (s) {
+                                        } if (a) {
                                         let n = [],
                                             o = 0,
                                             i = 0;
-                                        for (let l = 0; l < s.messages.length; l++) {
-                                            let r = s.messages[l];
-                                            if (r.isPinned && "poll" !== r.type) {
-                                                n.push(r), f("CLEAR_PRESERVE", "Preserving pinned message", {
-                                                    gId: r.gId
-                                                });
-                                                continue
-                                            }
-                                            "poll" === r.type && r.pollData && !0 === r.pollData.active ? (n.push(r), o++, f("CLEAR_PRESERVE_POLL", "Preserving active poll", {
+                                        for (let l = 0; l < a.messages.length; l++) {
+                                            let r = a.messages[l];
+                                            r.isPinned && "poll" !== r.type ? (n.push(r), f("CLEAR_PRESERVE", "Preserving pinned message", {
+                                                gId: r.gId
+                                            })) : "poll" === r.type && r.pollData && !0 === r.pollData.active ? (n.push(r), o++, f("CLEAR_PRESERVE_POLL", "Preserving active poll", {
                                                 gId: r.gId,
                                                 question: r.pollData.question
                                             })) : i++
                                         }
-                                        s.messages = n, f("CLEAR_SUMMARY", `Clear completed for channel ${e}`, {
+                                        a.messages = n, f("CLEAR_SUMMARY", `Clear completed for channel ${e}`, {
                                             messagesCleared: i,
                                             pollsPreserved: o,
                                             totalPreserved: n.length
                                         })
                                     }
-                                    let c = E.getChannelKey(e),
+                                    let c = _.getChannelKey(e),
                                         d = v.channelMessagesMap.get(c);
                                     if (d) {
                                         let m = [],
                                             g = 0;
                                         for (let p = 0; p < d.length; p++) {
                                             let u = d[p];
-                                            if (u.isPinned && "poll" !== u.type || v.pinnedMessage?.gId === u.gId) {
-                                                m.push(u);
-                                                continue
-                                            }
-                                            "poll" === u.type && u.pollData && !0 === u.pollData.active && (m.push(u), g++, f("CLEAR_MAP_PRESERVE_POLL", "Preserving poll in channelMessagesMap", {
+                                            u.isPinned && "poll" !== u.type ? m.push(u) : v.pinnedMessage?.gId !== u.gId ? "poll" === u.type && u.pollData && !0 === u.pollData.active && (m.push(u), g++, f("CLEAR_MAP_PRESERVE_POLL", "Preserving poll in channelMessagesMap", {
                                                 gId: u.gId
-                                            }))
+                                            })) : m.push(u)
                                         }
-                                        v.channelMessagesMap.set(c, m), $.invalidate(), f("CLEAR_MAP_SUMMARY", "ChannelMessagesMap clear completed", {
+                                        v.channelMessagesMap.set(c, m), w.invalidate(), f("CLEAR_MAP_SUMMARY", "ChannelMessagesMap clear completed", {
                                             channel: e,
                                             pollsPreserved: g,
                                             totalPreserved: m.length
                                         })
                                     }
                                 },
-                                CHAT_DATA: () => L.chatData(t),
-                                ON_OPEN: () => L.onOpen(t),
+                                CHAT_DATA: () => x.chatData(t),
+                                ON_OPEN: () => x.onOpen(t),
                                 poll_created() {
                                     if (t.poll) {
                                         let e = {
@@ -7689,27 +7361,27 @@ ${t}`,
                                             channel: t.poll.channelId,
                                             timestamp: Date.now()
                                         };
-                                        L.handlePollMessage(e), L.updatePoll(t.poll)
+                                        x.handlePollMessage(e), x.updatePoll(t.poll)
                                     }
                                 },
-                                poll_updated: () => L.updatePoll(t.poll),
+                                poll_updated: () => x.updatePoll(t.poll),
                                 poll_ended() {
-                                    if (t.poll && (t.poll.active = !1), L.updatePoll(t.poll), v.currentChannelPoll?.id === t.poll.id && (v.currentChannelPoll = null), t.poll && t.poll.channelId) {
-                                        let e = E.getChannelKey(t.poll.channelId),
-                                            s = v.channelMessagesMap.get(e);
-                                        if (s) {
-                                            let a = s.find(e => "poll" === e.type && e.pollData && e.pollData.id === t.poll.id);
-                                            a && (a.pollData.active = !1, a.isPinned = !1, $.invalidate())
+                                    if (t.poll && (t.poll.active = !1), x.updatePoll(t.poll), v.currentChannelPoll?.id === t.poll.id && (v.currentChannelPoll = null), t.poll && t.poll.channelId) {
+                                        let e = _.getChannelKey(t.poll.channelId),
+                                            a = v.channelMessagesMap.get(e);
+                                        if (a) {
+                                            let s = a.find(e => "poll" === e.type && e.pollData && e.pollData.id === t.poll.id);
+                                            s && (s.pollData.active = !1, s.isPinned = !1, w.invalidate())
                                         }
                                         let n = v.channels.find(e => e.Title === t.poll.channelId);
                                         if (n) {
                                             let o = n.messages.find(e => "poll" === e.type && e.pollData && e.pollData.id === t.poll.id);
-                                            o && (o.pollData.active = !1, o.isPinned = !1, $.invalidate())
+                                            o && (o.pollData.active = !1, o.isPinned = !1, w.invalidate())
                                         }
                                     }
                                 },
-                                poll_message: () => L.handlePollMessage(t.message),
-                                poll_results_message: () => L.handlePollMessage(t.message),
+                                poll_message: () => x.handlePollMessage(t.message),
+                                poll_results_message: () => x.handlePollMessage(t.message),
                                 poll_active() {
                                     t.poll && (v.currentChannelPoll = t.poll, v.activePolls[t.poll.id] = t.poll)
                                 },
@@ -7722,22 +7394,20 @@ ${t}`,
                                     if (t.isRemoving) {
                                         let e = v.messageIdIndex.get(t.messageId);
                                         if (e && e.reactions && e.reactions[t.reaction]) {
-                                            let s = t.userId?.toString();
-                                            e.reactions[t.reaction] = e.reactions[t.reaction].filter(e => "string" == typeof e ? e !== s : e.id !== s), 0 === e.reactions[t.reaction].length && delete e.reactions[t.reaction], e.reactions = {
+                                            let a = t.userId?.toString();
+                                            e.reactions[t.reaction] = e.reactions[t.reaction].filter(e => "string" == typeof e ? e !== a : e.id !== a), 0 === e.reactions[t.reaction].length && delete e.reactions[t.reaction], e.reactions = {
                                                 ...e.reactions
-                                            }, C.invalidate(t.messageId), $.invalidate()
+                                            }, M.invalidate(t.messageId), w.invalidate()
                                         }
                                         if (v.pinnedMessage && v.pinnedMessage.gId === t.messageId && v.pinnedMessage.reactions && v.pinnedMessage.reactions[t.reaction]) {
-                                            let a = t.userId?.toString();
-                                            v.pinnedMessage.reactions[t.reaction] = v.pinnedMessage.reactions[t.reaction].filter(e => "string" == typeof e ? e !== a : e.id !== a), 0 === v.pinnedMessage.reactions[t.reaction].length && delete v.pinnedMessage.reactions[t.reaction], v.pinnedMessage.reactions = {
+                                            let s = t.userId?.toString();
+                                            v.pinnedMessage.reactions[t.reaction] = v.pinnedMessage.reactions[t.reaction].filter(e => "string" == typeof e ? e !== s : e.id !== s), 0 === v.pinnedMessage.reactions[t.reaction].length && delete v.pinnedMessage.reactions[t.reaction], v.pinnedMessage.reactions = {
                                                 ...v.pinnedMessage.reactions
                                             }
                                         }
-                                        return
-                                    }
-                                    if (t.reactionData) {
+                                    } else if (t.reactionData) {
                                         let n = v.messageIdIndex.get(t.messageId);
-                                        n && (n.reactions = Vue.shallowReactive(t.reactionData || {}), C.invalidate(t.messageId), $.invalidate()), v.pinnedMessage && v.pinnedMessage.gId === t.messageId && (v.pinnedMessage.reactions = Vue.shallowReactive(t.reactionData || {}))
+                                        n && (n.reactions = Vue.shallowReactive(t.reactionData || {}), M.invalidate(t.messageId), w.invalidate()), v.pinnedMessage && v.pinnedMessage.gId === t.messageId && (v.pinnedMessage.reactions = Vue.shallowReactive(t.reactionData || {}))
                                     } else {
                                         let o = null;
                                         if (o = v.messageIdIndex.get(t.messageId)) {
@@ -7749,7 +7419,7 @@ ${t}`,
                                                 timestamp: Date.now() / 1e3
                                             }) : o.reactions[t.reaction].push(i) : (o.reactions[t.reaction].splice(l, 1), 0 === o.reactions[t.reaction].length && delete o.reactions[t.reaction]), o.reactions = {
                                                 ...o.reactions
-                                            }, C.invalidate(t.messageId), $.invalidate()
+                                            }, M.invalidate(t.messageId), w.invalidate()
                                         }
                                         if (v.pinnedMessage && v.pinnedMessage.gId === t.messageId) {
                                             v.pinnedMessage.reactions || (v.pinnedMessage.reactions = Vue.shallowReactive({})), v.pinnedMessage.reactions[t.reaction] || (v.pinnedMessage.reactions[t.reaction] = []);
@@ -7767,77 +7437,51 @@ ${t}`,
                                 LOCAL_ASSETS() {
                                     if (t.data) {
                                         let e = new Map,
-                                            s = new Map;
+                                            a = new Map;
                                         t.data.emojis && t.data.emojis.forEach(t => {
-                                            let s = t.url || t.src || t;
-                                            e.has(s) || e.set(s, {
-                                                ...t,
-                                                source: "local"
-                                            })
+                                            let a = "string" == typeof t ? t : t.url || t.src || t;
+                                            if (!e.has(a)) {
+                                                let s = "string" == typeof t ? {
+                                                    url: t,
+                                                    source: "local"
+                                                } : {
+                                                    ...t,
+                                                    source: "local"
+                                                };
+                                                e.set(a, s)
+                                            }
                                         }), t.data.stickers && t.data.stickers.forEach(e => {
-                                            let t = e.url || e.src || e;
-                                            s.has(t) || s.set(t, {
-                                                ...e,
-                                                source: "local"
-                                            })
+                                            let t = "string" == typeof e ? e : e.url || e.src || e;
+                                            if (!a.has(t)) {
+                                                let s = "string" == typeof e ? {
+                                                    url: e,
+                                                    source: "local"
+                                                } : {
+                                                    ...e,
+                                                    source: "local"
+                                                };
+                                                a.set(t, s)
+                                            }
                                         }), v.discordAssets.emojis.forEach(t => {
                                             if ("discord" === t.source) {
-                                                let s = t.url || t.src || t;
-                                                e.set(s, t)
+                                                let a = t.url || t.src || t;
+                                                e.set(a, t)
                                             }
                                         }), v.discordAssets.stickers.forEach(e => {
                                             if ("discord" === e.source) {
                                                 let t = e.url || e.src || e;
-                                                s.set(t, e)
+                                                a.set(t, e)
                                             }
                                         });
-                                        let a = Array.from(e.values()),
-                                            n = Array.from(s.values());
-                                        v.discordAssets.emojiByIndex.clear(), v.discordAssets.stickerByIndex.clear(), v.discordAssets.emojiUrlCache.clear(), a.forEach((e, t) => {
+                                        let s = Array.from(e.values()),
+                                            n = Array.from(a.values());
+                                        v.discordAssets.emojiByIndex.clear(), v.discordAssets.stickerByIndex.clear(), v.discordAssets.emojiUrlCache.clear(), s.forEach((e, t) => {
                                             v.discordAssets.emojiByIndex.set(t, e);
-                                            let s = `:${t}:`;
-                                            v.discordAssets.emojiUrlCache.set(s, e.url || e.src)
+                                            let a = `:${t}:`;
+                                            v.discordAssets.emojiUrlCache.set(a, e.url || e.src)
                                         }), n.forEach((e, t) => {
                                             v.discordAssets.stickerByIndex.set(t, e)
-                                        }), v.discordAssets.emojis = a, v.discordAssets.stickers = n, v.discordAssets.isLoaded = !0, v.discordAssets.isLoading = !1
-                                    }
-                                },
-                                DISCORD_ASSETS() {
-                                    if (t.data) {
-                                        let e = new Map,
-                                            s = new Map;
-                                        v.discordAssets.emojis.forEach(t => {
-                                            if ("local" === t.source) {
-                                                let s = t.url || t.src || t;
-                                                e.set(s, t)
-                                            }
-                                        }), v.discordAssets.stickers.forEach(e => {
-                                            if ("local" === e.source) {
-                                                let t = e.url || e.src || e;
-                                                s.set(t, e)
-                                            }
-                                        }), t.data.emojis && t.data.emojis.forEach(t => {
-                                            let s = t.url || t.src || t;
-                                            e.has(s) || e.set(s, {
-                                                ...t,
-                                                source: "discord"
-                                            })
-                                        }), t.data.stickers && t.data.stickers.forEach(e => {
-                                            let t = e.url || e.src || e;
-                                            s.has(t) || s.set(t, {
-                                                ...e,
-                                                source: "discord"
-                                            })
-                                        });
-                                        let a = Array.from(e.values()),
-                                            n = Array.from(s.values());
-                                        v.discordAssets.emojiByIndex.clear(), v.discordAssets.stickerByIndex.clear(), v.discordAssets.emojiUrlCache.clear(), a.forEach((e, t) => {
-                                            v.discordAssets.emojiByIndex.set(t, e);
-                                            let s = `:${t}:`;
-                                            v.discordAssets.emojiUrlCache.set(s, e.url || e.src)
-                                        }), n.forEach((e, t) => {
-                                            v.discordAssets.stickerByIndex.set(t, e)
-                                        }), v.discordAssets.emojis = a, v.discordAssets.stickers = n, v.discordAssets.isLoaded = !0, v.discordAssets.isLoading = !1
+                                        }), v.discordAssets.emojis = s, v.discordAssets.stickers = n, v.discordAssets.isLoaded = !0, v.discordAssets.isLoading = !1
                                     }
                                 },
                                 ON_REACTION_REMOVED_ALL() {
@@ -7849,7 +7493,7 @@ ${t}`,
                                     })
                                 },
                                 REACTION_DETAILS() {
-                                    k.optionsPanelRef.value && k.optionsPanelRef.value.handleReactionDetails && k.optionsPanelRef.value.handleReactionDetails(t.data)
+                                    y.optionsPanelRef.value && y.optionsPanelRef.value.handleReactionDetails && y.optionsPanelRef.value.handleReactionDetails(t.data)
                                 },
                                 ON_TYPING() {
                                     if (v.storage.showTypingIndicator && v.showInput && t.userId !== v.userId && t.channel === v.currentChannel) {
@@ -7861,24 +7505,24 @@ ${t}`,
                                     if (!v.storage.showTypingIndicator || !v.showInput) return;
                                     let e = t.data || t;
                                     Object.keys(e).forEach(t => {
-                                        let s = e[t];
-                                        if (s.channel !== v.currentChannel || s.userId === v.userId) return;
-                                        let a = s.userName;
-                                        o.addUser(a)
+                                        let a = e[t];
+                                        if (a.channel !== v.currentChannel || a.userId === v.userId) return;
+                                        let s = a.userName;
+                                        o.addUser(s)
                                     })
                                 },
                                 REMOVE_TYPING() {
                                     let e = t.data || t,
                                         {
-                                            userId: s,
-                                            userName: a,
+                                            userId: a,
+                                            userName: s,
                                             channels: n
                                         } = e;
-                                    n && n.includes(v.currentChannel) && o.removeUser(a)
+                                    n && n.includes(v.currentChannel) && o.removeUser(s)
                                 },
                                 ON_PIN_MESSAGE() {
                                     let e = null;
-                                    (e = v.messageIdIndex.get(t.messageId)) && t.channel === v.currentChannel && (e.isPinned = !0, C.updateFlag(t.messageId, "isPinned", !0), $.invalidate(), v.pinnedMessage = {
+                                    (e = v.messageIdIndex.get(t.messageId)) && t.channel === v.currentChannel && (e.isPinned = !0, M.updateFlag(t.messageId, "isPinned", !0), w.invalidate(), v.pinnedMessage = {
                                         ...e,
                                         channel: t.channel,
                                         reactions: e.reactions ? {
@@ -7890,16 +7534,16 @@ ${t}`,
                                     if (v.pinnedMessage?.gId === t.messageId && t.channel === v.currentChannel) {
                                         v.pinnedMessage = null;
                                         let e = v.messageIdIndex.get(t.messageId);
-                                        e && (e.isPinned = !1, C.updateFlag(t.messageId, "isPinned", !1), $.invalidate())
+                                        e && (e.isPinned = !1, M.updateFlag(t.messageId, "isPinned", !1), w.invalidate())
                                     }
                                 },
                                 PAUSE_MENU_STATE() {
-                                    t.data && "boolean" == typeof t.data.isPaused && (v.isPauseMenuActive = t.data.isPaused, t.data.isPaused ? (v.wasWindowOpenBeforePause = v.showWindow, v.wasInputOpenBeforePause = v.showInput, v.showWindow = !1, v.showInput = !1, v.isChatHidden = !0, L.setNuiFocus(!1, !1)) : (v.wasWindowOpenBeforePause && (v.showWindow = !0, v.isChatHidden = !1), v.wasWindowOpenBeforePause = !1, v.wasInputOpenBeforePause = !1))
+                                    t.data && "boolean" == typeof t.data.isPaused && (v.isPauseMenuActive = t.data.isPaused, t.data.isPaused ? (v.wasWindowOpenBeforePause = v.showWindow, v.wasInputOpenBeforePause = v.showInput, v.showWindow = !1, v.showInput = !1, v.isChatHidden = !0, x.setNuiFocus(!1, !1)) : (v.wasWindowOpenBeforePause && (v.showWindow = !0, v.isChatHidden = !1), v.wasWindowOpenBeforePause = !1, v.wasInputOpenBeforePause = !1))
                                 }
                             };
-                            s[t.type] && s[t.type]()
-                        } catch (a) {
-                            console.error("[خطأ في معالج الرسائل]", a, e.data || e.detail)
+                            a[t.type] && a[t.type]()
+                        } catch (s) {
+                            console.error("[خطأ في معالج الرسائل]", s, e.data || e.detail)
                         }
                     };
                     return document.addEventListener("click", e => {
@@ -7910,74 +7554,73 @@ ${t}`,
                         }
                         if (v.showChannelsPanel && !e.target.closest(".channels-panel-container") && !e.target.closest(".channels-toggle-btn") && !e.target.closest(".channel-panel")) {
                             v.showChannelsPanel = !1;
-                            let s = v.inputRef?.stickers?.length > 0;
-                            v.showExpansion = v.replyingTo || v.showEmojis || v.showPollsPanel || s
+                            let a = v.inputRef?.stickers?.length > 0;
+                            v.showExpansion = v.replyingTo || v.showEmojis || v.showPollsPanel || a
                         }
                         if (v.showPollsPanel && !e.target.closest(".polls-panel-container") && !e.target.closest(".poll-toggle-btn")) {
                             v.showPollsPanel = !1;
-                            let a = v.inputRef?.stickers?.length > 0;
-                            v.inputRef?.showMentionSuggestions && v.inputRef?.mentionSuggestions?.length, v.showExpansion = v.replyingTo || v.showEmojis || v.showChannelsPanel || a
+                            let s = v.inputRef?.stickers?.length > 0;
+                            v.inputRef?.showMentionSuggestions && v.inputRef, v.showExpansion = v.replyingTo || v.showEmojis || v.showChannelsPanel || s
                         }
                     }, !0), document.addEventListener("keydown", e => {
-                        (e.ctrlKey || e.metaKey) && "f" === e.key && v.showInput && (e.preventDefault(), v.search.show ? A.closeSearch() : A.openSearch())
+                        (e.ctrlKey || e.metaKey) && "f" === e.key && v.showInput && (e.preventDefault(), v.search.show ? S.closeSearch() : S.openSearch())
                     }), window.addEventListener("message", e), () => {
                         window.removeEventListener("message", e), o.destroy()
                     }
                 },
-                U = null,
-                F = e => {
-                    "Escape" === e.key && (v.showOptionsPanel ? v.messageContext ? L.closeMessageOptions() : L.toggleOptionsPanel() : v.showInput && L.hideInput(!0))
+                D = null,
+                B = e => {
+                    "Escape" === e.key && (v.showOptionsPanel ? v.messageContext ? x.closeMessageOptions() : x.toggleOptionsPanel() : v.showInput && x.hideInput(!0))
                 },
-                O = e => {
+                j = e => {
                     if (!v.showOptionsPanel) return;
                     let t = document.querySelector(".options-panel-wrapper"),
-                        s = document.querySelector(".options-button.modern"),
-                        a = e.target.closest(".message-item");
-                    !(s?.contains(e.target) || t?.contains(e.target)) && (!a || "true" !== a.dataset.hasGid) && (v.messageContext ? L.closeMessageOptions() : L.toggleOptionsPanel())
+                        a = document.querySelector(".options-button.modern"),
+                        s = e.target.closest(".message-item");
+                    a?.contains(e.target) || t?.contains(e.target) || s && "true" === s.dataset.hasGid || (v.messageContext ? x.closeMessageOptions() : x.toggleOptionsPanel())
                 };
             e(async () => {
-                await r.load(), v.emojiData = r.data, document.documentElement.setAttribute("data-message-style", v.storage.messageStyle || "default"), k.messagesRef.value && i.init(k.messagesRef.value), setTimeout(() => {
-                    v.discordAssets.isLoaded || L.requestAssetsFromClient()
-                }, 100), document.addEventListener("keydown", F), document.addEventListener("click", O, !0), fetch("https://Easy-Chat-Max/chatInitialized", {
+                await r.load(), v.emojiData = r.data, document.documentElement.setAttribute("data-message-style", v.storage.messageStyle || "default"), y.messagesRef.value && i.init(y.messagesRef.value), setTimeout(() => {
+                    v.discordAssets.isLoaded || x.requestAssetsFromClient()
+                }, 100), document.addEventListener("keydown", B), document.addEventListener("click", j, !0), fetch("https://Easy-Chat-Max/chatInitialized", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({})
-                }).catch(() => {}), U = R(), v.storage.color && (document.documentElement.style.setProperty("--chat-color-1", v.storage.color), document.documentElement.style.setProperty("--chat-color-2", v.storage.color))
+                }).catch(() => {}), D = P(), v.storage.color && (document.documentElement.style.setProperty("--chat-color-1", v.storage.color), document.documentElement.style.setProperty("--chat-color-2", v.storage.color))
             }), t(() => {
-                i.destroy(), "function" == typeof U && U(), document.removeEventListener("keydown", F), document.removeEventListener("click", O, !0)
-            }), s(() => k.messagesRef.value, e => {
+                i.destroy(), "function" == typeof D && D(), document.removeEventListener("keydown", B), document.removeEventListener("click", j, !0)
+            }), a(() => y.messagesRef.value, e => {
                 e && (i.destroy(), i.init(e))
             });
-            let z = () => {
-                    localStorage.setItem("storage", JSON.stringify(v.storage))
-                },
-                H = m.debounce(z, 500);
-            return s(() => v.message, m.debounce(e => {}, 100)), s(B.currentChannelMessages, e => {
-                window.MentionService && e && window.MentionService.updateKnownUsers(e), v.isChatHidden || (L.clearChatWindowTimer(), v.showWindow = !0, L.resetChatWindowTimer()), a(() => {
-                    k.messagesRef.value && i.softScrollToBottom()
+            let A = m.debounce(() => {
+                localStorage.setItem("storage", JSON.stringify(v.storage))
+            }, 500);
+            return a(() => v.message, m.debounce(e => {}, 100)), a(T.currentChannelMessages, e => {
+                window.MentionService && e && window.MentionService.updateKnownUsers(e), v.isChatHidden || (x.clearChatWindowTimer(), v.showWindow = !0, x.resetChatWindowTimer()), s(() => {
+                    y.messagesRef.value && i.softScrollToBottom()
                 })
             }, {
                 deep: !0
             }), {
-                ...D(v),
-                ...k,
-                ...B,
-                ...L,
+                ...toRefs(v),
+                ...y,
+                ...T,
+                ...x,
                 handleChannelSwitch(e) {
                     v.currentChannel = e, v.pinnedMessage = null;
                     let t = v.channels.find(t => t.Title === e);
                     t && (t.unreadCount = 0);
-                    let s = v.permissions.Channels?.find(t => t.Title === e);
-                    s && (s.unreadCount = 0);
-                    let a = document.querySelector(".channels-component");
-                    a && a.dispatchEvent(new CustomEvent("clear-unread", {
+                    let a = v.permissions.Channels?.find(t => t.Title === e);
+                    a && (a.unreadCount = 0);
+                    let s = document.querySelector(".channels-component");
+                    s && s.dispatchEvent(new CustomEvent("clear-unread", {
                         detail: {
                             channelId: e
                         }
                     })), n.add(() => {
-                        k.messagesRef.value && i.forceScrollToBottom()
+                        y.messagesRef.value && i.forceScrollToBottom()
                     }, "high")
                 },
                 templates: {
@@ -7985,23 +7628,26 @@ ${t}`,
                     defaultAlt: "{0}",
                     print: "<pre>{0}</pre>"
                 },
-                scrollToBottom: j,
-                activePickerTab: x(v, "activePickerTab"),
-                discordAssets: x(v, "discordAssets"),
-                showExpansion: B.showExpansion,
-                showPollModal: x(v, "showPollModal"),
-                showPollsPanel: x(v, "showPollsPanel"),
-                currentChannelPoll: x(v, "currentChannelPoll"),
-                showQuickChannelSwitcher: x(v, "showQuickChannelSwitcher"),
-                hasMultipleChannels: B.hasMultipleChannels,
-                totalUnreadCount: B.totalUnreadCount,
-                currentChannelColor: B.currentChannelColor,
-                selectedMessageId: x(v, "selectedMessageId")
+                debugLog: f,
+                scrollToBottom() {
+                    i.scrollToBottom(!0)
+                },
+                activePickerTab: toRef(v, "activePickerTab"),
+                discordAssets: toRef(v, "discordAssets"),
+                showExpansion: T.showExpansion,
+                showPollModal: toRef(v, "showPollModal"),
+                showPollsPanel: toRef(v, "showPollsPanel"),
+                currentChannelPoll: toRef(v, "currentChannelPoll"),
+                showQuickChannelSwitcher: toRef(v, "showQuickChannelSwitcher"),
+                hasMultipleChannels: T.hasMultipleChannels,
+                totalUnreadCount: T.totalUnreadCount,
+                currentChannelColor: T.currentChannelColor,
+                selectedMessageId: toRef(v, "selectedMessageId")
             }
         },
         render: function(e, t) {
-            let s = _resolveComponent("search-bar"),
-                a = _resolveComponent("message-component"),
+            let a = _resolveComponent("search-bar"),
+                s = _resolveComponent("message-component"),
                 n = _resolveComponent("quick-channel-switcher"),
                 o = _resolveComponent("tip-tap-input"),
                 i = _resolveComponent("typing-indicator"),
@@ -8017,7 +7663,7 @@ ${t}`,
             }, [_createCommentVNode(" Search Bar Component "), _createVNode(_Transition, {
                 name: "search-slide"
             }, {
-                default: _withCtx(() => [e.search.show ? (_openBlock(), _createBlock(s, {
+                default: _withCtx(() => [e.search.show ? (_openBlock(), _createBlock(a, {
                     key: 0,
                     messages: e.currentChannelMessages,
                     onClose: e.closeSearch
@@ -8028,11 +7674,11 @@ ${t}`,
                 class: "messages-container"
             }, [_createElementVNode("ul", {
                 class: "messages-list"
-            }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.currentChannelMessages, (t, s) => (_openBlock(), _createBlock(a, {
-                key: (t.gId || s) + "_" + (t.editedTimestamp || t.timestamp || 0),
+            }, [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.currentChannelMessages, (t, a) => (_openBlock(), _createBlock(s, {
+                key: (t.gId || a) + "_" + (t.editedTimestamp || t.timestamp || 0),
                 message: t,
-                previousMessage: s > 0 ? e.currentChannelMessages[s - 1] : null,
-                nextMessage: s < e.currentChannelMessages.length - 1 ? e.currentChannelMessages[s + 1] : null,
+                previousMessage: a > 0 ? e.currentChannelMessages[a - 1] : null,
+                nextMessage: a < e.currentChannelMessages.length - 1 ? e.currentChannelMessages[a + 1] : null,
                 templates: e.templates,
                 userId: e.userId,
                 storage: e.storage,
@@ -8182,12 +7828,12 @@ ${t}`,
             }), _createCommentVNode(" Uploaded Image Badge Button "), _createVNode(_TransitionGroup, {
                 name: "fade"
             }, {
-                default: _withCtx(() => [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.uploadedImages, (t, s) => (_openBlock(), _createElementBlock("button", {
+                default: _withCtx(() => [(_openBlock(!0), _createElementBlock(_Fragment, null, _renderList(e.uploadedImages, (t, a) => (_openBlock(), _createElementBlock("button", {
                     key: t.url,
                     class: "image-button-badge",
                     crossorigin: "anonymous",
                     referrerpolicy: "no-referrer",
-                    onClick: t => e.$refs.inputRef?.removeUploadedImage?.(s),
+                    onClick: t => e.$refs.inputRef?.removeUploadedImage?.(a),
                     title: "إزالة " + t.name
                 }, [_createElementVNode("img", {
                     src: t.url,
